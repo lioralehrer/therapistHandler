@@ -1,8 +1,8 @@
 
 
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Animated, Text, Platform } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform } from 'react-native';
+
 
 export default class Mynewproject extends Component {
 
@@ -17,15 +17,27 @@ export default class Mynewproject extends Component {
           המטופל שלך: {this.props.petiant}
         </Text>
         <View style={styles.btnContainer}>
-          <View style={styles.btn}>
-            <Button title="בחר משימות" onPress={() => alert("בחר משימות")} />
-          </View>
-          <View style={styles.btn}>
-            <Button title="בחר פעילויות" onPress={() => { alert("בחר פעילויות") }} />
-          </View>
-          <View style={styles.btn}>
-            <Button title="מטופל אחר?" onPress={() => alert("change pationt!")} />
-          </View>
+          <TouchableHighlight
+            style={styles.circle}
+            underlayColor='#ccc'
+            onPress={() => alert('Yaay!')}
+          >
+            <Text>  מטופל אחר </Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.circle}
+            underlayColor='#ccc'
+            onPress={() => alert('Yaay!')}
+          >
+            <Text> בחר פעילויות </Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.circle}
+            underlayColor='#ccc'
+            onPress={() => alert('Yaay!')}
+          >
+            <Text> בחר משימות   </Text>
+          </TouchableHighlight>
         </View>
 
       </View>
@@ -38,9 +50,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Platform.OS == 'ios' ? 20 : 0,
   },
-  btnContainer:{
-    flex:1,
-    flexDirection:'row',
+  btnContainer: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'space-around',
   },
 
@@ -52,17 +64,12 @@ const styles = StyleSheet.create({
     margin: 10,
 
   },
-  TextViewStyle: {
-    textAlign: 'center',
-    color: '#000',
-    fontSize: 18,
-
-    margin: 5,
-    padding: 7,
-  },
-  btn: {
-    margin: 2,
-
+  circle: {
+    borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+    width: Dimensions.get('window').width * 0.25,
+    height: Dimensions.get('window').width * 0.25,
+    backgroundColor: '#89AAFF',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
-
 });
