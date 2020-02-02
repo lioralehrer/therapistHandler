@@ -1,26 +1,35 @@
 
 
 import React, { Component } from 'react';
-import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform } from 'react-native';
-
-
+import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform, Modal } from 'react-native';
 export default class Mynewproject extends Component {
 
+  state = {
+    modalVisible: false,
+  };
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
+  paciantPicker = () => {
+    alert('blabla')
+  }
   render() {
 
 
     return (
       <View style={styles.MainContainer}>
-
         <Text style={styles.HeaderInsideText}>
           שלום {this.props.therapistName} {'\n'}
           המטופל שלך: {this.props.petiant}
         </Text>
+
         <View style={styles.btnContainer}>
           <TouchableHighlight
             style={styles.circle}
             underlayColor='#ccc'
-            onPress={() => alert('Yaay!')}
+            onPress={() => this.paciantPicker()}
           >
             <Text>  מטופל אחר </Text>
           </TouchableHighlight>
@@ -34,12 +43,31 @@ export default class Mynewproject extends Component {
           <TouchableHighlight
             style={styles.circle}
             underlayColor='#ccc'
-            onPress={() => alert('Yaay!')}
+            onPress={() => this.setModalVisible(!this.state.modalVisible)}
           >
             <Text> בחר משימות   </Text>
           </TouchableHighlight>
-        </View>
 
+          <Modal
+            animationType="fade"
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <TouchableHighlight
+              style={styles.circle}
+              underlayColor='#ccc'
+              onPress={() => this.setModalVisible(!this.state.modalVisible)}
+            >
+              <Text > סיים   </Text>
+            </TouchableHighlight>
+
+            <View style={{ flex: 1 }}>
+              <Text>I am the modal content!</Text>
+            </View>
+          </Modal>
+        </View>
       </View>
     );
   }

@@ -3,7 +3,7 @@ import { ScrollView, Navigator, NativeModules, View, StyleSheet , StatusBar, Tou
 import { Card } from 'react-native-elements';
 import SessionsHandler from './components/SessionsHandler/SessionsHandler';
 import InsideSession from './components/InsideSession';
-
+ 
 // import styles from './appStyle'
 // a function to calculate hours, minutes and seconds.
 const formatNumber = (number) => `0${number}`.slice(-2);
@@ -58,6 +58,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle='light-content' />
+        
         <SessionsHandler therapistName="רבקה"  petiant="ורד"/>
         <ScrollView>
        
