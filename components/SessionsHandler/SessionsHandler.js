@@ -2,15 +2,21 @@
 
 import React, { Component } from 'react';
 import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform, Modal } from 'react-native';
-export default class Mynewproject extends Component {
+import MissionCheckbox from '../MissionCheckbox';
 
-  state = {
-    modalVisible: false,
-  };
+
+export default class SessionHandler extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      modalVisible: false,
+    };
+  }
 
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+
 
   paciantPicker = () => {
     alert('blabla')
@@ -40,6 +46,7 @@ export default class Mynewproject extends Component {
           >
             <Text> בחר פעילויות </Text>
           </TouchableHighlight>
+          
           <TouchableHighlight
             style={styles.circle}
             underlayColor='#ccc'
@@ -55,6 +62,7 @@ export default class Mynewproject extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
+               <MissionCheckbox/>
             <TouchableHighlight
               style={styles.circle}
               underlayColor='#ccc'
@@ -62,9 +70,9 @@ export default class Mynewproject extends Component {
             >
               <Text > סיים   </Text>
             </TouchableHighlight>
-
+               
             <View style={{ flex: 1 }}>
-              <Text>I am the modal content!</Text>
+              <Text>ckcghjhjdh</Text>
             </View>
           </Modal>
         </View>

@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { View, Text, StyleSheet, Image } from 'react-native'
-import { Card,  Button } from 'react-native-elements'
+import { Card } from 'react-native-elements'
 
 
 export default class InsideSession extends Component {
