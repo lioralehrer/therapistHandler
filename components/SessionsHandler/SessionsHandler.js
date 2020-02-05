@@ -62,6 +62,8 @@ export default class SessionHandler extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
+              <View style={styles.modal}>
+
                <MissionCheckbox/>
             <TouchableHighlight
               style={styles.circle}
@@ -74,6 +76,7 @@ export default class SessionHandler extends Component {
             <View style={{ flex: 1 }}>
               <Text>ckcghjhjdh</Text>
             </View>
+              </View>
           </Modal>
         </View>
       </View>
@@ -107,5 +110,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#89AAFF',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  modal:{
+    // backgroundColor : 'black',
+    alignItems: 'center',
+    marginTop: 20,
   }
 });
