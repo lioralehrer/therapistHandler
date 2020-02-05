@@ -4,9 +4,9 @@ import { CheckBox } from 'react-native-elements';
 import MyHeader from './MyHeader';
 
 export default class MissionCheckbox extends Component {
-
+   
     state = {
-        checked: false,
+        checked:false,
     }
 
     render() {
@@ -18,14 +18,15 @@ export default class MissionCheckbox extends Component {
                 title={value}
                 checked={this.state.checked}
                 onPress={() => this.setState({ checked: !this.state.checked })}
-            />})
-        
+            />
+        })
+
         return (
             <View style={styles.container}>
-                <MyHeader title="בחרי משימות" />
-                <View style={styles.checkbox}>
-                    {missionsList}
-                </View>
+                    <MyHeader title="בחרי משימות" />
+                    <View style={styles.checkbox}>
+                        {missionsList}
+                    </View>
             </View>
 
         )
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const missions =['הוסיפי משימות', 'הציגי משימות בעזרת לולאה', 'סמני כל לולאה בנפרד', 'העבירי משימות לכרטיסים בעמוד אחר','עדיין הרדקודד?']
+const missions = ['הוסיפי משימות', 'הציגי משימות בעזרת לולאה', 'סמני כל לולאה בנפרד', 'העבירי משימות לכרטיסים בעמוד אחר', 'עדיין הרדקודד?']
 
 
 

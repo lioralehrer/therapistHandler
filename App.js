@@ -20,11 +20,14 @@ export default class App extends Component {
   constructor(props){
     super(props);
     this.pauseBtn = "Pause";
+    
   }
   state = {
     remaingSeconds: SESSION,
     isRunning: false,
     pause:true,
+    missions :['הוסיפי משימות', 'הציגי משימות בעזרת לולאה', 'סמני כל לולאה בנפרד', 'העבירי משימות לכרטיסים בעמוד אחר', 'עדיין הרדקודד?'],
+    myMissions: ['סמני כל לולאה בנפרד','העבירי משימות לעמוד אחר'],
   }
   componentWillMount() {
     if (this.interval) {
@@ -55,13 +58,14 @@ export default class App extends Component {
   }
   render() {
     const { hours, minutes, seconds } = getRemaining(this.state.remaingSeconds);
+    const myMissionsList = Object.entries(this.state.myMissions).map(([key , value])=>{
+      return  <InsideSession mission= {this.state.myMissions[key]}/>
+    })
     return (
       <View style={styles.container}>
         <StatusBar barStyle='light-content' />
-        
-        <SessionsHandler therapistName="רבקה"  petiant="ורד"/>
         <ScrollView>
-       
+        <SessionsHandler therapistName="רבקה"  petiant="ורד"/>
         <View style={styles.btnContainer}>
 
           {this.state.isRunning ?
@@ -78,10 +82,9 @@ export default class App extends Component {
               <Text style={styles.textButtton}>Start Session</Text>
             </TouchableOpacity> 
           }
-          
           <Text style={styles.time}> {`${hours}:${minutes}:${seconds}`}</Text>
         </View>
-       <InsideSession mission="להגיד בלהבלה"/>
+       {myMissionsList}
       </ScrollView>
       </View>
     )
@@ -106,8 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 5,
     borderColor: '#89AAFF',
-    // width: screen.width / 2,
-    // height: screen.width /5,
      borderRadius: screen.width / 2,
      margin: 2,
 

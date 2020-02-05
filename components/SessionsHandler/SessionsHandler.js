@@ -1,15 +1,16 @@
 
 
 import React, { Component } from 'react';
-import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform, Modal } from 'react-native';
+import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform, Modal, ScrollView } from 'react-native';
 import MissionCheckbox from '../MissionCheckbox';
 
 
 export default class SessionHandler extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       modalVisible: false,
+  
     };
   }
 
@@ -46,7 +47,7 @@ export default class SessionHandler extends Component {
           >
             <Text> בחר פעילויות </Text>
           </TouchableHighlight>
-          
+
           <TouchableHighlight
             style={styles.circle}
             underlayColor='#ccc'
@@ -62,21 +63,20 @@ export default class SessionHandler extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-              <View style={styles.modal}>
+            <View style={styles.modal} onStartShouldSetResponder={() => true}>
+                  <MissionCheckbox />
+                  <TouchableHighlight
+                    style={styles.circle}
+                    underlayColor='#ccc'
+                    onPress={() => this.setModalVisible(!this.state.modalVisible)}
+                  >
+                    <Text > סיים   </Text>
+                  </TouchableHighlight>
 
-               <MissionCheckbox/>
-            <TouchableHighlight
-              style={styles.circle}
-              underlayColor='#ccc'
-              onPress={() => this.setModalVisible(!this.state.modalVisible)}
-            >
-              <Text > סיים   </Text>
-            </TouchableHighlight>
-               
-            <View style={{ flex: 1 }}>
-              <Text>ckcghjhjdh</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text>ckcghjhjdh</Text>
+                  </View>
             </View>
-              </View>
           </Modal>
         </View>
       </View>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  modal:{
+  modal: {
     // backgroundColor : 'black',
     alignItems: 'center',
     marginTop: 20,
