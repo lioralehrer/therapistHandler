@@ -10,6 +10,7 @@ export default class MissionCheckbox extends Component {
     }
 
     render() {
+        const missions = this.props.missions;
         const missionsList = Object.entries(missions).map(([key, value]) => {
             return <CheckBox
                 iconRight
@@ -42,8 +43,6 @@ const styles = StyleSheet.create({
         margin: 20,
     }
 })
-
-const missions = ['הוסיפי משימות', 'הציגי משימות בעזרת לולאה', 'סמני כל לולאה בנפרד', 'העבירי משימות לכרטיסים בעמוד אחר', 'עדיין הרדקודד?']
 
 
 

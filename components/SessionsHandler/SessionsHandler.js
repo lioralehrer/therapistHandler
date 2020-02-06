@@ -64,7 +64,7 @@ export default class SessionHandler extends Component {
               Alert.alert('Modal has been closed.');
             }}>
             <View style={styles.modal} onStartShouldSetResponder={() => true}>
-                  <MissionCheckbox />
+                  <MissionCheckbox  missions={this.props.missions}/>
                   <TouchableHighlight
                     style={styles.circle}
                     underlayColor='#ccc'
@@ -74,7 +74,7 @@ export default class SessionHandler extends Component {
                   </TouchableHighlight>
 
                   <View style={{ flex: 1 }}>
-                    <Text>ckcghjhjdh</Text>
+                    <Text>liorablabla</Text>
                   </View>
             </View>
           </Modal>

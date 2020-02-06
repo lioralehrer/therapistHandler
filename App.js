@@ -20,7 +20,7 @@ export default class App extends Component {
       <View style={styles.container}>
         <StatusBar barStyle='light-content' />
         <ScrollView>
-        <SessionsHandler therapistName="רבקה"  petiant="ורד"/>
+        <SessionsHandler therapistName="רבקה"  petiant="ורד" missions={this.state.missions}/>
         <Timer/>
        {myMissionsList}
       </ScrollView>
