@@ -4,20 +4,9 @@ import { CheckBox } from 'react-native-elements';
 import MyHeader from './MyHeader';
 
 export default class MissionCheckbox extends Component {
-    // constructor(props){
-    //     super(props);
-    //     this.missions = this.props.missions;
-    // }
-   
-    state = {
-        checked:false,
-    }
-    // state = {
-    //     checked : [],
-    // }
-    componentWillMount(){
-       
-    }
+    checkedMission (id){
+      this.props.checkedMission(id)
+ }
 
     render() {
         const missions = this.props.missions;
@@ -26,14 +15,11 @@ export default class MissionCheckbox extends Component {
                 iconRight
                 right
                 checkedColor='green'
-                title={value}
-                // checked={this.state.checked[key]}
-                // onPress={() => this.setState({ checked[key]: !this.state.checked[key] })}
-                checked={this.state.checked}
-                onPress={() => this.setState({ checked: !this.state.checked })}
+                title={value.text}
+                checked={value.checked}
+                onPress={() => this.checkedMission(value.id)}
             />
         })
-
         return (
             <View style={styles.container}>
                     <MyHeader title="בחרי משימות" />

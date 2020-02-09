@@ -22,6 +22,9 @@ export default class SessionHandler extends Component {
   paciantPicker = () => {
     alert('blabla')
   }
+  checkedMission=(id)=>{
+    this.props.checkedMission(id);
+  }
   render() {
 
 
@@ -64,7 +67,7 @@ export default class SessionHandler extends Component {
               Alert.alert('Modal has been closed.');
             }}>
             <View style={styles.modal} onStartShouldSetResponder={() => true}>
-                  <MissionCheckbox  missions={this.props.missions}/>
+                  <MissionCheckbox  missions={this.props.missions} checkedMission={(id)=>this.checkedMission(id)}/>
                   <TouchableHighlight
                     style={styles.circle}
                     underlayColor='#ccc'

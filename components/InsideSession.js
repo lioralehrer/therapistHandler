@@ -8,7 +8,7 @@ export default class InsideSession extends Component {
     render() {
         return (
             <View style={styles.view}>
-                <Card title= {"משימה: "+ this.props.mission} >
+                <Card title= {"משימה: "+ this.props.mission.text} >
                     <View style={styles.user}>
                         <Text style={styles.card}>מספר נסיונות: </Text>
                         <Text style={styles.card}>מספר הצלחות:</Text>
