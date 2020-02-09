@@ -1,0 +1,26 @@
+// to render id: npm install uuidv4
+
+import { uuid } from 'uuidv4';
+  missions: [
+       {
+         text: 'הוסיפי משימות',
+         id: uuid(),
+   },
+
+       {
+        text: 'הציגי משימות בעזרת לולאה',
+         id: uuid(),
+       },
+       {
+         text: 'סמני כל משימה בנפרד',
+         id: uuid(),
+       },
+       {
+         text: 'העבירי משימות לכרטיסים בעמוד אחר',
+         id: uuid(),
+       },
+       {
+         text: 'עדיין הרדקודד?'
+         , id: uuid(),
+       }
+     ],
