@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, StyleSheet, StatusBar } from 'react-native';
 import SessionsHandler from './components/SessionsHandler/SessionsHandler';
-import InsideSession from './components/InsideSession';
+import Mission from './components/Mission';
 import Timer from './components/Timer';
 
 
@@ -13,27 +13,32 @@ export default class App extends Component {
         text: 'הוסיפי משימות',
         id: 0,
         checked: false,
+        tries:'2',
       },
 
       {
         text: 'הציגי משימות בעזרת לולאה',
         id: 1,
         checked: false,
+        tries:'2',
       },
       {
         text: 'סמני כל משימה בנפרד',
         id: 2,
         checked: false,
+        tries:'2',
       },
       {
         text: 'העבירי משימות לכרטיסים בעמוד אחר',
         id: 3,
         checked: false,
+        tries:'2',
       },
       {
         text: 'עדיין הרדקודד?',
         id: 4,
         checked: false,
+        tries:'2',
       }
     ],
     myMissions : [],
@@ -54,7 +59,7 @@ export default class App extends Component {
 
   render() {
     const myMissionsList = Object.entries(this.state.myMissions).map(([key, value]) => {
-      return <InsideSession mission={this.state.myMissions[key]} />
+      return <Mission mission={this.state.myMissions[key]} />
     })
     return (
       <View style={styles.container}>
