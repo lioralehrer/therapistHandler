@@ -16,11 +16,26 @@ const createArray = length => {
 const NUMBERS = createArray(12);
 
 export default class InsideSession extends Component {
-
-    state = {
-        selectedTries: '0',
-        selectedSuccesses: '0',
+    constructor(props){
+        super(props);
+        this.state = {
+            selectedTries: this.props.mission.tries,
+            selectedSuccesses: this.props.mission.succeses,
+        }
     }
+    handleTries =(num)=>{
+        this.setState({
+            selectedTries : num,
+        })
+        this.props.handleTries(num);
+    }
+    handleSucces= (num)=>{
+        this.setState({
+            selectedSuccesses : num,
+        })
+        this.props.handleSuccesses(num)
+    }
+  
     renderPicker = (str) => (
         <View styl={styles.pickerContainer}>
             <Text style={styles.pickerTitle}>{str} </Text>
@@ -29,9 +44,7 @@ export default class InsideSession extends Component {
                 itemStyle={styles.pickerItem}
                 mode="dialog"
             selectedValue = {str=="נסיונות" ? this.state.selectedTries : this.state.selectedSuccesses}
-            onValueChange = {num => { str=="נסיונות"?
-                this.setState({selectedTries : num}) : this.setState({selectedSuccesses: num})
-            }}
+            onValueChange = {num => {str=="נסיונות"? this.handleTries(num) : this.handleSucces(num) }}
             >
                 {NUMBERS.map(num => (
                     <Picker.Item key={num} label={num} value={num} />
@@ -74,9 +87,8 @@ const styles = StyleSheet.create({
         ...Platform.select({
             android: {
                 color: '#89AAFF',
-
                 backgroundColor: '#fff0f5',
-                marginLeft: 10,
+                // marginLeft: 10,
             },
         }),
     },

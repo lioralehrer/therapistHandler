@@ -25,9 +25,8 @@ export default class SessionHandler extends Component {
   checkedMission=(id)=>{
     this.props.checkedMission(id);
   }
+
   render() {
-
-
     return (
       <View style={styles.MainContainer}>
         <Text style={styles.HeaderInsideText}>
@@ -67,7 +66,8 @@ export default class SessionHandler extends Component {
               Alert.alert('Modal has been closed.');
             }}>
             <View style={styles.modal} onStartShouldSetResponder={() => true}>
-                  <MissionCheckbox  missions={this.props.missions} checkedMission={(id)=>this.checkedMission(id)}/>
+                  <MissionCheckbox  missions={this.props.missions} checkedMission={(id)=>this.checkedMission(id)} 
+                  />
                   <TouchableHighlight
                     style={styles.circle}
                     underlayColor='#ccc'
