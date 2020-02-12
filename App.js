@@ -81,7 +81,7 @@ export default class App extends Component {
     let missions = this.state.missions;
     let newMission = {
       text: mission,
-      id: missions.length+1,
+      id: missions.length,
       checked: false,
       tries: '0',
       succseses: '0',
