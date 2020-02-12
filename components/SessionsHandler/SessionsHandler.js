@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform, Modal, ScrollView } from 'react-native';
 import MissionCheckbox from '../MissionCheckbox';
+import MyHeader from '../MyHeader';
 
 
 export default class SessionHandler extends Component {
@@ -10,7 +11,7 @@ export default class SessionHandler extends Component {
     super(props);
     this.state = {
       modalVisible: false,
-  
+
     };
   }
 
@@ -22,16 +23,17 @@ export default class SessionHandler extends Component {
   paciantPicker = () => {
     alert('blabla')
   }
-  checkedMission=(id)=>{
+  checkedMission = (id) => {
     this.props.checkedMission(id);
   }
 
   render() {
     return (
       <View style={styles.MainContainer}>
+        <MyHeader title='מטפל' />
         <Text style={styles.HeaderInsideText}>
           שלום {this.props.therapistName} {'\n'}
-          המטופל שלך: {this.props.petiant}
+          המטופל שלך: {this.props.patient}
         </Text>
 
         <View style={styles.btnContainer}>
@@ -64,22 +66,28 @@ export default class SessionHandler extends Component {
             visible={this.state.modalVisible}
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
-            }}>
-            <View style={styles.modal} onStartShouldSetResponder={() => true}>
-                  <MissionCheckbox  missions={this.props.missions} checkedMission={(id)=>this.checkedMission(id)} 
-                  />
-                  <TouchableHighlight
-                    style={styles.circle}
-                    underlayColor='#ccc'
-                    onPress={() => this.setModalVisible(!this.state.modalVisible)}
-                  >
-                    <Text > סיים   </Text>
-                  </TouchableHighlight>
+            }}
+            swipeArea={50}
+          >
 
-                  <View style={{ flex: 1 }}>
-                    <Text>liorablabla</Text>
-                  </View>
+            <View style={styles.modal} onStartShouldSetResponder={() => true}>
+              <ScrollView>
+                <MissionCheckbox missions={this.props.missions} checkedMission={(id) => this.checkedMission(id)}
+                />
+                <TouchableHighlight
+                  style={styles.circle}
+                  underlayColor='#ccc'
+                  onPress={() => this.setModalVisible(!this.state.modalVisible)}
+                >
+                  <Text > סיים   </Text>
+                </TouchableHighlight>
+
+                <View style={{ flex: 1 }}>
+                  <Text>ablabla</Text>
+                </View>
+              </ScrollView>
             </View>
+
           </Modal>
         </View>
       </View>
@@ -115,7 +123,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   modal: {
-    // backgroundColor : 'black',
     alignItems: 'center',
     marginTop: 20,
   }

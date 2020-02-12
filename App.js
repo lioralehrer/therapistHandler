@@ -3,7 +3,7 @@ import { ScrollView, View, StyleSheet, StatusBar } from 'react-native';
 import SessionsHandler from './components/SessionsHandler/SessionsHandler';
 import Mission from './components/Mission';
 import Timer from './components/Timer';
-
+import Manager from './components/Manager';
 
 export default class App extends Component {
 
@@ -61,7 +61,7 @@ export default class App extends Component {
       myMissions: [...missions.filter(mission => mission.checked)]
     })
   }
-  handleTries = (num,key) => {
+  handleTries = (num, key) => {
     let missions = this.state.missions;
     missions[key].tries = num.toString();
     this.setState({
@@ -69,7 +69,7 @@ export default class App extends Component {
       myMissions: [...missions.filter(mission => mission.checked)]
     })
   }
-  handleSuccesses = (num, key)=>{
+  handleSuccesses = (num, key) => {
     let missions = this.state.missions;
     missions[key].succseses = num.toString();
     this.setState({
@@ -77,35 +77,57 @@ export default class App extends Component {
       myMissions: [...missions.filter(mission => mission.checked)]
     })
   }
-  render() {
-    const myMissionsList = Object.entries(this.state.myMissions).map(([key, value]) => {
-      return <Mission mission={this.state.myMissions[key]}
-      handleTries={(num) => this.handleTries(num,key)}
-      handleSuccesses= {(num)=> this.handleSuccesses(num,key)}
-      />
+  addMission = (mission) => {
+    let missions = this.state.missions;
+    let newMission = {
+      text: mission,
+      id: missions.length+1,
+      checked: false,
+      tries: '0',
+      succseses: '0',
+    }
+    this.setState({
+      missions: [...missions , newMission],
+      myMissions: [...missions.filter(mission => mission.checked)]
     })
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle='light-content' />
-        <ScrollView>
-          <SessionsHandler
-            therapistName="רבקה"
-            petiant="ורד"
-            missions={this.state.missions}
-            checkedMission={(id) => this.checkedMission(id)}
-          />
-          <Timer />
-          {myMissionsList}
-        </ScrollView>
-      </View>
-    )
-  }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#07121B',
-  },
-})
+  }
+    render() {
+      const myMissionsList = Object.entries(this.state.myMissions).map(([key, value]) => {
+        return <Mission mission={this.state.myMissions[key]}
+          handleTries={(num) => this.handleTries(num, key)}
+          handleSuccesses={(num) => this.handleSuccesses(num, key)}
+        />
+      })
+      return (
+        <View style={styles.container}>
+          <StatusBar barStyle='light-content' />
+          <ScrollView>
+            <SessionsHandler
+              therapistName="רבקה"
+              patient="ורד"
+              missions={this.state.missions}
+              checkedMission={(id) => this.checkedMission(id)}
+            />
+            <Timer />
+            <Manager
+              managerName='עדי'
+              patient='ורד'
+              missions={this.state.missions}
+              checkedMission={(id) => this.checkedMission(id)}
+              addMission={(mission) => this.addMission(mission)}
+            />
+            {myMissionsList}
+          </ScrollView>
+        </View>
+      )
+    }
+  }
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#07121B',
+    },
+  })
 
