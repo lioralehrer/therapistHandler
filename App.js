@@ -1,9 +1,17 @@
+// import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, StatusBar } from 'react-native';
-import SessionsHandler from './components/SessionsHandler/SessionsHandler';
-import Mission from './components/Mission';
-import Timer from './components/Timer';
-import Manager from './components/Manager';
+import { ScrollView, View, StyleSheet, StatusBar, Text } from 'react-native';
+// import SessionsHandler from './components/SessionsHandler/SessionsHandler';
+// import Mission from './components/Mission';
+// import Timer from './components/Timer';
+// import Manager from './components/Manager';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from './screens/Home';
+import Manager from './screens/Manager';
+import Therapist from './screens/Therapist';
+
+const Stack = createStackNavigator();
 
 export default class App extends Component {
 
@@ -87,47 +95,55 @@ export default class App extends Component {
       succseses: '0',
     }
     this.setState({
-      missions: [...missions , newMission],
+      missions: [...missions, newMission],
       myMissions: [...missions.filter(mission => mission.checked)]
     })
 
   }
-    render() {
-      const myMissionsList = Object.entries(this.state.myMissions).map(([key, value]) => {
-        return <Mission mission={this.state.myMissions[key]}
-          handleTries={(num) => this.handleTries(num, key)}
-          handleSuccesses={(num) => this.handleSuccesses(num, key)}
-        />
-      })
-      return (
-        <View style={styles.container}>
-          <StatusBar barStyle='light-content' />
-          <ScrollView>
-            <SessionsHandler
-              therapistName="רבקה"
-              patient="ורד"
-              missions={this.state.missions}
-              checkedMission={(id) => this.checkedMission(id)}
-            />
-            <Timer />
-            <Manager
-              managerName='עדי'
-              patient='ורד'
-              missions={this.state.missions}
-              checkedMission={(id) => this.checkedMission(id)}
-              addMission={(mission) => this.addMission(mission)}
-            />
-            {myMissionsList}
-          </ScrollView>
-        </View>
-      )
-    }
-  }
+  render() {
+    const myMissionsList = Object.entries(this.state.myMissions).map(([key, value]) => {
+      return <Mission mission={this.state.myMissions[key]}
+        handleTries={(num) => this.handleTries(num, key)}
+        handleSuccesses={(num) => this.handleSuccesses(num, key)}
+      />
+    })
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={Home} options={{ title: 'ESDMbrace' }} />
+          <Stack.Screen name="Manager" component={Manager} />
+          <Stack.Screen name="Therapist" component={Therapist} />
+        </Stack.Navigator>
+      </NavigationContainer>
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#07121B',
-    },
-  })
+      // <View style={styles.container}>
+      //   <StatusBar barStyle='light-content' />
+      //   <ScrollView>
+      //     <SessionsHandler
+      //       therapistName="רבקה"
+      //       patient="ורד"
+      //       missions={this.state.missions}
+      //       checkedMission={(id) => this.checkedMission(id)}
+      //     />
+      //     <Timer />
+      //     <Manager
+      //       managerName='עדי'
+      //       patient='ורד'
+      //       missions={this.state.missions}
+      //       checkedMission={(id) => this.checkedMission(id)}
+      //       addMission={(mission) => this.addMission(mission)}
+      //     />
+      //     {myMissionsList}
+      //   </ScrollView>
+      // </View>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#07121B',
+  },
+})
 

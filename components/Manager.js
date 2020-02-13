@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform, Modal, ScrollView } from 'react-native';
+import {  TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView,Button } from 'react-native';
 import MyHeader from './MyHeader';
 import MissionCheckbox from './MissionCheckbox';
 import AddMission from './AddMission';
+import { globalStyles } from '../styles/global'
 
 export default class Manager extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ export default class Manager extends Component {
 
     render() {
         return (
-            <View style={styles.MainContainer}>
+            <View style={globalStyles.MainContainer}>
                 <MyHeader title='מנהל טיפול' />
                 <Text style={styles.HeaderInsideText}>
                     שלום {this.props.managerName} {'\n'}
@@ -39,14 +40,14 @@ export default class Manager extends Component {
 
                 <View style={styles.btnContainer}>
                     <TouchableHighlight
-                        style={styles.circle}
+                        style={globalStyles.circle}
                         underlayColor='#ccc'
                         onPress={() => this.paciantPicker()}
                     >
                         <Text>  מטופל אחר </Text>
                     </TouchableHighlight>
                     <TouchableHighlight
-                        style={styles.circle}
+                        style={globalStyles.circle}
                         underlayColor='#ccc'
                         onPress={() => alert('Yaay!')}
                     >
@@ -54,7 +55,7 @@ export default class Manager extends Component {
                     </TouchableHighlight>
 
                     <TouchableHighlight
-                        style={styles.circle}
+                        style={globalStyles.circle}
                         underlayColor='#ccc'
                         onPress={() => this.setModalVisible(!this.state.modalVisible)}
                     >
@@ -73,7 +74,7 @@ export default class Manager extends Component {
                                 />
                                 <AddMission addMission={(mission) => this.addMission(mission)} />
                                 <TouchableHighlight
-                                    style={styles.circle}
+                                    style={globalStyles.circle}
                                     underlayColor='#ccc'
                                     onPress={() => this.setModalVisible(!this.state.modalVisible)}
                                 >
@@ -84,6 +85,7 @@ export default class Manager extends Component {
                                     <Text>blabla</Text>
                                 </View>
                             </ScrollView>
+                            
                         </View>
 
                     </Modal>
@@ -94,10 +96,6 @@ export default class Manager extends Component {
 }
 
 const styles = StyleSheet.create({
-    MainContainer: {
-        flex: 1,
-        paddingTop: Platform.OS == 'ios' ? 20 : 0,
-    },
     btnContainer: {
         flex: 1,
         flexDirection: 'row',
@@ -112,16 +110,7 @@ const styles = StyleSheet.create({
         margin: 10,
 
     },
-    circle: {
-        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-        width: Dimensions.get('window').width * 0.25,
-        height: Dimensions.get('window').width * 0.25,
-        backgroundColor: '#89AAFF',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     modal: {
-        // backgroundColor : 'black',
         alignItems: 'center',
         marginTop: 20,
     }

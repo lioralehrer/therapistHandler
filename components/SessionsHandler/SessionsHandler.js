@@ -1,10 +1,10 @@
 
 
 import React, { Component } from 'react';
-import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform, Modal, ScrollView } from 'react-native';
+import {  TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView } from 'react-native';
 import MissionCheckbox from '../MissionCheckbox';
 import MyHeader from '../MyHeader';
-
+import { globalStyles} from '../../styles/global'
 
 export default class SessionHandler extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ export default class SessionHandler extends Component {
 
   render() {
     return (
-      <View style={styles.MainContainer}>
+      <View style={globalStyles.MainContainer}>
         <MyHeader title='מטפל' />
         <Text style={styles.HeaderInsideText}>
           שלום {this.props.therapistName} {'\n'}
@@ -38,14 +38,14 @@ export default class SessionHandler extends Component {
 
         <View style={styles.btnContainer}>
           <TouchableHighlight
-            style={styles.circle}
+            style={globalStyles.circle}
             underlayColor='#ccc'
             onPress={() => this.paciantPicker()}
           >
             <Text>  מטופל אחר </Text>
           </TouchableHighlight>
           <TouchableHighlight
-            style={styles.circle}
+            style={globalStyles.circle}
             underlayColor='#ccc'
             onPress={() => alert('Yaay!')}
           >
@@ -53,7 +53,7 @@ export default class SessionHandler extends Component {
           </TouchableHighlight>
 
           <TouchableHighlight
-            style={styles.circle}
+            style={globalStyles.circle}
             underlayColor='#ccc'
             onPress={() => this.setModalVisible(!this.state.modalVisible)}
           >
@@ -75,7 +75,7 @@ export default class SessionHandler extends Component {
                 <MissionCheckbox missions={this.props.missions} checkedMission={(id) => this.checkedMission(id)}
                 />
                 <TouchableHighlight
-                  style={styles.circle}
+                  style={globalStyles.circle}
                   underlayColor='#ccc'
                   onPress={() => this.setModalVisible(!this.state.modalVisible)}
                 >
@@ -96,10 +96,6 @@ export default class SessionHandler extends Component {
 }
 
 const styles = StyleSheet.create({
-  MainContainer: {
-    flex: 1,
-    paddingTop: Platform.OS == 'ios' ? 20 : 0,
-  },
   btnContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -113,14 +109,6 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 10,
 
-  },
-  circle: {
-    borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-    width: Dimensions.get('window').width * 0.25,
-    height: Dimensions.get('window').width * 0.25,
-    backgroundColor: '#89AAFF',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   modal: {
     alignItems: 'center',
