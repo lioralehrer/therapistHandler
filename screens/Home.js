@@ -42,7 +42,7 @@ export default class AddMission extends Component {
             succseses: '1',
           }
         ],
-        myMissions: [],
+        myMissions:[],
       }
       componentDidMount() {
         this.setState({
@@ -97,7 +97,7 @@ export default class AddMission extends Component {
                     <TouchableHighlight
                         style={globalStyles.circle}
                         underlayColor='#ccc'
-                         onPress={() => this.props.navigation.navigate('Manager', { managerName:'זהבה', patient:'אסתי', missions: this.state.missions})}
+                         onPress={() => this.props.navigation.navigate('Manager', { managerName:'זהבה', patient:'אסתי', missions: this.state.missions, myMissions:this.state.myMissions})}
                    
                    >
                         <Text style={styles.text}>  מנהל   </Text>

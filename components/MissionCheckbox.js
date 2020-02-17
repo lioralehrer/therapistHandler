@@ -17,7 +17,8 @@ export default class MissionCheckbox extends Component {
                 checkedColor='green'
                 title={value.text}
                 checked={value.checked}
-                onPress={() => this.checkedMission(value.id)}
+                 onPress={() => this.checkedMission(value.id)}
+              
             />
         })
         return (
