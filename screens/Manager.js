@@ -2,26 +2,95 @@ import React, { Component } from 'react';
 import { TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView, Button } from 'react-native';
 import MyHeader from '../components/MyHeader';
 import MissionCheckbox from '../components/MissionCheckbox';
-import { Mission } from '../components/Mission'
+import Mission from '../components/Mission'
 import AddMission from '../components/AddMission';
 import { globalStyles } from '../styles/global'
 import { NavigationActions } from 'react-navigation';
 import Timer from '../components/Timer';
 
 export default class Manager extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            modalVisible: false,
-        };
-    }
+    state = {
+        missions: [
+            {
+                text: 'הוסיפי משימות',
+                id: 0,
+                checked: false,
+                tries: '0',
+                succseses: '0',
+            },
 
-    // addMission = (mission) => {
-    //     this.props.addMission(mission);
-    // }
+            {
+                text: 'הציגי משימות בעזרת לולאה',
+                id: 1,
+                checked: false,
+                tries: '0',
+                succseses: '0',
+            },
+            {
+                text: 'סמני כל משימה בנפרד',
+                id: 2,
+                checked: false,
+                tries: '0',
+                succseses: '0',
+            },
+            {
+                text: 'העבירי משימות לכרטיסים בעמוד אחר',
+                id: 3,
+                checked: false,
+                tries: '2',
+                succseses: '0',
+            },
+            {
+                text: 'עדיין הרדקודד?',
+                id: 4,
+                checked: false,
+                tries: '1',
+                succseses: '1',
+            }
+        ],
+        myMissions: [],
+        modalVisible: false,
+    }
+    checkedMission = (id) => {
+        let missions = this.state.missions;
+        missions[id].checked = !missions[id].checked
+        this.setState({
+            missions: missions,
+            myMissions: [...missions.filter(mission => mission.checked)]
+        })
+    }
+    handleTries = (num, key) => {
+        let missions = this.state.missions;
+        missions[key].tries = num.toString();
+        this.setState({
+            missions: missions,
+            myMissions: [...missions.filter(mission => mission.checked)]
+        })
+    }
+    handleSuccesses = (num, key) => {
+        let missions = this.state.missions;
+        missions[key].succseses = num.toString();
+        this.setState({
+            missions: missions,
+            myMissions: [...missions.filter(mission => mission.checked)]
+        })
+    }
     addMission = (mission) => {
+        let missions = this.state.missions;
+        let newMission = {
+            text: mission,
+            id: missions.length,
+            checked: false,
+            tries: '0',
+            succseses: '0',
+        }
+        this.setState({
+            missions: [...missions, newMission],
+            myMissions: [...missions.filter(mission => mission.checked)]
+        })
 
     }
+    
 
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
@@ -31,25 +100,12 @@ export default class Manager extends Component {
     paciantPicker = () => {
         alert('blabla')
     }
-    checkedMission = (id) => {
-        missions[id].checked = !missions[id].checked
-        NavigationActions.setParams({
-            params: {
-                missions: missions,
-                myMissions: [...missions.filter(mission => mission.checked)]
-            },
-            // key: 'Home'
-        })
-    }
-
 
     render() {
         const { managerName } = this.props.route.params;
         const { patient } = this.props.route.params;
-        const { missions } = this.props.route.params;
-        const { myMissions } = this.props.route.params;
-        const myMissionsList = Object.entries(myMissions).map(([key, value]) => {
-            return <Mission mission={myMissions[key]}
+        const myMissionsList = Object.entries(this.state.myMissions).map(([key, value]) => {
+            return <Mission mission={this.state.myMissions[key]}
                 handleTries={(num) => this.handleTries(num, key)}
                 handleSuccesses={(num) => this.handleSuccesses(num, key)}
             />
@@ -95,22 +151,11 @@ export default class Manager extends Component {
                         >
                             <View style={styles.modal} onStartShouldSetResponder={() => true}>
                                 <ScrollView>
-                                    <MissionCheckbox missions={missions}
-                                        checkedMission={(id) => {
-                                            let newMissions = missions;
-                                            newMissions[id].checked = !missions[id].checked
-                                            NavigationActions.setParams({
-                                                params: {
-                                                    missions: newMissions,
-                                                    myMissions: [...missions.filter(mission => mission.checked)]
-                                                },
-                                                // key: 'Home'
-                                            })
-                                            this.forceUpdate();
-                                        }
-                                        }
-                                    />
-                                    <AddMission addMission={(mission) => this.addMission(mission)} />
+                                    <MissionCheckbox missions={this.state.missions}
+                                        checkedMission={(id) => this.checkedMission(id)} />
+                                    <AddMission
+                                        addMission={(mission) => { this.addMission(mission) }}
+                                      />
                                     <TouchableHighlight
                                         style={globalStyles.circle}
                                         underlayColor='#ccc'

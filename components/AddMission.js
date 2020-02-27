@@ -4,9 +4,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default class AddMission extends Component {
-    state = {
-        text: '',
-    }
+   constructor(props){
+       super(props);
+       this.state ={text:''};
+   }
     addMission = (text) => {
         this.setState({ text })
         this.props.addMission(text)
@@ -24,7 +25,7 @@ export default class AddMission extends Component {
                 <TextInput
                     style={{ height: 40 }}
                     placeholder="Add Mission Here"
-                    onChangeText={(text) => this.setState({ text })}
+                    onChangeText={(text) => {this.setState({ text })}}
                     value={this.state.text}
                     editable={true}
                     // maxLength={40}
