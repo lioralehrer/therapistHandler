@@ -7,6 +7,49 @@ import SessionsHandler from '../components/SessionsHandler/SessionsHandler'
 
 export default class Therapist extends Component {
     state = {
+            goals:[
+                {
+                    id: Math.random(),
+                    title:'מטרה ראשונה',
+                    description:'תיאור מטרה ראשונה',
+                    subGoals:[
+                        {id:1, text:'תת 1',checked:false, tries:0,succseses:0, active:true},
+                        {id:2, text:'תת 2',checked:false, tries:0,succseses:0, active:true},
+                        {id:3, text:' תת 3',checked:false, tries:0,succseses:0, active:true},
+                        {id:4, text:'תת 4',checked:false, tries:0,succseses:0, active:true}]
+                },
+                {
+                    id: Math.random(),
+                    title:'מטרה שניה',
+                    description:'בלהבהבךבב',
+                    subGoals:[
+                        {id:1, text:'תת מטרה 1',checked:false, tries:0,succseses:0, active:true},
+                        {id:2, text:'תת מטרה 2',checked:false, tries:0,succseses:0, active:true},
+                        {id:3, text:'תת מטרה 3',checked:false, tries:0,succseses:0, active:true},
+                        {id:4, text:'תת מטרה 4',checked:false, tries:0,succseses:0, active:true}]
+                },
+                {
+                    id: Math.random(),
+                    title:'מטרה שלישית',
+                    description:'בלהבהבךבב',
+                    subGoals:[
+                        {id:1, text:'תת מטרה 1',checked:false, tries:0,succseses:0, active:true},
+                        {id:2, text:'תת מטרה 2',checked:false, tries:0,succseses:0, active:true},
+                        {id:3, text:'תת מטרה 3',checked:false, tries:0,succseses:0, active:true},
+                        {id:4, text:'תת מטרה 4',checked:false, tries:0,succseses:0, active:true}]
+                },
+                {
+                    id: Math.random(),
+                    title:'מטרה רביעית',
+                    description:'בלהבהבךבב',
+                    subGoals:[
+                        {id:1, text:'תת 1',checked:false, tries:0,succseses:0, active:true},
+                        {id:2, text:'תת 2',checked:false, tries:0,succseses:0, active:true},
+                        {id:3, text:'תת 3',checked:false, tries:0,succseses:0, active:true},
+                        {id:4, text:'תת 4',checked:false, tries:0,succseses:0, active:true}]
+                },
+            ],
+           
         missions: [
             {
                 text: 'הוסיפי משימות',
@@ -46,10 +89,12 @@ export default class Therapist extends Component {
             }
         ],
         myMissions: [],
+        myGoals:[],
     }
     componentDidMount() {
         this.setState({
-            myMissions: [...this.state.missions.filter(mission => mission.checked)]
+            myMissions: [...this.state.missions.filter(mission => mission.checked)],
+            myGoals: [...this.state.goals.filter(goal=>goal.subGoals.checked) ]
         })
     }
     checkedMission = (id) => {
@@ -59,6 +104,16 @@ export default class Therapist extends Component {
             missions: missions,
             myMissions: [...missions.filter(mission => mission.checked)]
         })
+    }
+    checkedGoal= (id, goal) =>{
+        let goals = this.state.goals;
+        let index = goals.indexOf(goal);
+        goals[index].subGoals[id-1].checked = !goals[index].subGoals[id-1].checked;
+        this.setState({
+            goals : goals,
+            myGoals: [...goals.filter(goal=>goal.subGoals.checked) ]
+        })
+         alert(this.state.myGoals.length);
     }
     handleTries = (num, key) => {
         let missions = this.state.missions;
@@ -93,8 +148,11 @@ export default class Therapist extends Component {
                     <SessionsHandler
                         therapistName="רבקה"
                         patient="ורד"
+                        goals = {this.state.goals}
                         missions={this.state.missions}
+                        goals= {this.state.goals}
                         checkedMission={(id) => this.checkedMission(id)}
+                        checkedGoal = {(id, goal)=> this.checkedGoal(id, goal)}
                     />
                     <Timer />
                     {myMissionsList}

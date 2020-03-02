@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import {  TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView } from 'react-native';
 import MissionCheckbox from '../MissionCheckbox';
+import Goals from '../Goals'
 import MyHeader from '../MyHeader';
 import { globalStyles} from '../../styles/global'
 
@@ -25,6 +26,10 @@ export default class SessionHandler extends Component {
   }
   checkedMission = (id) => {
     this.props.checkedMission(id);
+  }
+  checkedGoal = (id, goal) =>{
+    // alert(id+""+ goal.id)
+    this.props.checkedGoal(id, goal)
   }
 
   render() {
@@ -72,8 +77,9 @@ export default class SessionHandler extends Component {
 
             <View style={styles.modal} onStartShouldSetResponder={() => true}>
               <ScrollView>
-                <MissionCheckbox missions={this.props.missions} checkedMission={(id) => this.checkedMission(id)}
-                />
+                {/* <MissionCheckbox missions={this.props.missions} checkedMission={(id) => this.checkedMission(id)}
+                /> */}
+                <Goals  goals={this.props.goals} checkedGoal={(id, goal)=>this.checkedGoal(id, goal) }/> 
                 <TouchableHighlight
                   style={globalStyles.circle}
                   underlayColor='#ccc'
@@ -113,5 +119,6 @@ const styles = StyleSheet.create({
   modal: {
     alignItems: 'center',
     marginTop: 20,
+    backgroundColor:'#4c2a4c'
   }
 });
