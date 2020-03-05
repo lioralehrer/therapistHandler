@@ -111,9 +111,9 @@ export default class Therapist extends Component {
         goals[index].subGoals[id-1].checked = !goals[index].subGoals[id-1].checked;
         this.setState({
             goals : goals,
-            myGoals: [...goals.filter(goal=>goal.subGoals.checked) ]
+            myGoals: [...goals.filter(goal=>goal.subGoals.checked)]
         })
-         alert(this.state.myGoals.length);
+        
     }
     handleTries = (num, key) => {
         let missions = this.state.missions;

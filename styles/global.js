@@ -41,3 +41,8 @@ export const globalStyles = StyleSheet.create({
       justifyContent: 'space-around',
     },
   });
+
+//   export const icons = {
+//     'up': require('../assets/Arrowhead-01-128.png'),
+//     'down': require('../assets/Arrowhead-Down-01-128.png'),
+// }
