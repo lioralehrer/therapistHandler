@@ -3,9 +3,9 @@
 import React, { Component } from 'react';
 import {  TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView } from 'react-native';
 import MissionCheckbox from '../MissionCheckbox';
-import Goals from '../Goals'
 import MyHeader from '../MyHeader';
 import { globalStyles} from '../../styles/global'
+import GoalsList from '../GoalsList';
 
 export default class SessionHandler extends Component {
   constructor(props) {
@@ -79,7 +79,7 @@ export default class SessionHandler extends Component {
               <ScrollView>
                 {/* <MissionCheckbox missions={this.props.missions} checkedMission={(id) => this.checkedMission(id)}
                 /> */}
-                <Goals  goals={this.props.goals} checkedGoal={(id, goal)=>this.checkedGoal(id, goal) }/> 
+                <GoalsList  goals={this.props.goals} checkedGoal={(id, goal)=>this.checkedGoal(id, goal) }/> 
                 <TouchableHighlight
                   style={globalStyles.circle}
                   underlayColor='#ccc'
