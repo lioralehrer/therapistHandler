@@ -14,7 +14,7 @@ export default class AddMission extends Component {
                     <TouchableHighlight
                         style={globalStyles.circle}
                         underlayColor='#ccc'
-                         onPress={() => this.props.navigation.navigate('Manager', { managerName:'זהבה', patient:'אסתי'})}
+                         onPress={() => this.props.navigation.navigate('Manager', { managerName:'זהבה', patient:'מיכאל'})}
                    
                    >
                         <Text style={styles.text}>  מנהל   </Text>
@@ -22,7 +22,7 @@ export default class AddMission extends Component {
                     <TouchableHighlight
                         style={globalStyles.circle}
                         underlayColor='#ccc'
-                        onPress={() => this.props.navigation.navigate('Therapist')}
+                        onPress={() => this.props.navigation.navigate('Therapist',{therapistName:'רבקה', patient:'מיכאל'})}
                     >
                         <Text style={styles.text}>  מטפל   </Text>
                     </TouchableHighlight>

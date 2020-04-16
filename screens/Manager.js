@@ -90,7 +90,7 @@ export default class Manager extends Component {
         })
 
     }
-    
+
 
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
@@ -116,8 +116,9 @@ export default class Manager extends Component {
                     <MyHeader title='מנהל טיפול' />
                     <Text style={styles.HeaderInsideText}>
                         שלום {managerName} {'\n'}
-                        המטופל שלך: {patient}
+                        המטופל שלך: {patient} {'\n'}
                     </Text>
+
 
                     <View style={styles.btnContainer}>
                         <TouchableHighlight
@@ -155,7 +156,7 @@ export default class Manager extends Component {
                                         checkedMission={(id) => this.checkedMission(id)} />
                                     <AddMission
                                         addMission={(mission) => { this.addMission(mission) }}
-                                      />
+                                    />
                                     <TouchableHighlight
                                         style={globalStyles.circle}
                                         underlayColor='#ccc'
@@ -204,5 +205,10 @@ const styles = StyleSheet.create({
     modal: {
         alignItems: 'center',
         marginTop: 20,
+    },
+    therapistList: {
+        color: '#fff',
+        fontSize: 18,
+        textAlign: 'center',
     }
 })

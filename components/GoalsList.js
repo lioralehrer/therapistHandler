@@ -11,12 +11,12 @@ const GoalsList = ({ goals, checkedGoal }) => {
     }
     const goalsList = Object.keys(goals).map((goal, i) => {
         return <View style={styles.goal}>
-            <Goal goal={goals[goal]} index={i} checkedGoal={(subGoalId, goal) => checkedGoal(subGoalId, goal)} />
+            <Goal goal={goals[goal]} index={i} checkedGoal={(id) => checkedGoal(id)} />
         </View>
     })
     return (
         <View style={styles.container}>
-            <MyHeader title="בחר/י  תת מטרות" />
+            <MyHeader title="בחר/י  מטרות" />
             <View style={styles.list}>
                 {goalsList}
             </View>

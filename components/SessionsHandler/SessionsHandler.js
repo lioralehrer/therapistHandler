@@ -27,9 +27,8 @@ export default class SessionHandler extends Component {
   checkedMission = (id) => {
     this.props.checkedMission(id);
   }
-  checkedGoal = (id, goal) =>{
-    // alert(id+""+ goal.id)
-    this.props.checkedGoal(id, goal)
+  checkedGoal = (id) =>{
+    this.props.checkedGoal(id)
   }
 
   render() {
@@ -79,7 +78,7 @@ export default class SessionHandler extends Component {
               <ScrollView>
                 {/* <MissionCheckbox missions={this.props.missions} checkedMission={(id) => this.checkedMission(id)}
                 /> */}
-                <GoalsList  goals={this.props.goals} checkedGoal={(id, goal)=>this.checkedGoal(id, goal) }/> 
+                <GoalsList  goals={this.props.goals} checkedGoal={(id)=>this.checkedGoal(id) }/> 
                 <TouchableHighlight
                   style={globalStyles.circle}
                   underlayColor='#ccc'

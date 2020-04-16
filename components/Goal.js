@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableHighlight, Image } from 'react-native';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, ListItem } from 'react-native-elements';
 
 const Goal = ({ goal, checkedGoal }) => {
     // const [goal , setGoal] = useState({goal});
@@ -11,6 +11,7 @@ const Goal = ({ goal, checkedGoal }) => {
     return (
         <View style={styles.goal}>
             <View style={styles.text}>
+
                 <View style={styles.head}>
                     <Text style={styles.title}>{goal.title}</Text>
                     <TouchableHighlight
@@ -21,19 +22,34 @@ const Goal = ({ goal, checkedGoal }) => {
                             source={expanded ? require('../assets/Arrowhead-Down.png') : require('../assets/Arrowhead-01-128.png')} />
                     </TouchableHighlight>
                 </View>
-                <Text style={styles.description}>{goal.description}</Text>
-            </View>
-            { Object.keys(goal.subGoals).map((subgoal, index) => {
-            return expanded ? <View></View> :
                 <CheckBox
                     iconRight
-                    right
                     checkedColor='green'
-                    title={goal.subGoals[subgoal].text}
-                    checked={goal.subGoals[subgoal].checked}
-                     onPress={() => checkedGoal(goal.subGoals[subgoal].id, goal)}
+                    right
+                    title={goal.description}
+                    checked={goal.checked}
+                    onPress={ () => checkedGoal(goal.id)}
                 />
-        })}
+            </View>
+            {Object.keys(goal.subGoals).map((subgoal, index) => {
+                return expanded ? <View></View> :
+                    // <CheckBox
+                    //     iconRight
+                    //     right
+                    //     checkedColor='green'
+                    //     title={goal.subGoals[subgoal].text}
+                    //     checked={goal.subGoals[subgoal].checked}
+                    //      onPress={() => checkedGoal(goal.subGoals[subgoal].id, goal)}
+                    // />
+                    <View>
+                        <ListItem
+                            key={index}
+                            title={goal.subGoals[subgoal].text}
+                            bottomDivider
+                            chevron
+                        />
+                    </View>
+            })}
 
         </View>
     );
