@@ -3,7 +3,8 @@ import { StyleSheet, View, Text, Modal, ScrollView, Button, StatusBar } from 're
 import { globalStyles } from '../styles/global';
 import Timer from '../components/Timer';
 import Mission from '../components/Mission';
-import Goal from '../components/Goal'
+import Goal from '../components/Goal';
+import MyGoal from '../components/MyGoal'
 import SessionsHandler from '../components/SessionsHandler/SessionsHandler'
 
 export default class Therapist extends Component {
@@ -136,7 +137,7 @@ export default class Therapist extends Component {
         // })
         const myGoalsList = Object.entries(this.state.myGoals).map(([key, value]) => {
             return <View style={styles.goal}>
-                <Goal goal={this.state.goals[key]}   />
+                <MyGoal goal={this.state.myGoals[key]}   />
             </View>
         })
       

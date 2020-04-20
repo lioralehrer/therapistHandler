@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
             android: {
                 color: '#89AAFF',
                 backgroundColor: '#fff0f5',
-                // marginLeft: 10,
             },
         }),
     },

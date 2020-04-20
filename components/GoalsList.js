@@ -4,6 +4,8 @@ import { CheckBox } from 'react-native-elements';
 import Goal from './Goal'
 import MyHeader from './MyHeader'
 
+
+
 const GoalsList = ({ goals, checkedGoal }) => {
     const [expanded, setExpannded] = useState(true)
     const toggle = () => {
