@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, Animated } from 'react-native';
-import { CheckBox } from 'react-native-elements';
 import Goal from './Goal'
 import MyHeader from './MyHeader'
 

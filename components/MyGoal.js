@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, ListItem } from 'react-native-elements'
-import Goal from './Goal';
 import SubGoal from './SubGoal';
 
-const MyGoal = ({ goal }) => {
+const MyGoal = ({ goal, handleTries, handleSuccesses }) => {
 
     const subgoalsList = Object.keys(goal.subGoals).map((subGoal, i) => {
         return (
             <View>
-               <SubGoal subGoal= {goal.subGoals[subGoal]} index = {i}  ></SubGoal>
+                <SubGoal
+                    subGoal={goal.subGoals[subGoal]}
+                    index={i}
+                    tries={(num) => handleTries(num, subGoal)}
+                    succseses={(num) => handleSuccesses(num, subGoal)} >
+                </SubGoal>
             </View>
         )
 
@@ -17,7 +21,9 @@ const MyGoal = ({ goal }) => {
 
     return (
         <View style={styles.view} key={goal.id}>
-            <Card title={"משימה: " + goal.title + "\n  תיאור: " + goal.description} containerStyle={styles.card}>
+            <Card
+                title={"משימה: " + goal.title + "\n  תיאור: " + goal.description} 
+                containerStyle={styles.card}>
                 <View style={styles.test01}>
                     {subgoalsList}
                 </View>

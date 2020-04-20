@@ -19,12 +19,11 @@ const SubGoal = ({ subGoal, index, tries, succseses }) => {
 
     const handleTries = (num) => {
         setTries(num);
-        
-        //  tries(num) ;
+        tries(num);
     }
     const handleSucces = (num) => {
         setSucceses(num);
-        // succseses(num)
+        succseses(num)
     }
     const renderPicker = (str) => (
         <View styl={styles.pickerContainer}>
