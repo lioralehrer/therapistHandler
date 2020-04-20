@@ -1,114 +1,112 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView, Button } from 'react-native';
 import MyHeader from '../components/MyHeader';
-import MissionCheckbox from '../components/MissionCheckbox';
-import Mission from '../components/Mission'
-import AddMission from '../components/AddMission';
 import { globalStyles } from '../styles/global'
-import { NavigationActions } from 'react-navigation';
 import Timer from '../components/Timer';
+import MyGoal from '../components/MyGoal';
+import GoalsList from '../components/GoalsList';
 
 export default class Manager extends Component {
     state = {
-        missions: [
+        goals: [
             {
-                text: 'הוסיפי משימות',
-                id: 0,
+                id: Math.random(),
+                title: 'מטרה ראשונה',
+                description: 'תיאור מטרה ראשונה',
                 checked: false,
-                tries: '0',
-                succseses: '0',
-            },
-
-            {
-                text: 'הציגי משימות בעזרת לולאה',
-                id: 1,
-                checked: false,
-                tries: '0',
-                succseses: '0',
+                subGoals: [
+                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 3, text: ' תת 3', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, active: true }]
             },
             {
-                text: 'סמני כל משימה בנפרד',
-                id: 2,
+                id: Math.random(),
+                title: 'מטרה שניה',
+                description: 'בלהבהבךבב',
                 checked: false,
-                tries: '0',
-                succseses: '0',
+                subGoals: [
+                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, active: true }]
             },
             {
-                text: 'העבירי משימות לכרטיסים בעמוד אחר',
-                id: 3,
+                id: Math.random(),
+                title: 'מטרה שלישית',
+                description: 'בלהבהבךבב',
                 checked: false,
-                tries: '2',
-                succseses: '0',
+                subGoals: [
+                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, active: true }]
             },
             {
-                text: 'עדיין הרדקודד?',
-                id: 4,
+                id: Math.random(),
+                title: 'מטרה רביעית',
+                description: 'בלהבהבךבב',
                 checked: false,
-                tries: '1',
-                succseses: '1',
-            }
+                subGoals: [
+                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 3, text: 'תת 3', checked: false, tries: 0, succseses: 0, active: true },
+                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, active: true }]
+            },
         ],
-        myMissions: [],
+        myGoals: [],
         modalVisible: false,
     }
-    checkedMission = (id) => {
-        let missions = this.state.missions;
-        missions[id].checked = !missions[id].checked
+    checkedGoal = (id) => {
+        let goals = this.state.goals;
+        goals.forEach((goal) => { id == goal.id ? goal.checked = !goal.checked : '' })
         this.setState({
-            missions: missions,
-            myMissions: [...missions.filter(mission => mission.checked)]
-        })
-    }
-    handleTries = (num, key) => {
-        let missions = this.state.missions;
-        missions[key].tries = num.toString();
-        this.setState({
-            missions: missions,
-            myMissions: [...missions.filter(mission => mission.checked)]
-        })
-    }
-    handleSuccesses = (num, key) => {
-        let missions = this.state.missions;
-        missions[key].succseses = num.toString();
-        this.setState({
-            missions: missions,
-            myMissions: [...missions.filter(mission => mission.checked)]
-        })
-    }
-    addMission = (mission) => {
-        let missions = this.state.missions;
-        let newMission = {
-            text: mission,
-            id: missions.length,
-            checked: false,
-            tries: '0',
-            succseses: '0',
-        }
-        this.setState({
-            missions: [...missions, newMission],
-            myMissions: [...missions.filter(mission => mission.checked)]
+            goals: goals,
+            myGoals: [...goals.filter(goal => goal.checked)],
         })
 
     }
-
-
+    handleTries = (num, subgoal, key) => {
+        let goals = this.state.goals;
+        goals[key].subGoals[subgoal].tries = num.toString();
+        this.setState({
+            goals: goals,
+            mygoals: [...goals.filter(goal => goal.checked)]
+        })
+    }
+    handleSuccesses = (num, subgoal, key) => {
+        let goals = this.state.goals;
+        goals[key].subGoals[subgoal].succseses = num.toString();
+        this.setState({
+            goals: goals,
+            mygoals: [...goals.filter(goal => goal.checked)]
+        })
+    }
+    // addMission = (mission) => {
+    //     let missions = this.state.missions;
+    //     let newMission = {
+    //         text: mission,
+    //         id: missions.length,
+    //         checked: false,
+    //         tries: '0',
+    //         succseses: '0',
+    //     }
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
-
-
     paciantPicker = () => {
         alert('blabla')
     }
-
     render() {
         const { managerName } = this.props.route.params;
         const { patient } = this.props.route.params;
-        const myMissionsList = Object.entries(this.state.myMissions).map(([key, value]) => {
-            return <Mission mission={this.state.myMissions[key]}
-                handleTries={(num) => this.handleTries(num, key)}
-                handleSuccesses={(num) => this.handleSuccesses(num, key)}
-            />
+        const myGoalsList = Object.entries(this.state.myGoals).map(([key, value]) => {
+            return <View style={styles.goal}>
+                <MyGoal goal={this.state.myGoals[key]}
+                    handleTries={(num, subgoal) => this.handleTries(num, subgoal, key)}
+                    handleSuccesses={(num, subgoal) => this.handleSuccesses(num, subgoal, key)}
+                />
+            </View>
         })
         return (
             <View style={styles.container}>
@@ -118,8 +116,6 @@ export default class Manager extends Component {
                         שלום {managerName} {'\n'}
                         המטופל שלך: {patient} {'\n'}
                     </Text>
-
-
                     <View style={styles.btnContainer}>
                         <TouchableHighlight
                             style={globalStyles.circle}
@@ -143,7 +139,6 @@ export default class Manager extends Component {
                         >
                             <Text> עדכן משימות   </Text>
                         </TouchableHighlight>
-
                         <Modal
                             animationType="fade"
                             transparent={false}
@@ -152,11 +147,12 @@ export default class Manager extends Component {
                         >
                             <View style={styles.modal} onStartShouldSetResponder={() => true}>
                                 <ScrollView>
-                                    <MissionCheckbox missions={this.state.missions}
-                                        checkedMission={(id) => this.checkedMission(id)} />
-                                    <AddMission
-                                        addMission={(mission) => { this.addMission(mission) }}
-                                    />
+                                    <GoalsList
+                                        goals={this.state.goals}
+                                        checkedGoal={(id) => this.checkedGoal(id)} />
+                                    {/* TO DO: add form for adding goals */}
+                                    {/* TO DO: add btn to delete goals */}
+                                    {/* TO DO: able to update goals */}
                                     <TouchableHighlight
                                         style={globalStyles.circle}
                                         underlayColor='#ccc'
@@ -164,18 +160,15 @@ export default class Manager extends Component {
                                     >
                                         <Text > סיים   </Text>
                                     </TouchableHighlight>
-
                                     <View style={{ flex: 1 }}>
-                                        <Text>blabla</Text>
                                     </View>
                                 </ScrollView>
                             </View>
 
                         </Modal>
-
                     </View>
                     <Timer />
-                    {myMissionsList}
+                    {myGoalsList}
                 </ScrollView>
                 <Button title="Go back" onPress={() => this.props.navigation.goBack()} />
 
@@ -202,13 +195,14 @@ const styles = StyleSheet.create({
         margin: 10,
 
     },
-    modal: {
-        alignItems: 'center',
-        marginTop: 20,
-    },
     therapistList: {
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
+    },
+    modal: {
+        alignItems: 'center',
+        marginTop: 20,
+        backgroundColor: '#4c2a4c'
     }
 })

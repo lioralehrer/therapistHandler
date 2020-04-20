@@ -76,8 +76,6 @@ export default class SessionHandler extends Component {
 
             <View style={styles.modal} onStartShouldSetResponder={() => true}>
               <ScrollView>
-                {/* <MissionCheckbox missions={this.props.missions} checkedMission={(id) => this.checkedMission(id)}
-                /> */}
                 <GoalsList  goals={this.props.goals} checkedGoal={(id)=>this.checkedGoal(id) }/> 
                 <TouchableHighlight
                   style={globalStyles.circle}
