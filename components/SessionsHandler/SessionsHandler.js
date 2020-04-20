@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import {  TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView } from 'react-native';
-import MissionCheckbox from '../MissionCheckbox';
 import MyHeader from '../MyHeader';
 import { globalStyles} from '../../styles/global'
 import GoalsList from '../GoalsList';
