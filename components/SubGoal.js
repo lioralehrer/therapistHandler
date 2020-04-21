@@ -5,7 +5,7 @@ import { ListItem } from 'react-native-elements';
 const createArray = length => {
     const arr = [];
     let i = 0;
-    while (i < length) {
+    while (i <= length) {
         arr.push(i.toString());
         i += 1;
     }
@@ -31,13 +31,14 @@ const SubGoal = ({ subGoal, index, tries, succseses }) => {
             <Picker
                 style={styles.picker}
                 itemStyle={styles.pickerItem}
-                mode="dialog"
+                mode="dropdown"
                 selectedValue={str == "נסיונות" ? selectedTries : selectedSuccesses}
                 onValueChange={num => { str == "נסיונות" ? handleTries(num) : handleSucces(num) }}
             >
-                {NUMBERS.map(num => (
+                {str == "נסיונות" ?   NUMBERS.map(num => (
                     <Picker.Item key={num} label={num} value={num} />
-                ))}
+                )) : createArray(selectedTries).map(num => ( <Picker.Item key={num} label={num} value={num} /> ))
+              }
             </Picker>
         </View>
     )
