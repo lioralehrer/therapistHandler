@@ -1,0 +1,26 @@
+{
+  "name": "therapisthandler_bed",
+  "version": "1.0.0",
+  "description": "Server-side for therapishHandler",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lioralehrer/therapistHandler.git"
+  },
+  "author": "Hilla Shahrabani, Liora Lehrer, Keren Noy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lioralehrer/therapistHandler/issues"
+  },
+  "homepage": "https://github.com/lioralehrer/therapistHandler#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
