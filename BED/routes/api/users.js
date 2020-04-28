@@ -59,6 +59,25 @@ router.post('/', (req,res) => {
   }
 })
 
+// Update user
+router.put('/:id', (req, res) => {
+  const found = users.some(user => user.id === parseInt(req.params.id));
+  if (found) {
+    const upUser = req.body;
+    users.forEach(user => {
+      if (user.id === parseInt(req.params.id)) {
+        user.full_name = upUser.full_name ? upUser.full_name : user.full_name;
+        user.email = upUser.email ? upUser.email : user.email;
+        user.password = upUser.password ? upUser.password : user.password;
+        user.role = upUser.role ? upUser.role : user.role;
+
+        res.json({msg: 'User was updated', user})
+      }
+    });
+  } else {
+    res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`});
+  }
+});
 
 
 // Helper methods
