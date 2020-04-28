@@ -32,16 +32,19 @@ const DB = {
   patients: [
     {
       id: 1,
+      personal_id: 200288662,
       full_name: "קנט ברוקמן",
       care_manager_id: 2
     },
     {
       id: 2,
+      personal_id: 112233445,
       full_name: "נד פלנדרס",
       care_manager_id: 2
     },
     {
       id: 3,
+      personal_id: 998877665,
       full_name: "טוד פלנדרס",
       care_manager_id: 1
     }

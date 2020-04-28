@@ -9,8 +9,9 @@ app.use(logger);
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-// Users API routes
-app.use('/api/users', require('./routes/api/users'));
+// API routes
+app.use('/api/users', require('./routes/api/users')); // users
+app.use('/api/patients', require('./routes/api/patients')); // patients
 
 const PORT = process.env.PORT || 5000;
 
