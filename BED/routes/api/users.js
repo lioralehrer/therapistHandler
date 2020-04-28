@@ -17,7 +17,7 @@ router.get('/:id', (req, res) => {
   if (found) {
     res.json(users.filter(user => user.id === parseInt(req.params.id)));
   } else {
-    res.status(400).json({msg: `Couldn't find member with ID ${req.params.id}`});
+    res.status(400).json({msg: `Couldn't find user with ID ${req.params.id}`});
   }
 });
 

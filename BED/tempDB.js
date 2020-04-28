@@ -64,17 +64,17 @@ const DB = {
     {
       id: 1,
       description: "לרקוד את ריקוד הציפורים",
-      child_id: 1
+      patient_id: 1
     },
     {
       id: 2,
       description: "לאכול סלט בטטה",
-      child_id: 1,
+      patient_id: 1,
     },
     {
       id: 3,
       description: "לצייר טווס",
-      child_id: 2
+      patient_id: 2
     }
   ],
   missions: [
