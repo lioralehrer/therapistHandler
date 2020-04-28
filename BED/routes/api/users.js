@@ -45,11 +45,15 @@ router.post('/', (req,res) => {
       case 'missing_info':
         jsonResponse.msg += 'Missing information'
         break;
+      case 'duplicate_email':
+        jsonResponse.msg += 'Email address has been used for another account'
+        break;
       case 'invalid_role':
         jsonResponse.msg += 'Invalid role'
         break;
       case 'invalid_password':
         jsonResponse.msg += 'Invalid password'
+        break;
     }
     return res.status(400).json(jsonResponse);
   }
@@ -57,18 +61,21 @@ router.post('/', (req,res) => {
 
 
 
-
 // Helper methods
 const checkParams = (user) => {
-  let validator = {
+  const validator = {
     valid: false
   };
+  const emailsArray = users.map(user => user.email);
+
   if (!(user.full_name && user.email && user.password && user.role)) {
     validator.code = 'missing_info';
   } else if (!(roles.includes(user.role))) {
     validator.code = 'invalid_role';
   } else if (user.password.length < 6) {
     validator.code = 'invalid_password'
+  } else if (emailsArray.includes(user.email)) {
+    validator.code = 'duplicate_email'
   } else {
     validator.valid = true;
   }
