@@ -13,7 +13,7 @@ router.get('/', (req, res) => res.json(users));
 
 // Get user by ID
 router.get('/:id', (req, res) => {
-  const found = users.some(user => user.id === parseInt(req.params.id));
+  const found = userFound(req.params.id);
   if (found) {
     res.json(users.filter(user => user.id === parseInt(req.params.id)));
   } else {
@@ -31,49 +31,44 @@ router.post('/', (req,res) => {
     role: req.body.role
   };
 
-  const paramsValidation = checkParams(newUser);
+  const validateParams = checkCParams(newUser);
   
 
-  if (paramsValidation.valid) {
+  if (validateParams.valid) {
     users.push(newUser);
     res.json(users);
   } else {
+    const reason = errorHandler(validateParams.code)
     const jsonResponse = {
-      msg: 'Unable to create user. '
+      msg: `Unable to create user. ${reason}`
     };
-    switch (paramsValidation.code) {
-      case 'missing_info':
-        jsonResponse.msg += 'Missing information'
-        break;
-      case 'duplicate_email':
-        jsonResponse.msg += 'Email address has been used for another account'
-        break;
-      case 'invalid_role':
-        jsonResponse.msg += 'Invalid role'
-        break;
-      case 'invalid_password':
-        jsonResponse.msg += 'Invalid password'
-        break;
-    }
     return res.status(400).json(jsonResponse);
   }
 })
 
 // Update user
 router.put('/:id', (req, res) => {
-  const found = users.some(user => user.id === parseInt(req.params.id));
+  const found = userFound(req.params.id);
   if (found) {
     const upUser = req.body;
-    users.forEach(user => {
-      if (user.id === parseInt(req.params.id)) {
-        user.full_name = upUser.full_name ? upUser.full_name : user.full_name;
-        user.email = upUser.email ? upUser.email : user.email;
-        user.password = upUser.password ? upUser.password : user.password;
-        user.role = upUser.role ? upUser.role : user.role;
-
-        res.json({msg: 'User was updated', user})
-      }
-    });
+    const validateParams = checkUParams(upUser);
+    if (validateParams.valid) {
+      users.forEach(user => {
+        if (user.id === parseInt(req.params.id)) {
+          user.full_name = upUser.full_name ? upUser.full_name : user.full_name;
+          user.email = upUser.email ? upUser.email : user.email;
+          user.password = upUser.password ? upUser.password : user.password;
+          user.role = upUser.role ? upUser.role : user.role;
+          res.json({msg: 'User was updated', user});
+        }
+      })
+    } else {
+      const reason = errorHandler(validateParams.code)
+      const jsonResponse = {
+        msg: `Unable to update user. ${reason}`
+      };
+      return res.status(400).json(jsonResponse);
+    }
   } else {
     res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`});
   }
@@ -81,7 +76,7 @@ router.put('/:id', (req, res) => {
 
 // Delete user
 router.delete('/:id', (req, res) => {
-  const found = users.some(user => user.id === parseInt(req.params.id));
+  const found = userFound(req.params.id);
   if (found) {
     res.json({msg: 'User deleted', users: users.filter(user => user.id !== parseInt(req.params.id))});
   } else {
@@ -124,6 +119,19 @@ const checkUParams = (user) => {
     validator.valid = true;
   }
   return validator;
+}
+
+const errorHandler = (code) => {
+  switch (code) {
+    case 'missing_info':
+      return 'Missing information';
+    case 'duplicate_email':
+      return 'Email address has been used for another account';
+    case 'invalid_role':
+      return 'Invalid role';
+    case 'invalid_password':
+      return 'Invalid password';
+  }
 }
 
 module.exports = router;
