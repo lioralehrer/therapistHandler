@@ -17,7 +17,7 @@ const DB = {
     {
       id: 3,
       full_name: "בארט סימפסון",
-      email: "bar.sim@gamil.com",
+      email: "bar.sim@gmail.com",
       password: "123456",
       role: "therapist"
     },
