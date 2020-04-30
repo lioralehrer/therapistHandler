@@ -124,9 +124,9 @@ const checkUParams = (patient) => {
     valid: false
   };
   const personalIDArray = patients.filter(existing_patient => existing_patient.id != parseInt(patient.id)).map(patient => patient.personal_id);
-  if (personalIDArray.includes(patient.personal_id)) {
+  if (patient.personal_id && personalIDArray.includes(patient.personal_id)) {
     validator.code = 'duplicate_personal_id'
-  } else if (!validateCareManagerID(patient.care_manager_id)) {
+  } else if (patient.care_manager_id && !validateCareManagerID(patient.care_manager_id)) {
     validator.code = 'invalid_care_manager_id'
   } else {
     validator.valid = true;

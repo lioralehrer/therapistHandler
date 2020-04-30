@@ -91,19 +91,34 @@ router.delete('/:id', (req, res) => {
 
 
 // Helper methods
-const checkParams = (user) => {
+const userFound = (id) => {
+  return users.some(user => user.id === parseInt(id));
+}
+
+const checkCParams = (user) => {
+  const validator = {
+    valid: false
+  };
+
+  if (!(user.full_name && user.email && user.password && user.role)) {
+    validator.code = 'missing_info';
+    return validator;
+  }
+  return checkUParams(user);
+}
+
+const checkUParams = (user) => {
   const validator = {
     valid: false
   };
   const emailsArray = users.map(user => user.email);
+  console.log(emailsArray);
 
-  if (!(user.full_name && user.email && user.password && user.role)) {
-    validator.code = 'missing_info';
-  } else if (!(roles.includes(user.role))) {
+  if (user.role && !roles.includes(user.role)) {
     validator.code = 'invalid_role';
-  } else if (user.password.length < 6) {
+  } else if (user.password && user.password.length < 6) {
     validator.code = 'invalid_password'
-  } else if (emailsArray.includes(user.email)) {
+  } else if (user.email && emailsArray.includes(user.email)) {
     validator.code = 'duplicate_email'
   } else {
     validator.valid = true;
