@@ -1,10 +1,10 @@
 
 
 import React, { Component } from 'react';
-import { Dimensions, TouchableHighlight, StyleSheet, View, Text, Platform, Modal, ScrollView } from 'react-native';
-import MissionCheckbox from '../MissionCheckbox';
+import {  TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView } from 'react-native';
 import MyHeader from '../MyHeader';
-
+import { globalStyles} from '../../styles/global'
+import GoalsList from '../GoalsList';
 
 export default class SessionHandler extends Component {
   constructor(props) {
@@ -26,10 +26,13 @@ export default class SessionHandler extends Component {
   checkedMission = (id) => {
     this.props.checkedMission(id);
   }
+  checkedGoal = (id) =>{
+    this.props.checkedGoal(id)
+  }
 
   render() {
     return (
-      <View style={styles.MainContainer}>
+      <View style={globalStyles.MainContainer}>
         <MyHeader title='מטפל' />
         <Text style={styles.HeaderInsideText}>
           שלום {this.props.therapistName} {'\n'}
@@ -38,14 +41,14 @@ export default class SessionHandler extends Component {
 
         <View style={styles.btnContainer}>
           <TouchableHighlight
-            style={styles.circle}
+            style={globalStyles.circle}
             underlayColor='#ccc'
             onPress={() => this.paciantPicker()}
           >
             <Text>  מטופל אחר </Text>
           </TouchableHighlight>
           <TouchableHighlight
-            style={styles.circle}
+            style={globalStyles.circle}
             underlayColor='#ccc'
             onPress={() => alert('Yaay!')}
           >
@@ -53,7 +56,7 @@ export default class SessionHandler extends Component {
           </TouchableHighlight>
 
           <TouchableHighlight
-            style={styles.circle}
+            style={globalStyles.circle}
             underlayColor='#ccc'
             onPress={() => this.setModalVisible(!this.state.modalVisible)}
           >
@@ -72,10 +75,9 @@ export default class SessionHandler extends Component {
 
             <View style={styles.modal} onStartShouldSetResponder={() => true}>
               <ScrollView>
-                <MissionCheckbox missions={this.props.missions} checkedMission={(id) => this.checkedMission(id)}
-                />
+                <GoalsList  goals={this.props.goals} checkedGoal={(id)=>this.checkedGoal(id) }/> 
                 <TouchableHighlight
-                  style={styles.circle}
+                  style={globalStyles.circle}
                   underlayColor='#ccc'
                   onPress={() => this.setModalVisible(!this.state.modalVisible)}
                 >
@@ -96,10 +98,6 @@ export default class SessionHandler extends Component {
 }
 
 const styles = StyleSheet.create({
-  MainContainer: {
-    flex: 1,
-    paddingTop: Platform.OS == 'ios' ? 20 : 0,
-  },
   btnContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -114,16 +112,9 @@ const styles = StyleSheet.create({
     margin: 10,
 
   },
-  circle: {
-    borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-    width: Dimensions.get('window').width * 0.25,
-    height: Dimensions.get('window').width * 0.25,
-    backgroundColor: '#89AAFF',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   modal: {
     alignItems: 'center',
     marginTop: 20,
+    backgroundColor:'#4c2a4c'
   }
 });
