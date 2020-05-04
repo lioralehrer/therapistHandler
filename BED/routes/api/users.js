@@ -1,94 +1,92 @@
 const express = require('express');
 const router = express.Router();
-const DB = require('../../tempDB');
-const users = DB.users;
+const User = require('./models/user');
 
-const roles = [
+const ROLES = [
   'care manager',
   'therapist'
 ]
 
 // Get all users
-router.get('/', (req, res) => res.json(users));
+router.get('/', async (req,res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({msg: err});
+  }
+});
 
 // Get user by ID
-router.get('/:id', (req, res) => {
-  const found = userFound(req.params.id);
-  if (found) {
-    res.json(users.filter(user => user.id === parseInt(req.params.id)));
-  } else {
-    res.status(400).json({msg: `Couldn't find user with ID ${req.params.id}`});
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({msg: `Unable to find user with ID ${req.params.id}`});
+    }
+  } catch (err) {
+    res.status(400).json({msg: err});
   }
 });
 
 // Create user
-router.post('/', (req,res) => {
-  const newUser = {
-    id: users.length + 1,
+router.post('/', async (req,res) => {
+  const newUser = new User({
     full_name: req.body.full_name,
     email: req.body.email,
     password: req.body.password,
     role: req.body.role
-  };
+  });
 
   const validateParams = checkCParams(newUser);
-  
 
   if (validateParams.valid) {
-    users.push(newUser);
-    res.json(users);
+    try {
+      const savedUser = await newUser.save();
+      res.json(savedUser);
+    } catch (err) {
+      res.status(500).json({msg: err});
+    }
   } else {
-    const reason = errorHandler(validateParams.code)
+    const reason = errorMsgHandler(validateParams.errCode)
     const jsonResponse = {
       msg: `Unable to create user. ${reason}`
     };
     return res.status(400).json(jsonResponse);
   }
-})
+});
 
 // Update user
-router.put('/:id', (req, res) => {
-  const found = userFound(req.params.id);
-  if (found) {
-    const upUser = req.body;
-    const validateParams = checkUParams(upUser);
-    if (validateParams.valid) {
-      users.forEach(user => {
-        if (user.id === parseInt(req.params.id)) {
-          user.full_name = upUser.full_name ? upUser.full_name : user.full_name;
-          user.email = upUser.email ? upUser.email : user.email;
-          user.password = upUser.password ? upUser.password : user.password;
-          user.role = upUser.role ? upUser.role : user.role;
-          res.json({msg: 'User was updated', user});
-        }
-      })
-    } else {
-      const reason = errorHandler(validateParams.code)
-      const jsonResponse = {
-        msg: `Unable to update user. ${reason}`
-      };
-      return res.status(400).json(jsonResponse);
-    }
-  } else {
-    res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`});
+router.patch('/:id', async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {$set: req.body.data},
+      {new: true, useFindAndModify: false});
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(500).json({msg: err});
   }
 });
 
 // Delete user
-router.delete('/:id', (req, res) => {
-  const found = userFound(req.params.id);
-  if (found) {
-    res.json({msg: 'User deleted', users: users.filter(user => user.id !== parseInt(req.params.id))});
-  } else {
-    res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`});
+router.delete('/:id', async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const removedUser = await User.findByIdAndDelete(req.params.id);
+    if (removedUser) {
+      res.json(removedUser);
+    } else {
+      res.status(404).json({msg: `Unable to find user with ID ${req.params.id}`});
+    }
+  } catch (err) {
+    res.status(500).json({msg: err});
   }
 });
 
-
 // Helper methods
-const userFound = (id) => {
-  return users.some(user => user.id === parseInt(id));
-}
 
 const checkCParams = (user) => {
   const validator = {
@@ -96,7 +94,7 @@ const checkCParams = (user) => {
   };
 
   if (!(user.full_name && user.email && user.password && user.role)) {
-    validator.code = 'missing_info';
+    validator.errCode = 'missing_info';
     return validator;
   }
   return checkUParams(user);
@@ -106,27 +104,21 @@ const checkUParams = (user) => {
   const validator = {
     valid: false
   };
-  const emailsArray = users.map(user => user.email);
-  console.log(emailsArray);
 
-  if (user.role && !roles.includes(user.role)) {
-    validator.code = 'invalid_role';
+  if (user.role && !ROLES.includes(user.role)) {
+    validator.errCode = 'invalid_role';
   } else if (user.password && user.password.length < 6) {
-    validator.code = 'invalid_password'
-  } else if (user.email && emailsArray.includes(user.email)) {
-    validator.code = 'duplicate_email'
+    validator.errCode = 'invalid_password'
   } else {
     validator.valid = true;
   }
   return validator;
 }
 
-const errorHandler = (code) => {
+const errorMsgHandler = (code) => {
   switch (code) {
     case 'missing_info':
       return 'Missing information';
-    case 'duplicate_email':
-      return 'Email address has been used for another account';
     case 'invalid_role':
       return 'Invalid role';
     case 'invalid_password':
