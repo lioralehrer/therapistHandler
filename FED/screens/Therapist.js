@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Modal, ScrollView, Button, StatusBar } from 'react-native';
+import { StyleSheet, View, Text, Modal, ScrollView, Button, StatusBar,TouchableHighlight } from 'react-native';
 import { globalStyles } from '../styles/global';
 import Timer from '../components/Timer';
-import MyGoal from '../components/MyGoal'
-import SessionsHandler from '../components/SessionsHandler/SessionsHandler'
+import MyGoal from '../components/MyGoal';
+import TherapistGoalsList from '../components/TherapistGoalList';
+
 
 export default class Therapist extends Component {
     state = {
@@ -53,12 +54,8 @@ export default class Therapist extends Component {
                     { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, active: true }]
             },
         ],
-        myGoals: []
-    }
-    componentDidMount() {
-        this.setState({
-            myGoals: [...this.state.goals.filter(goal => goal.subGoals.checked)]
-        })
+        myGoals: [],
+        modalVisible: false,
     }
     checkedGoal = (id) => {
         let goals = this.state.goals;
@@ -69,7 +66,7 @@ export default class Therapist extends Component {
         })
 
     }
-    handleTries = (num,subgoal, key) => {
+    handleTries = (num, subgoal, key) => {
         let goals = this.state.goals;
         goals[key].subGoals[subgoal].tries = num.toString();
         this.setState({
@@ -77,7 +74,7 @@ export default class Therapist extends Component {
             mygoals: [...goals.filter(goal => goal.checked)]
         })
     }
-    handleSuccesses = (num,subgoal, key) => {
+    handleSuccesses = (num, subgoal, key) => {
         let goals = this.state.goals;
         goals[key].subGoals[subgoal].succseses = num.toString();
         this.setState({
@@ -85,37 +82,87 @@ export default class Therapist extends Component {
             mygoals: [...goals.filter(goal => goal.checked)]
         })
     }
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
+    }
+    paciantPicker = () => {
+        alert('blabla')
+    }
 
     render() {
+        const { therapistName } = this.props.route.params;
+        const { patient } = this.props.route.params;
         const myGoalsList = Object.entries(this.state.myGoals).map(([key, value]) => {
             return <View style={styles.goal}>
                 <MyGoal goal={this.state.myGoals[key]}
                     handleTries={(num, subgoal) => this.handleTries(num, subgoal, key)}
-                    handleSuccesses={(num, subgoal) => this.handleSuccesses(num,subgoal, key)}
+                    handleSuccesses={(num, subgoal) => this.handleSuccesses(num, subgoal, key)}
                 />
             </View>
         })
-
-        // This is the way to pass props from 'Home' component to this component
-        const { therapistName } = this.props.route.params;
-        const { patient } = this.props.route.params;
 
         return (
             <View style={styles.container} >
                 <StatusBar barStyle='light-content' />
                 <ScrollView>
-                    <SessionsHandler
-                        therapistName={therapistName}
-                        patient={patient}
-                        goals={this.state.goals}
-                        goals={this.state.goals}
-                        checkedGoal={(id) => this.checkedGoal(id)}
-                    />
+                    <Text style={styles.HeaderInsideText}>
+                        שלום {therapistName} {'\n'}
+                        המטופל שלך: {patient} {'\n'}
+                    </Text>
+                    <View style={styles.btnContainer}>
+                        <TouchableHighlight
+                            style={globalStyles.circle}
+                            underlayColor='#ccc'
+                            onPress={() => this.paciantPicker()}
+                        >
+                            <Text>  מטופל אחר </Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            style={globalStyles.circle}
+                            underlayColor='#ccc'
+                            onPress={() => alert('Yaay!')}
+                        >
+                            <Text> עדכן פעילויות </Text>
+                        </TouchableHighlight>
+
+                        <TouchableHighlight
+                            style={globalStyles.circle}
+                            underlayColor='#ccc'
+                            onPress={() => this.setModalVisible(!this.state.modalVisible)}
+                        >
+                            <Text> עדכן משימות   </Text>
+                        </TouchableHighlight>
+                        <Modal
+                            animationType="fade"
+                            transparent={false}
+                            visible={this.state.modalVisible}
+                            swipeArea={50}
+                        >
+                            <View style={styles.modal} onStartShouldSetResponder={() => true}>
+                                <ScrollView>
+                                    <TherapistGoalsList
+                                        goals={this.state.goals}
+                                        checkedGoal={(id) => this.checkedGoal(id)} />
+                                    {/* TO DO: able to update goals */}
+                                    <TouchableHighlight
+                                        style={globalStyles.circle}
+                                        underlayColor='#ccc'
+                                        onPress={() => this.setModalVisible(!this.state.modalVisible)}
+                                    >
+                                        <Text > סיים   </Text>
+                                    </TouchableHighlight>
+                                    <View style={{ flex: 1 }}>
+                                    </View>
+                                </ScrollView>
+                            </View>
+
+                        </Modal>
+                    </View>
                     <Timer />
                     {myGoalsList}
                 </ScrollView>
                 <Button title="Go back" onPress={() => this.props.navigation.goBack()} />
-            </View>
+            </View >
 
         )
     }
@@ -129,6 +176,30 @@ const styles = StyleSheet.create({
 
     text: {
         color: '#fff',
+    },
+    btnContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+
+    HeaderInsideText: {
+        color: '#fff',
+        fontSize: 18,
+        textAlign: 'center',
+        padding: 5,
+        margin: 10,
+
+    },
+    therapistList: {
+        color: '#fff',
+        fontSize: 18,
+        textAlign: 'center',
+    },
+    modal: {
+        alignItems: 'center',
+        marginTop: 20,
+        backgroundColor: '#4c2a4c'
     }
 
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions , Vibration, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, Dimensions , TouchableOpacity} from 'react-native';
 
 //  function to calculate hours, minutes and seconds.
 const formatNumber = (number) => `0${number}`.slice(-2);
@@ -30,7 +30,6 @@ export default class Timer extends Component {
     }
     startSession = () => {
         this.setState(state => ({ remaingSeconds: state.remaingSeconds - 1, isRunning: true }));
-        Vibration.vibrate(PATTERN, true)
         this.interval = setInterval(() => this.state.remaingSeconds > 0 ? this.setState(state => ({ remaingSeconds: state.remaingSeconds - 1 })) : this.setState(state => ({ remaingSeconds: SESSION }), clearInterval(this.interval)), 1000);
 
     }

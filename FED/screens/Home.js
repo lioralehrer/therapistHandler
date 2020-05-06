@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import { globalStyles } from '../styles/global'
 
-export default class AddMission extends Component {
+export default class Home extends Component {
    
    
 
@@ -17,14 +17,14 @@ export default class AddMission extends Component {
                          onPress={() => this.props.navigation.navigate('Manager', { managerName:'זהבה', patient:'מיכאל'})}
                    
                    >
-                        <Text style={styles.text}>  מנהל   </Text>
+                        <Text style={styles.text}>  מנהלת   </Text>
                     </TouchableHighlight>
                     <TouchableHighlight
                         style={globalStyles.circle}
                         underlayColor='#ccc'
                         onPress={() => this.props.navigation.navigate('Therapist',{therapistName:'רבקה', patient:'מיכאל'})}
                     >
-                        <Text style={styles.text}>  מטפל   </Text>
+                        <Text style={styles.text}>  מטפלת   </Text>
                     </TouchableHighlight>
                 </View>
 

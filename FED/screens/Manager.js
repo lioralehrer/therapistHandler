@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView, Button } from 'react-native';
-import MyHeader from '../components/MyHeader';
 import { globalStyles } from '../styles/global'
 import Timer from '../components/Timer';
 import MyGoal from '../components/MyGoal';
@@ -82,15 +81,31 @@ export default class Manager extends Component {
             mygoals: [...goals.filter(goal => goal.checked)]
         })
     }
-    // addMission = (mission) => {
-    //     let missions = this.state.missions;
-    //     let newMission = {
-    //         text: mission,
-    //         id: missions.length,
-    //         checked: false,
-    //         tries: '0',
-    //         succseses: '0',
-    //     }
+
+    addGoal = (goal) => {
+        let goals = this.state.goals;
+        // doesnot work:
+        // for (var g in goals) {
+        //     if (goals[g].id == goal.id) {
+        //         goals[g] == goal;
+        //         goal = '';
+        //         break;
+        //     }
+
+        // }
+         goals.push(goal)
+        this.setState({
+            goals : goals
+        })
+
+    }
+    deleteGoal = (id) => {
+        let goals = [...this.state.goals.filter(goal => goal.id != id)];
+        this.setState({
+            goals: goals
+        })
+
+    }
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
@@ -111,7 +126,6 @@ export default class Manager extends Component {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <MyHeader title='מנהל טיפול' />
                     <Text style={styles.HeaderInsideText}>
                         שלום {managerName} {'\n'}
                         המטופל שלך: {patient} {'\n'}
@@ -149,9 +163,9 @@ export default class Manager extends Component {
                                 <ScrollView>
                                     <GoalsList
                                         goals={this.state.goals}
+                                        newGoal={(goal) => this.addGoal(goal)}
+                                        deleteGoal={(id) => this.deleteGoal(id)}
                                         checkedGoal={(id) => this.checkedGoal(id)} />
-                                    {/* TO DO: add form for adding goals */}
-                                    {/* TO DO: add btn to delete goals */}
                                     {/* TO DO: able to update goals */}
                                     <TouchableHighlight
                                         style={globalStyles.circle}

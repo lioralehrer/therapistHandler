@@ -19,7 +19,7 @@ const Goal = ({ goal, checkedGoal }) => {
                     >
                         <Image
                             style={{ width: 30, height: 30 }}
-                            source={expanded ? require('../assets/Arrowhead-Down.png') : require('../assets/Arrowhead-01-128.png')} />
+                            source={expanded ? require('../assets/arrow-up.jpg') : require('../assets/arrow-down.jpg')} />
                     </TouchableHighlight>
                 </View>
                 <CheckBox
@@ -28,19 +28,11 @@ const Goal = ({ goal, checkedGoal }) => {
                     right
                     title={goal.description}
                     checked={goal.checked}
-                    onPress={ () => checkedGoal(goal.id)}
+                    onPress={() => checkedGoal(goal.id)}
                 />
             </View>
             {Object.keys(goal.subGoals).map((subgoal, index) => {
                 return expanded ? <View></View> :
-                    // <CheckBox
-                    //     iconRight
-                    //     right
-                    //     checkedColor='green'
-                    //     title={goal.subGoals[subgoal].text}
-                    //     checked={goal.subGoals[subgoal].checked}
-                    //      onPress={() => checkedGoal(goal.subGoals[subgoal].id, goal)}
-                    // />
                     <View>
                         <ListItem
                             key={index}
@@ -50,7 +42,6 @@ const Goal = ({ goal, checkedGoal }) => {
                         />
                     </View>
             })}
-
         </View>
     );
 }
