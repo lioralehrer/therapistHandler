@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Keyboard, Modal, TouchableHighlight} from 'react-native';
+import { View, Text, TextInput, Button, Modal} from 'react-native';
 import { globalStyles } from '../styles/global';
 
 
 export default function GoalForm({ txt, goal, newGoal }) {
-    const [modalVisible, setModalVisible] = useState( false);
+    const [modalVisible, setModalVisible] = useState(false);
     const [title, setTitle] = useState(goal? goal.title : '');
-    const [description, setDescription] = useState(goal? goal.description : '');
+    const [description, setDescription] = useState(goal ? goal.description : '');
     const [subGoal1, setSubGoal1] = useState(goal? goal.subGoals[0].text : '');
     const [subGoal2, setSubGoal2] = useState(goal? goal.subGoals[1].text : '');
     const [subGoal3, setSubGoal3] = useState(goal? goal.subGoals[2].text : '');
     const [subGoal4, setSubGoal4] = useState(goal? goal.subGoals[3].text : '');
 
     const handleNewGoal = () => {
-        let goal= {
-            id : Math.random(),
+        let goalId = Math.random();
+        if (goal){
+            goalId =goal.id 
+        }
+        let g= {
+            id : goalId,
             title: title,
             description: description,
             checked: false,
@@ -24,7 +28,7 @@ export default function GoalForm({ txt, goal, newGoal }) {
                 { id: 3, text: subGoal3, checked: false, tries: 0, succseses: 0, active: true },
                 { id: 4, text: subGoal4, checked: false, tries: 0, succseses: 0, active: true }]
         }
-        newGoal(goal);
+        newGoal(g);
         setModalVisible(false)
         setTitle('');
         setDescription('');
@@ -32,7 +36,6 @@ export default function GoalForm({ txt, goal, newGoal }) {
         setSubGoal2('');
         setSubGoal3('');
         setSubGoal4('');
-
     }
     const cancel = () => {
         setModalVisible(false);

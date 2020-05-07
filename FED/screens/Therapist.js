@@ -15,10 +15,10 @@ export default class Therapist extends Component {
                 description: 'תיאור מטרה ראשונה',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 3, text: ' תת 3', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, active: true }]
+                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 3, text: ' תת 3', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: true }]
             },
             {
                 id: Math.random(),
@@ -26,10 +26,10 @@ export default class Therapist extends Component {
                 description: 'בלהבהבךבב',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, active: true }]
+                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: true }]
             },
             {
                 id: Math.random(),
@@ -37,10 +37,10 @@ export default class Therapist extends Component {
                 description: 'בלהבהבךבב',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, active: true }]
+                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: true }]
             },
             {
                 id: Math.random(),
@@ -48,10 +48,10 @@ export default class Therapist extends Component {
                 description: 'בלהבהבךבב',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 3, text: 'תת 3', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, active: true }]
+                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 3, text: 'תת 3', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: true }]
             },
         ],
         myGoals: [],
@@ -130,7 +130,7 @@ export default class Therapist extends Component {
                             underlayColor='#ccc'
                             onPress={() => this.setModalVisible(!this.state.modalVisible)}
                         >
-                            <Text> עדכן משימות   </Text>
+                            <Text> עדכן מטרות   </Text>
                         </TouchableHighlight>
                         <Modal
                             animationType="fade"

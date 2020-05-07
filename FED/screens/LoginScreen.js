@@ -10,7 +10,7 @@ import LoginPlaceholder from '../components/LoginPlaceholder';
 const LoginScreen = ({ navigation }) => {
     return (
         <View style ={styles.container}>
-            <Header title='SpecLtracker' />
+            <Header title='Spectracker' />
             <LoginPlaceholder navigation={navigation}/>
         </View>
     );
