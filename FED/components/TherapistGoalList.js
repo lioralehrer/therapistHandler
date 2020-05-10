@@ -10,7 +10,12 @@ const TherapistGoalsList = ({ goals, checkedGoal }) => {
 
     const goalsList = Object.keys(goals).map((goal, i) => {
         return <View style={styles.goal}>
-            <Goal goal={goals[goal]} index={i} checkedGoal={(id) => checkedGoal(id)} />
+            <Goal 
+            goal={goals[goal]} 
+            index={i} 
+            checkedGoal={(id) => checkedGoal(id)}
+            checkedActivity= {(subgoal , i )=>alert(subgoal[i])}
+            />
         </View>
     })
     return (

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableHighlight, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, Image,Button} from 'react-native';
 import { CheckBox, ListItem } from 'react-native-elements';
+import {globalStyles} from '../styles/global'
 
-const Goal = ({ goal, checkedGoal }) => {
-    // const [goal , setGoal] = useState({goal});
+const Goal = ({ goal, checkedGoal, checkedActivity }) => {
     const [expanded, setExpanded] = useState(true);
     const toggle = () => {
         setExpanded(!expanded);
@@ -37,9 +37,23 @@ const Goal = ({ goal, checkedGoal }) => {
                         <ListItem
                             key={index}
                             title={goal.subGoals[subgoal].text}
+                            subtitle={ <View style={globalStyles.btns}>   
+                                    
+                            {goal.subGoals[subgoal].activities.map((activity, i)=>{
+                               return(
+                                <Button
+                                onPress={() => checkedActivity( goal.subGoals[subgoal].activities, i)}
+                                color="#841584"
+                                title={activity}
+                            />
+                               ) 
+                             })}
+                              <Text> בחרי פעילות/יות:</Text> 
+                        </View>}
                             bottomDivider
                             chevron
                         />
+                     
                     </View>
             })}
         </View>

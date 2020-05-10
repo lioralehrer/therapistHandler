@@ -1,56 +1,61 @@
-import React, {useState}  from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 
 
 
 const LoginPlaceholder = ({ navigation }) => {
-    const managers = ["עדי"];
-    const therapists = [ "קורל", "מאי", "הדר"];
+    const userInfo = [
+        { userName: 'Admin', psw: '123', role: 'admin' },
+        { userName: 'Adi', psw: '123', role: 'manager' },
+        { userName: 'Coral', psw: '123', role: 'therapist' }]
 
-    const [text, setText] = useState('');
+    const [userName, setUserName] = useState('');
+    const [psw, setPsw] = useState('');
 
-    const onChange = textValue => setText(textValue);
-
-    const isValidUser = (username) => {
-        if (therapists.includes(username)) {
-            navigation.navigate('Therapist', { therapistName: username, patient: 'ורד'});
-        }else if (managers.includes(username)) {
-            navigation.navigate('Manager', { managerName: username, patient: 'ורד'})
+    const isValidUser = () => {
+        let u = userInfo.find((user) => {
+            return user.userName == userName
+        })
+        if (u.psw == psw) {
+            if (u.role == 'manager') {
+                navigation.navigate('Manager', { managerName: userName, patient: 'ורד' });
+            } else if (u.role == 'therapist') {
+                navigation.navigate('Therapist', { therapistName: userName, patient: 'ורד' });
+            } else { alert("Handle Admin...") }
         } else {
-            alert("No User named: "+ username + "\n  Please Sign in ")
+            alert("Some Problem With User or Password... ")
         }
-    };
+    }
 
     return (
         <View style={styles.loginContainer}>
             <View style={styles.loginInput}>
-                <TextInput 
-                placeholder="Name..." 
-                style={styles.loginInputText} 
-                blurOnSubmit ={true}
-                onChangeText={onChange} value={text}/>
+                <TextInput
+                    placeholder="Name..."
+                    style={styles.loginInputText}
+                    blurOnSubmit={true}
+                    onChangeText={(userName) => setUserName(userName)} value={userName} />
             </View>
             <View style={styles.loginInput}>
-                <TextInput 
-                placeholder="Password..." 
-                secureTextEntry={true}
-                style={styles.loginInputText}/>
-                
-                </View>
+                <TextInput
+                    placeholder="Password..."
+                    secureTextEntry={true}
+                    style={styles.loginInputText}
+                    onChangeText={(psw) => setPsw(psw)} value={psw} />
+            </View>
             <View style={styles.loginButton}>
-                <TouchableOpacity style={styles.button} onPress={() => isValidUser(text)}>
+                <TouchableOpacity style={styles.button} onPress={() => isValidUser()}>
                     <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
             </View>
         </View>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
     loginContainer: {
         flex: 1,
         justifyContent: 'center',
-        // backgroundColor: 'pink',
         marginLeft: 60,
         marginRight: 60,
         marginBottom: 20,
