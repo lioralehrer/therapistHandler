@@ -1,46 +1,46 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView, Button } from 'react-native';
-import MyHeader from '../components/MyHeader';
 import { globalStyles } from '../styles/global'
 import Timer from '../components/Timer';
 import MyGoal from '../components/MyGoal';
 import GoalsList from '../components/GoalsList';
+import Reports from '../components/Reports';
 
 export default class Manager extends Component {
     state = {
         goals: [
             {
                 id: Math.random(),
-                title: 'מטרה ראשונה',
+                title: ' לעדכן מטרות',
                 description: 'תיאור מטרה ראשונה',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 3, text: ' תת 3', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, active: true }]
+                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 3, text: ' תת 3', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: true }]
             },
             {
                 id: Math.random(),
                 title: 'מטרה שניה',
-                description: 'בלהבהבךבב',
+                description: 'מטרה שנמחקת לא תוצג בעדכון רשימה',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, active: true }]
+                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: true }]
             },
             {
                 id: Math.random(),
                 title: 'מטרה שלישית',
-                description: 'בלהבהבךבב',
+                description: 'הכניסי ID קיים למטרה קיימת',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, active: true }]
+                    { id: 1, text: 'בדקי שעובד  ', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: true }]
             },
             {
                 id: Math.random(),
@@ -48,10 +48,10 @@ export default class Manager extends Component {
                 description: 'בלהבהבךבב',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 3, text: 'תת 3', checked: false, tries: 0, succseses: 0, active: true },
-                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, active: true }]
+                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 3, text: 'תת 3', checked: false, tries: 0, succseses: 0, activities: true },
+                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: true }]
             },
         ],
         myGoals: [],
@@ -82,15 +82,28 @@ export default class Manager extends Component {
             mygoals: [...goals.filter(goal => goal.checked)]
         })
     }
-    // addMission = (mission) => {
-    //     let missions = this.state.missions;
-    //     let newMission = {
-    //         text: mission,
-    //         id: missions.length,
-    //         checked: false,
-    //         tries: '0',
-    //         succseses: '0',
-    //     }
+
+    handleGoal = (goal) => {
+        let goals = this.state.goals;
+        let objectIndex = this.state.goals.findIndex(go => go.id == goal.id)
+        if (objectIndex >= 0) {
+            goals[objectIndex] = goal;
+        } else {
+            goals.push(goal)
+        }
+        this.setState({
+            goals: goals
+        })
+        alert(objectIndex)
+        this.forceUpdate();
+    }
+    deleteGoal = (id) => {
+        let goals = [...this.state.goals.filter(goal => goal.id != id)];
+        this.setState({
+            goals: goals
+        })
+        this.forceUpdate();
+    }
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
@@ -111,7 +124,6 @@ export default class Manager extends Component {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <MyHeader title='מנהל טיפול' />
                     <Text style={styles.HeaderInsideText}>
                         שלום {managerName} {'\n'}
                         המטופל שלך: {patient} {'\n'}
@@ -137,7 +149,7 @@ export default class Manager extends Component {
                             underlayColor='#ccc'
                             onPress={() => this.setModalVisible(!this.state.modalVisible)}
                         >
-                            <Text> עדכן משימות   </Text>
+                            <Text> עדכן מטרות   </Text>
                         </TouchableHighlight>
                         <Modal
                             animationType="fade"
@@ -149,9 +161,9 @@ export default class Manager extends Component {
                                 <ScrollView>
                                     <GoalsList
                                         goals={this.state.goals}
+                                        newGoal={(goal) => this.handleGoal(goal)}
+                                        deleteGoal={(id) => this.deleteGoal(id)}
                                         checkedGoal={(id) => this.checkedGoal(id)} />
-                                    {/* TO DO: add form for adding goals */}
-                                    {/* TO DO: add btn to delete goals */}
                                     {/* TO DO: able to update goals */}
                                     <TouchableHighlight
                                         style={globalStyles.circle}
@@ -169,6 +181,7 @@ export default class Manager extends Component {
                     </View>
                     <Timer />
                     {myGoalsList}
+                    {/* <Reports /> */}
                 </ScrollView>
                 <Button title="Go back" onPress={() => this.props.navigation.goBack()} />
 
