@@ -12,7 +12,8 @@ const MyGoal = ({ goal, handleTries, handleSuccesses }) => {
                     subGoal={goal.subGoals[subGoal]}
                     index={i}
                     tries={(num) => handleTries(num, subGoal)}
-                    succseses={(num) => handleSuccesses(num, subGoal)} >
+                    succseses={(num) => handleSuccesses(num, subGoal)} 
+                    >
                 </SubGoal>
             </View>
         )

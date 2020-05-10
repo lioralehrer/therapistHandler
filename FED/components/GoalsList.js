@@ -6,12 +6,12 @@ import { globalStyles } from '../styles/global'
 
 
 
-const GoalsList = ({ goals, checkedGoal, newGoal, deleteGoal }) => {
+const GoalsList = ({ goals, checkedGoal, newGoal, deleteGoal, checkedActivity }) => {
 
 
     const goalsList = Object.keys(goals).map((goal, i) => {
         return <View style={styles.goal}>
-            <Goal goal={goals[goal]} index={i} checkedGoal={(id) => checkedGoal(id)} />
+            <Goal goal={goals[goal]} index={i} checkedGoal={(id) => checkedGoal(id)} checkedActivity= {( activities , i )=>checkedActivity(activities[i])} />
             <View style={globalStyles.btns}>
                 <Button
                     onPress={() => deleteGoal(goals[goal].id)}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Picker, Platform } from 'react-native';
+import { View, Text, StyleSheet, Picker, Platform, Button } from 'react-native';
 import { ListItem } from 'react-native-elements';
+import { globalStyles } from '../styles/global';
 
 const createArray = length => {
     const arr = [];
@@ -35,13 +36,22 @@ const SubGoal = ({ subGoal, index, tries, succseses }) => {
                 selectedValue={str == "נסיונות" ? selectedTries : selectedSuccesses}
                 onValueChange={num => { str == "נסיונות" ? handleTries(num) : handleSucces(num) }}
             >
-                {str == "נסיונות" ?   NUMBERS.map(num => (
+                {str == "נסיונות" ? NUMBERS.map(num => (
                     <Picker.Item key={num} label={num} value={num} />
-                )) : createArray(selectedTries).map(num => ( <Picker.Item key={num} label={num} value={num} /> ))
-              }
+                )) : createArray(selectedTries).map(num => (<Picker.Item key={num} label={num} value={num} />))
+                }
             </Picker>
         </View>
     )
+    const activityList = Object.keys(subGoal.activities).map((activity, i) => {
+        return (
+            <Button
+                onPress={() => null}
+                color="#841584"
+                title={subGoal.activities[activity]}
+            />
+        )
+    })
 
     return (
         <View>
@@ -56,6 +66,10 @@ const SubGoal = ({ subGoal, index, tries, succseses }) => {
                 chevron
             >
             </ListItem>
+            <View><Text> פעילות:</Text></View>
+            <View style={globalStyles.btns}>
+                {activityList}
+            </View>
         </View>
     )
 }
