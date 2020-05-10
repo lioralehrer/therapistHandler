@@ -14,7 +14,7 @@
     "@react-navigation/native": "^5.0.3",
     "@react-navigation/stack": "^5.0.3",
     "react": "16.9.0",
-    "react-native": "0.61.5",
+    "react-native": "^0.62.2",
     "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.5.6",
     "react-native-popup-dialog": "^0.18.3",
