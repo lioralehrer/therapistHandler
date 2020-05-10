@@ -4,8 +4,10 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'reac
 
 
 const LoginPlaceholder = ({ navigation }) => {
-    const managers = ["עדי"];
-    const therapists = [ "קורל", "מאי", "הדר"];
+    // const managers = ["עדי"];
+    // const therapists = [ "קורל", "מאי", "הדר"];
+    const managers = ["Adi"];
+    const therapists = [ "Coral"];
 
     const [text, setText] = useState('');
 
