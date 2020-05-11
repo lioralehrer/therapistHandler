@@ -5,7 +5,7 @@ import Goal from './Goal'
 
 
 
-const TherapistGoalsList = ({ goals, checkedGoal }) => {
+const TherapistGoalsList = ({ goals, checkedGoal, checkedActivity }) => {
 
 
     const goalsList = Object.keys(goals).map((goal, i) => {
@@ -14,7 +14,7 @@ const TherapistGoalsList = ({ goals, checkedGoal }) => {
             goal={goals[goal]} 
             index={i} 
             checkedGoal={(id) => checkedGoal(id)}
-            checkedActivity= {(subgoal , i )=>alert(subgoal[i])}
+            checkedActivity= {( activities , i )=>checkedActivity(activities[i])}
             />
         </View>
     })
