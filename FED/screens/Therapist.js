@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Modal, ScrollView, Button, StatusBar,TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, Modal, ScrollView, Button, StatusBar, TouchableHighlight } from 'react-native';
 import { globalStyles } from '../styles/global';
 import Timer from '../components/Timer';
 import MyGoal from '../components/MyGoal';
@@ -15,10 +15,10 @@ export default class Therapist extends Component {
                 description: 'תיאור מטרה ראשונה',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 3, text: ' תת 3', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: true }]
+                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: ['בועות סבון', 'משיכת חבל'] },
+                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: ['כדור'] },
+                    { id: 3, text: ' תת 3', checked: false, tries: 0, succseses: 0, activities: ['אופניים'] },
+                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: ['לגו'] }]
             },
             {
                 id: Math.random(),
@@ -26,10 +26,10 @@ export default class Therapist extends Component {
                 description: 'בלהבהבךבב',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: true }]
+                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, activities: ['צביעה'] },
+                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: ['לחצנים'] },
+                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: ['חמש אבנים'] },
+                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: ['כדור'] }]
             },
             {
                 id: Math.random(),
@@ -37,10 +37,10 @@ export default class Therapist extends Component {
                 description: 'בלהבהבךבב',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: true }]
+                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, activities: ['קיפולי נייר'] },
+                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: ['הך פטיש'] },
+                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: ['פאזל'] },
+                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: ['גזירת דמויות'] }]
             },
             {
                 id: Math.random(),
@@ -48,13 +48,14 @@ export default class Therapist extends Component {
                 description: 'בלהבהבךבב',
                 checked: false,
                 subGoals: [
-                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 3, text: 'תת 3', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: true }]
+                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: ['הדבקת חול'] },
+                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: ['עיסת נייר'] },
+                    { id: 3, text: 'תת 3', checked: false, tries: 0, succseses: 0, activities: ['צביעה'] },
+                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: ['לחצנים'] }]
             },
         ],
         myGoals: [],
+        activities: [],
         modalVisible: false,
     }
     checkedGoal = (id) => {
@@ -65,6 +66,17 @@ export default class Therapist extends Component {
             myGoals: [...goals.filter(goal => goal.checked)],
         })
 
+    }
+    checkedActivity = (activity) => {
+        let activities = this.state.activities;
+        let exist = activities.includes(activity);
+        if (!exist) {
+            activities.push(activity);
+            this.setState({
+                activities: activities
+            })
+        }
+        alert(activity + " נבחר ");
     }
     handleTries = (num, subgoal, key) => {
         let goals = this.state.goals;
@@ -92,6 +104,13 @@ export default class Therapist extends Component {
     render() {
         const { therapistName } = this.props.route.params;
         const { patient } = this.props.route.params;
+        const myActivities = this.state.activities.map(act => {
+            return (
+                <View style={styles.goal}>
+                    <Text style={styles.HeaderInsideText}>{act}</Text>
+                </View>
+            )
+        })
         const myGoalsList = Object.entries(this.state.myGoals).map(([key, value]) => {
             return <View style={styles.goal}>
                 <MyGoal goal={this.state.myGoals[key]}
@@ -122,7 +141,7 @@ export default class Therapist extends Component {
                             underlayColor='#ccc'
                             onPress={() => alert('Yaay!')}
                         >
-                            <Text> עדכן פעילויות </Text>
+                            <Text>  פעילויות </Text>
                         </TouchableHighlight>
 
                         <TouchableHighlight
@@ -130,7 +149,7 @@ export default class Therapist extends Component {
                             underlayColor='#ccc'
                             onPress={() => this.setModalVisible(!this.state.modalVisible)}
                         >
-                            <Text> עדכן מטרות   </Text>
+                            <Text>מטרות ופעילויות </Text>
                         </TouchableHighlight>
                         <Modal
                             animationType="fade"
@@ -142,8 +161,8 @@ export default class Therapist extends Component {
                                 <ScrollView>
                                     <TherapistGoalsList
                                         goals={this.state.goals}
+                                        checkedActivity={(activity) => this.checkedActivity(activity)}
                                         checkedGoal={(id) => this.checkedGoal(id)} />
-                                    {/* TO DO: able to update goals */}
                                     <TouchableHighlight
                                         style={globalStyles.circle}
                                         underlayColor='#ccc'
@@ -160,6 +179,10 @@ export default class Therapist extends Component {
                     </View>
                     <Timer />
                     {myGoalsList}
+                    <View>
+                        <Text style={styles.HeaderInsideText}>פעילויות שנבחרו: </Text>
+                    </View>
+                    {myActivities}
                 </ScrollView>
                 <Button title="Go back" onPress={() => this.props.navigation.goBack()} />
             </View >
