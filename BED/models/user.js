@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = parseInt(process.env.BCSALT);
 
 
-const TestUser = sequelize.define('testuser', {
+const User = sequelize.define('user', {
   full_name: {
     type: Sequelize.STRING,
     allowNull: false
@@ -31,10 +31,10 @@ const TestUser = sequelize.define('testuser', {
   }
 });
 
-TestUser.findOneByEmail = email => {
-  return TestUser.findOne({ where: { email } });
+User.findOneByEmail = email => {
+  return User.findOne({ where: { email } });
 }
 
 sequelize.sync().then().catch(err => console.error(err));
 
-module.exports = TestUser;
+module.exports = User;

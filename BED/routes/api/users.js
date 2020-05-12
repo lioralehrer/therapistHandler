@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const TestUser = require('../../models/user');
+const User = require('../../models/user');
 
 // Authenticate user
 router.post('/auth', async (req, res) => {
   try {
-    const user = await TestUser.findOneByEmail(req.body.email);
+    const user = await User.findOneByEmail(req.body.email);
     if (user) {
       const userAuthenticated = bcrypt.compareSync(req.body.password, user.password);
       if (userAuthenticated) {
@@ -27,7 +27,7 @@ router.post('/auth', async (req, res) => {
 // Create user
 router.post('/', async (req, res) => {
   try {
-    const newUser = await TestUser.create(req.body);
+    const newUser = await User.create(req.body);
     res.json(newUser);
   } catch (err) {
     console.error(err.message);
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
 // Get all users
 router.get('/', async (req, res) => {
   try {
-    const allUsers = await TestUser.findAll();
+    const allUsers = await User.findAll();
     res.json(allUsers);
   } catch (err) {
     console.error(err.message);
@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
 // Get single user
 router.get('/:id', async (req, res) => {
   try {
-    const user = await TestUser.findOne({where: {id: req.params.id}});
+    const user = await User.findOne({where: {id: req.params.id}});
     if (user) {
       res.json(user);
     } else {
@@ -63,7 +63,7 @@ router.get('/:id', async (req, res) => {
 
 // Update a user
 router.patch('/:id', async (req, res) => {
-    const user = await TestUser.findOne({where: {id: req.params.id}})
+    const user = await User.findOne({where: {id: req.params.id}})
     if (user) {
       try {
         await user.update(req.body);
@@ -79,7 +79,7 @@ router.patch('/:id', async (req, res) => {
 // Delete a user
 router.delete('/:id', async (req, res) => {
   try {
-    const delRows = await TestUser.destroy({where: {id: req.params.id}});
+    const delRows = await User.destroy({where: {id: req.params.id}});
     if (delRows == 1) {
       res.json({msg: `User with ID ${req.params.id} deleted successfully.`});
     } else {
