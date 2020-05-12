@@ -63,17 +63,17 @@ router.get('/:id', async (req, res) => {
 
 // Update a user
 router.patch('/:id', async (req, res) => {
-    const user = await User.findOne({where: {id: req.params.id}})
-    if (user) {
-      try {
-        await user.update(req.body);
-        res.json({msg: `User with ID ${req.params.id} updated successfully.`});
-      } catch (err) {
-        console.error(err)
-      }
-    } else {
-      res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
+  const user = await User.findOne({where: {id: req.params.id}})
+  if (user) {
+    try {
+      await user.update(req.body);
+      res.json({msg: `User with ID ${req.params.id} updated successfully.`});
+    } catch (err) {
+      console.error(err)
     }
+  } else {
+    res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
+  }
 });
 
 // Delete a user
