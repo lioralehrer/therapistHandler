@@ -1,69 +1,93 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../../dbConnector');
+const bcrypt = require('bcrypt');
+const TestUser = require('../../models/user');
+
+// Authenticate user
+router.post('/auth', async (req, res) => {
+  try {
+    const user = await TestUser.findOneByEmail(req.body.email);
+    if (user) {
+      const userAuthenticated = bcrypt.compareSync(req.body.password, user.password);
+      if (userAuthenticated) {
+        res.json({authenticated: true})
+      } else {
+        res.json({authenticated: false})
+      }
+    } else {
+      res.status(404).json({msg: `Unable to find user with email address ${req.params.email}`})
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({msg: err.message});
+  }
+})
 
 
 // Create user
 router.post('/', async (req, res) => {
   try {
-    const reqData = new Map();
-    reqData.set('full_name', req.body.full_name);
-    reqData.set('email', req.body.email);
-    reqData.set('password', req.body.password);
-    reqData.set('role', req.body.role);
-    const newUser = await pool.query("INSERT INTO testusers (full_name, email, password, role) VALUES($1, $2, $3, $4) RETURNING *", Array.from(reqData.values()));
-    res.json(newUser.rows[0]);
+    const newUser = await TestUser.create(req.body);
+    res.json(newUser);
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({msg: err.message});
   }
 })
 
 // Get all users
 router.get('/', async (req, res) => {
   try {
-    const allUsers = await pool.query("SELECT * FROM testusers");
-    res.json(allUsers.rows);
+    const allUsers = await TestUser.findAll();
+    res.json(allUsers);
   } catch (err) {
-    console.error(err.message);;
+    console.error(err.message);
+    res.status(500).json({msg: err.message});
   }
 })
 
 // Get single user
 router.get('/:id', async (req, res) => {
   try {
-    const user = await pool.query("SELECT * FROM testusers WHERE id = $1", [req.params.id]);
-    if (user.rows[0]) {
-      res.json(user.rows[0]);
+    const user = await TestUser.findOne({where: {id: req.params.id}});
+    if (user) {
+      res.json(user);
     } else {
       res.status(400).json({message: `Unable to find user with ID ${req.params.id}`});
     }
   } catch (err) {
     console.error(err.message);
   }
-})
+});
 
 
 // Update a user
-router.put('/:id', async (req, res) => {
-  try {
-    const reqData = new Map();
-    reqData.set('full_name', req.body.full_name);
-    reqData.set('email', req.body.email);
-    reqData.set('password', req.body.password);
-    reqData.set('role', req.body.role);
-    const upUser = await pool.query("UPDATE testusers SET full_name = $1, email = $2, password = $3, role = $4 WHERE id = $5 RETURNING *", [...Array.from(reqData.values()), req.params.id]);
-    res.json(upUser.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-  }
-})
+router.patch('/:id', async (req, res) => {
+    const user = await TestUser.findOne({where: {id: req.params.id}})
+    if (user) {
+      try {
+        await user.update(req.body);
+        res.json({msg: `User with ID ${req.params.id} updated successfully.`});
+      } catch (err) {
+        console.error(err)
+      }
+    } else {
+      res.status(404).json({msg: `Unable to find user with ID ${req.params.id}`})
+    }
+});
 
 // Delete a user
 router.delete('/:id', async (req, res) => {
-  await pool.query("DELETE FROM testusers WHERE id = $1", [req.params.id]);
-  res.json({message: `User with ID ${req.params.id} deleted successfully.`});
-})
-
-// TODO: Create models and implement validation etc.
+  try {
+    const delRows = await TestUser.destroy({where: {id: req.params.id}});
+    if (delRows == 1) {
+      res.json({msg: `User with ID ${req.params.id} deleted successfully.`});
+    } else {
+      res.status(404).json({msg: `Unable to find user with ID ${req.params.id}`})
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 module.exports = router;
