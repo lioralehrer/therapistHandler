@@ -15,7 +15,7 @@ router.post('/auth', async (req, res) => {
         res.json({authenticated: false})
       }
     } else {
-      res.status(404).json({msg: `Unable to find user with email address ${req.params.email}`})
+      res.status(400).json({msg: `Unable to find user with email address ${req.params.email}`})
     }
   } catch (err) {
     console.error(err);
@@ -72,7 +72,7 @@ router.patch('/:id', async (req, res) => {
         console.error(err)
       }
     } else {
-      res.status(404).json({msg: `Unable to find user with ID ${req.params.id}`})
+      res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
     }
 });
 
@@ -83,7 +83,7 @@ router.delete('/:id', async (req, res) => {
     if (delRows == 1) {
       res.json({msg: `User with ID ${req.params.id} deleted successfully.`});
     } else {
-      res.status(404).json({msg: `Unable to find user with ID ${req.params.id}`})
+      res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
     }
   } catch (err) {
     console.error(err);
