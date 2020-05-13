@@ -36,8 +36,8 @@ User.findOneByEmail = email => {
 }
 
 const populateDB = async () => {
-  const userCount = await User.findAll();
-  if (userCount == 0) {
+  const userCount = (await User.findAll()).length;
+  if (userCount === 0) {
     User.bulkCreate([
     {
       fullName: "full name",
