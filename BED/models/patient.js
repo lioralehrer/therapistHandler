@@ -31,8 +31,8 @@ const Patient = sequelize.define('patient', {
 Patient.hasMany(User, {as: 'careProfessional'});
 
 const populateDB = async () => {
-  const patientCount = await Patient.findAll();
-  if (patientCount == 0) {
+  const patientCount = (await Patient.findAll()).length;
+  if (patientCount === 0) {
     Patient.bulkCreate([
     {
       personalId: "720184743",
