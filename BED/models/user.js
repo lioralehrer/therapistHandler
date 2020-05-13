@@ -5,7 +5,7 @@ const saltRounds = parseInt(process.env.BCSALT);
 
 
 const User = sequelize.define('user', {
-  full_name: {
+  fullName: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -35,6 +35,28 @@ User.findOneByEmail = email => {
   return User.findOne({ where: { email } });
 }
 
-sequelize.sync().then().catch(err => console.error(err));
+const populateDB = async () => {
+  const userCount = await User.findAll();
+  if (userCount == 0) {
+    User.bulkCreate([
+    {
+      fullName: "full name",
+      email: "e@ma.il",
+      password: "hashedpass",
+      role: "care_manager"
+    },
+    {
+      fullName: "פול ניים",
+      email: "h@p.kl",
+      password: "hashedpass",
+      role: "therapist"
+    }
+    ])
+  }
+}
+
+sequelize.sync().then(() => {
+  populateDB();
+}).catch(err => console.error(err));
 
 module.exports = User;

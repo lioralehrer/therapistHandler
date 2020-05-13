@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
+const Patient = require('../../models/patient');
 
 // Authenticate user
 router.post('/auth', async (req, res) => {
@@ -57,6 +58,7 @@ router.get('/:id', async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({msg: err.message});
   }
 });
 
@@ -69,7 +71,8 @@ router.patch('/:id', async (req, res) => {
       await user.update(req.body);
       res.json({msg: `User with ID ${req.params.id} updated successfully.`});
     } catch (err) {
-      console.error(err)
+      console.error(err.message);
+      res.status(500).json({msg: err.message});
     }
   } else {
     res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
@@ -79,15 +82,33 @@ router.patch('/:id', async (req, res) => {
 // Delete a user
 router.delete('/:id', async (req, res) => {
   try {
-    const delRows = await User.destroy({where: {id: req.params.id}});
-    if (delRows == 1) {
+    const user = await User.findOne({where: {id: req.params.id}});
+    if (user) {
+      const delRows = await User.destroy({where: {id: req.params.id}});
       res.json({msg: `User with ID ${req.params.id} deleted successfully.`});
     } else {
       res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
     }
   } catch (err) {
-    console.error(err);
+    console.error(err.message);
+    res.status(500).json({msg: err.message});
   }
 });
+
+// Get all patients by user
+router.get('/:id/patients', async (req, res) => {
+  try {
+    const user = await User.findOne({where: {id: req.params.id}});
+    if (user) {
+      const userPatients = await Patient.findAll({where: {careProfessionalId: req.params.id}});
+      res.json(userPatients);
+    } else {
+      res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({msg: err.message});
+  }
+})
 
 module.exports = router;
