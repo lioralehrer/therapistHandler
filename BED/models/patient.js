@@ -7,21 +7,28 @@ const User = require('./user');
 
 const Patient = sequelize.define('patient', {
   personalId: {
-    type: Sequelize.TEXT('tiny'),
-    unique: true,
+    type: Sequelize.STRING,
     allowNull: false
   },
   fullName: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  carePersonId: {
+  careProfessionalId: {
     type: Sequelize.INTEGER,
     allowNull: false
   }
+},
+{
+  indexes: [
+    {
+      unique: true,
+      fields: ['personalId', 'careProfessionalId']
+    }
+  ]
 });
 
-Patient.hasMany(User, {as: 'carePerson'});
+Patient.hasMany(User, {as: 'careProfessional'});
 
 const populateDB = async () => {
   const patientCount = await Patient.findAll();
@@ -30,22 +37,22 @@ const populateDB = async () => {
     {
       personalId: "720184743",
       fullName: "patient name",
-      carePersonId: 1
+      careProfessionalId: 1
     },
     {
       personalId: "537293749",
       fullName: "פיישנט ניים",
-      carePersonId: 1
+      careProfessionalId: 1
     },
     {
       personalId: "293837463",
       fullName: "איז מיי ניים",
-      carePersonId: 2
+      careProfessionalId: 2
     },
     {
       personalId: "720184743",
       fullName: "patient name",
-      carePersonId: 2
+      careProfessionalId: 2
     }
     ])
   }
