@@ -7,7 +7,7 @@ ALTER USER "hillash" SET search_path = masterSchema;
 
 -- Creating the Table
 drop table testUsers;
-create type role ('admin', 'care_manager', 'therapist');
+create type role ('admin', 'case_manager', 'therapist');
 create table testUsers (
 id serial primary key,
 full_name varchar(40) not null,
@@ -19,7 +19,7 @@ registered_at timestamptz default now());
 -- Inserting testUsers dummy data
 insert into testusers (full_name, email, password, role)
 values ('גברת קראבאפל', 'mrs.cra@gmail.com', '123456', 'admin'),
-('מגי סימפסון', 'mag.sim@gmail.com', '123456', 'care_manager'),
-('ליסה סימפסון', 'lis.sim@gmail.com', '123456', 'care_manager'),
+('מגי סימפסון', 'mag.sim@gmail.com', '123456', 'case_manager'),
+('ליסה סימפסון', 'lis.sim@gmail.com', '123456', 'case_manager'),
 ('בארט סימפסון', 'bar.sim@gmail.com', '123456', 'therapist'),
 ('מארג'' סימפסון', 'mar.sim@gmail.com', '123456', 'therapist')

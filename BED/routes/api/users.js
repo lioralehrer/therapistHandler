@@ -1,28 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const User = require('../../models/user');
-
-// Authenticate user
-router.post('/auth', async (req, res) => {
-  try {
-    const user = await User.findOneByEmail(req.body.email);
-    if (user) {
-      const userAuthenticated = bcrypt.compareSync(req.body.password, user.password);
-      if (userAuthenticated) {
-        res.json({authenticated: true})
-      } else {
-        res.json({authenticated: false})
-      }
-    } else {
-      res.status(400).json({msg: `Unable to find user with email address ${req.params.email}`})
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({msg: err.message});
-  }
-})
-
 
 // Create user
 router.post('/', async (req, res) => {

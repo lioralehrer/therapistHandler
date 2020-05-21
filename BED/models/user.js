@@ -1,40 +1,56 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../dbConnector');
-const bcrypt = require('bcrypt');
-const saltRounds = parseInt(process.env.BCSALT);
 
 
 const User = sequelize.define('user', {
-  full_name: {
+  fullName: {
     type: Sequelize.STRING,
     allowNull: false
   },
   email: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true
-    }
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false
+    unique: true
   },
   role: {
-    type: Sequelize.ENUM('admin', 'care_manager', 'therapist')
-  }}, {
-  hooks: {
-    beforeSave: (user) => {
-      user.password = bcrypt.hashSync(user.password, saltRounds);
-    }
+    type: Sequelize.ENUM('admin', 'case_manager', 'therapist')
   }
 });
 
-User.findOneByEmail = email => {
-  return User.findOne({ where: { email } });
+User.findOneById = id => {
+  return User.findOne({ where: { id } });
 }
 
-sequelize.sync().then().catch(err => console.error(err));
+const populateTable = async () => {
+  const userCount = (await User.findAll()).length;
+  console.log(`userCount: ${userCount}`);
+  if (userCount === 0) {
+    try {
+      User.bulkCreate([
+      {
+        fullName: "full name",
+        email: "e@ma.il",
+        role: "case_manager"
+      },
+      {
+        fullName: "פול ניים",
+        email: "h@p.kl",
+        role: "therapist"
+      }
+      ]);
+      console.log("added 2 users to db");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+}
+
+// For futue reference - table relationships between user and patient
+// User.belongsToMany(Patient, {through: 'PatientCareProfessionals', as: 'careProfessional'});
+// Patient.belongsToMany(User, {through: 'PatientCareProfessionals'});
+
+sequelize.sync().then(() => {
+  populateTable();
+}).catch(err => console.error(err));
 
 module.exports = User;
