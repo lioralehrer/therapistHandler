@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../dbConnector');
-
+const Patient = require('./patient');
 
 const User = sequelize.define('user', {
   fullName: {
