@@ -6,8 +6,8 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'reac
 const LoginPlaceholder = ({ navigation }) => {
     const userInfo = [
         { userName: 'Admin', psw: '123', role: 'admin' },
-        { userName: 'Adi', psw: '123', role: 'manager' },
-        { userName: 'Coral', psw: '123', role: 'therapist' }]
+        { userName: 'עדי', psw: '123', role: 'manager' },
+        { userName: 'קורל', psw: '123', role: 'therapist' }]
 
     const [userName, setUserName] = useState('');
     const [psw, setPsw] = useState('');
@@ -18,12 +18,13 @@ const LoginPlaceholder = ({ navigation }) => {
         })
         if (u.psw == psw) {
             if (u.role == 'manager') {
-                navigation.navigate('Manager', { managerName: userName, patient: 'ורד' });
+                navigation.navigate('Manager', { managerName: userName, patient: 'ירדן' });
             } else if (u.role == 'therapist') {
-                navigation.navigate('Therapist', { therapistName: userName, patient: 'ורד' });
-            } else { alert("Handle Admin...") }
+                // navigation.navigate('Therapist', { therapistName: userName, patient: 'ורד' });
+                navigation.navigate('Therapist', {userName});
+            } else { Alert.alert("Handle Admin...") }
         } else {
-            alert("Some Problem With User or Password... ")
+         Alert.alert("Some Problem With User or Password... ")
         }
     }
 
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
     },
     loginInput: {
         flex: 1,
-        // backgroundColor: 'steelblue',
         maxHeight: 58,
         borderWidth: 1,
         borderColor: 'lightgrey',

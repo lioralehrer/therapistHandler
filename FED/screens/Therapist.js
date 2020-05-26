@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Modal, ScrollView, Button, StatusBar, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, Modal, ScrollView, Button, StatusBar, TouchableHighlight,Alert} from 'react-native';
 import { globalStyles } from '../styles/global';
 import Timer from '../components/Timer';
 import MyGoal from '../components/MyGoal';

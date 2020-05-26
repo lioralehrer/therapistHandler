@@ -30,17 +30,18 @@ const TherapistGoalsList = ({ goals, checkedGoal, checkedActivity }) => {
 export default TherapistGoalsList;
 
 const styles = StyleSheet.create({
-    container: {
-        width: 400
-    },
-    list: {
-        flex: 1,
-        margin: 20,
-    },
-    title: {
-        color: '#fff',
-        fontSize: 20,
-        textAlign: 'center'
+    // container: {
+    //      width: 400
+    // },
+    // list: {
+    //     flex: 1,
+    //     margin: 20,
+    // },
+    // title: {
+    //     color: '#fff',
+    //     fontSize: 20,
+    //     textAlign: 'center'
 
-    },
+    // },
+
 })
