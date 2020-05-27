@@ -141,7 +141,7 @@ const populateTables = async () => {
   }
 }
 
-sequelize.sync().then(async () => {
+sequelize.sync().then(() => {
   populateTables();
 }).catch(err => console.error(err));
 
