@@ -27,11 +27,37 @@ const Patient = sequelize.define('patient', {
   }
 });
 
+// getGoals: fetches the Goals by Patient ID
+
 const User_Patient = sequelize.define('user_patient', {
 });
 
 User.belongsToMany(Patient, {through: User_Patient});
 Patient.belongsToMany(User, {through: User_Patient});
+
+const Goal = sequelize.define('goal', {
+  serialNum: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description: Sequelize.STRING,
+  patientId: {
+    type: Sequelize.INTEGER,
+    model: 'patients',
+    key: 'id'
+  },
+  skillType: Sequelize.ENUM('receptive_comm', 'expressive_comm'),
+  archived: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
+});
+
+Patient.hasMany(Goal);
 
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
@@ -86,6 +112,33 @@ const populateTables = async () => {
       console.error(err.message);
     }
   }
+  const goalCount = (await Goal.findAll()).length;
+  console.log(`goalCount: ${goalCount}`);
+  if (goalCount === 0) {
+    try {
+      await Goal.bulkCreate([{
+        serialNum: 3,
+        title: 'title',
+        description: 'description',
+        patientId: 2,
+        skillType: 'expressive_comm'
+      }, {
+        serialNum: 2,
+        title: 'tightel',
+        description: 'discreepshen',
+        patientId: 2,
+        skillType: 'expressive_comm'
+      }, {
+        serialNum: 1,
+        title: 'טייטל',
+        description: 'דיסקריפשן',
+        patientId: 1,
+        skillType: 'receptive_comm'
+      }]);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 }
 
 sequelize.sync().then(() => {
@@ -95,5 +148,6 @@ sequelize.sync().then(() => {
 module.exports = {
   User,
   Patient,
-  User_Patient
+  User_Patient,
+  Goal
 };
