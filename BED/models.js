@@ -59,6 +59,45 @@ const Goal = sequelize.define('goal', {
 
 Patient.hasMany(Goal);
 
+const SubGoal = sequelize.define('subGoal', {
+  serialNum: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description: Sequelize.STRING,
+  attempts: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  },
+  successes: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+    validate: {
+      isLteAttempts: function() {
+        if (this.attempts < this.successes) {
+          throw new Error('Successes must be less than or equal to attempts');
+        }
+      }
+    }
+  },
+  goalId: {
+    type: Sequelize.INTEGER,
+    model: 'goals',
+    key: 'id'
+  },
+  doneAt: {
+    type: Sequelize.DATEONLY
+  }
+})
+
+Goal.hasMany(SubGoal);
+
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
   console.log(`userCount: ${userCount}`);
@@ -75,7 +114,9 @@ const populateTables = async () => {
         email: "h@p.kl",
         role: "therapist"
       }
-      ]);
+      ], {
+        validate: true
+      }).then().catch(exceptions => exceptions.forEach(errs => Object.values(errs.errors).forEach(err => console.error(err))));
       console.log("added 2 users to db");
     } catch (err) {
       console.error(err.message);
@@ -93,8 +134,9 @@ const populateTables = async () => {
       {
         fullName: "פיישנט ניים",
         birthdate: new Date(Date.UTC(1990, 2, 21))
-      }
-      ]);
+      }], {
+        validate: true
+      }).then().catch(exceptions => exceptions.forEach(errs => Object.values(errs.errors).forEach(err => console.error(err))));
       console.log("added 2 patients to db");
     } catch (err) {
       console.error(err.message);
@@ -134,7 +176,41 @@ const populateTables = async () => {
         description: 'דיסקריפשן',
         patientId: 1,
         skillType: 'receptive_comm'
-      }]);
+      }], {
+        validate: true
+      }).then().catch(exceptions => exceptions.forEach(errs => Object.values(errs.errors).forEach(err => console.error(err))));
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const subgoalCount = (await SubGoal.findAll()).length;
+  console.log(`subgoalCount: ${subgoalCount}`);
+  if (subgoalCount === 0) {
+    try {
+      await SubGoal.bulkCreate([{
+        serialNum: 3,
+        title: 'title',
+        description: 'description',
+        goalId: 2,
+        attempts: 2,
+        successes: 2
+      }, {
+        serialNum: 2,
+        title: 'tightel',
+        description: 'discreepshen',
+        goalId: 2,
+        attempts: 2,
+        successes: 1
+      }, {
+        serialNum: 1,
+        title: 'טייטל',
+        description: 'דיסקריפשן',
+        goalId: 1,
+        attempts: 1,
+        successes: 1
+      }], {
+        validate: true
+      }).then().catch(exceptions => exceptions.forEach(errs => Object.values(errs.errors).forEach(err => console.error(err))));
     } catch (err) {
       console.error(err.message);
     }
@@ -149,5 +225,6 @@ module.exports = {
   User,
   Patient,
   User_Patient,
-  Goal
+  Goal,
+  SubGoal
 };
