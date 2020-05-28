@@ -103,6 +103,14 @@ const SubGoal = sequelize.define('subGoal', {
 
 Goal.hasMany(SubGoal);
 
+const Environment = sequelize.define('environments', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  }
+});
+
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
   console.log(`userCount: ${userCount}`);
@@ -121,7 +129,7 @@ const populateTables = async () => {
       }
       ], {
         validate: true
-      }).then().catch(exceptions => exceptions.forEach(errs => Object.values(errs.errors).forEach(err => console.error(err))));
+      }).then().catch(err => console.error(err));
       console.log("added 2 users to db");
     } catch (err) {
       console.error(err.message);
@@ -141,7 +149,7 @@ const populateTables = async () => {
         birthdate: new Date(Date.UTC(1990, 2, 21))
       }], {
         validate: true
-      }).then().catch(exceptions => exceptions.forEach(errs => Object.values(errs.errors).forEach(err => console.error(err))));
+      }).then().catch(err => console.error(err));
       console.log("added 2 patients to db");
     } catch (err) {
       console.error(err.message);
@@ -183,7 +191,7 @@ const populateTables = async () => {
         skillType: 'receptive_comm'
       }], {
         validate: true
-      }).then().catch(exceptions => exceptions.forEach(errs => Object.values(errs.errors).forEach(err => console.error(err))));
+      }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
     }
@@ -215,7 +223,24 @@ const populateTables = async () => {
         successes: 1
       }], {
         validate: true
-      }).then().catch(exceptions => exceptions.forEach(errs => Object.values(errs.errors).forEach(err => console.error(err))));
+      }).then().catch(err => console.error(err));
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const environmentCount = (await Environment.findAll()).length;
+  console.log(`environmentCount: ${environmentCount}`);
+  if (environmentCount === 0) {
+    try {
+      await Environment.bulkCreate([{
+        title: 'toilet'
+      }, {
+        title: 'living room'
+      }, {
+        title: 'מטבח'
+      }], {
+        validate: true
+      }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
     }
