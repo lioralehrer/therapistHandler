@@ -94,6 +94,11 @@ const SubGoal = sequelize.define('subGoal', {
   doneAt: {
     type: Sequelize.DATEONLY
   }
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['serialNum', 'goalId']
+  }]
 })
 
 Goal.hasMany(SubGoal);
