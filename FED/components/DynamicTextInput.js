@@ -5,18 +5,36 @@ import { globalStyles } from '../styles/global'
 
 const DynamicTextInput = ({ title, btnTitle, placeholder, submitTextInput }) => {
     const [fields, setFields] = useState(1);
-    const [eventValue, setEventValue] = useState();
-    const textInputFields = () => (
-        < TextInput
-            style={globalStyles.input}
-            placeholder={placeholder}
-            onChangeText={e => handleChangeText(e)}
-            defaultValue={eventValue}
-        />
-    )
-    const handleChangeText = (e) => {
-        setEventValue(e);
-        submitTextInput(eventValue);
+    const [eventValue, setEventValue] = useState([{text:''}]);
+
+    const handleChangeText = (e, i) => {
+        const updateValue = [...eventValue];
+        updateValue[i] = {text: e}
+        setEventValue(updateValue);
+        submitTextInput(updateValue);
+    }
+
+    const flds = () => {
+        let arr = []
+        for (let i = 0; i < fields; i++) {
+            arr.push(
+                <ListItem
+                    key={i}
+                    title={
+                        <TextInput
+                            style={globalStyles.input}
+                            placeholder={placeholder}
+                            onChangeText={e => handleChangeText(e, i)}
+                            defaultValue={eventValue}
+                        />
+                    }
+                    bottomDivider
+                    chevron
+                />
+            )
+
+        }
+        return arr
     }
 
     return (
@@ -24,19 +42,13 @@ const DynamicTextInput = ({ title, btnTitle, placeholder, submitTextInput }) => 
             <Card
                 title={title}
             >
-                {/* {textInputFields} */}
-                <TextInput
-                    style={globalStyles.input}
-                    placeholder={placeholder}
-                    onChangeText={e => handleChangeText(e)}
-                    defaultValue={eventValue}
-                />
-                <Button
-                    icon={<Icon name='code' color='#ffffff' />}
-                    buttonStyle={{ borderRadius: 5, marginLeft: 10, marginRight: 10, marginBottom: 0, backgroundColor: "#841584" }}
-                    title={btnTitle}
-                    onPress={() => setFields(fields + 1)}
-                />
+                {flds()}
+                    <Button
+                        icon={<Icon name='code' color='#ffffff' />}
+                        buttonStyle={{ borderRadius: 5, marginLeft: 10, marginRight: 10, marginBottom: 0, backgroundColor: "#841584" }}
+                        title={btnTitle}
+                        onPress={() => setFields(fields + 1)}
+                    />
             </Card>
 
         </View>
