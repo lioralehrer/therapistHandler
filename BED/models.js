@@ -148,6 +148,11 @@ const Activity_Environment = sequelize.define('activity_environments', {
 Activity.belongsToMany(Environment, {through: Activity_Environment});
 Environment.belongsToMany(Activity, {through: Activity_Environment});
 
+const Goal_Activity = sequelize.define('goal_activities', {});
+
+Activity.belongsToMany(Goal, {through: Goal_Activity});
+Goal.belongsToMany(Activity, {through: Goal_Activity});
+
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
   console.log(`userCount: ${userCount}`);
@@ -312,6 +317,22 @@ const populateTables = async () => {
       await activity.addEnvironment(environment, {validate: true}).then().catch(err => console.error(err));
       console.log("linked activity 3 to environment 5");
       console.log("linked activity 3 to environment 6");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const goalActivityCount = (await Goal_Activity.findAll()).length;
+  console.log(`goalActivityCount: ${goalActivityCount}`);
+  if (goalActivityCount === 0) {
+    try {
+      let activity = await Activity.findOne({where: {id: 3}});
+      let goal = await Goal.findOne({where: {id: 1}});
+      await activity.addGoal(goal).then().catch(err => console.error(err));
+      activity = await Activity.findOne({where: {id: 3}});
+      goal = await Goal.findOne({where: {id: 2}});
+      await activity.addGoal(goal).then().catch(err => console.error(err));
+      console.log("linked activity 3 to goal 1");
+      console.log("linked activity 3 to goal 2");
     } catch (err) {
       console.error(err.message);
     }
