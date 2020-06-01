@@ -79,8 +79,8 @@ const SubGoal = sequelize.define('subGoal', {
     allowNull: false,
     defaultValue: 0,
     validate: {
-      isLteAttempts: function() {
-        if (this.attempts < this.successes) {
+      isLteAttempts(value) {
+        if (this.attempts < value) {
           throw new Error('Successes must be less than or equal to attempts');
         }
       }
@@ -110,6 +110,43 @@ const Environment = sequelize.define('environments', {
     unique: true
   }
 });
+
+const Activity = sequelize.define('activities', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  },
+  description: {
+    type: Sequelize.STRING,
+  }
+});
+
+const Activity_Environment = sequelize.define('activity_environments', {
+  default: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+    validate: {
+      async oneDefaultEnvToAct(value) {
+        if (value) {
+          let records;
+          try {
+            records = await Activity_Environment.findAll({where: {activityId: this.activityId}});
+          } catch (err) {
+            console.error(err);
+          }
+          if (records.some(record => record.default)) {
+            throw new Error('This activity already has a default environment');
+          }
+        }
+      }
+    }
+  }
+});
+
+Activity.belongsToMany(Environment, {through: Activity_Environment});
+Environment.belongsToMany(Activity, {through: Activity_Environment});
 
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
@@ -241,6 +278,40 @@ const populateTables = async () => {
       }], {
         validate: true
       }).then().catch(err => console.error(err));
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const activityCount = (await Activity.findAll()).length;
+  console.log(`activityCount: ${activityCount}`);
+  if (activityCount === 0) {
+    try {
+      await Activity.bulkCreate([{
+        title: 'paint'
+      }, {
+        title: 'dance'
+      }, {
+        title: 'לרדד בצק'
+      }], {
+        validate: true
+      }).then().catch(err => console.error(err));
+    } catch (err) {
+      console.error(err.message);
+      await t.rollback();
+    }
+  }
+  const activityEnvironmentCount = (await Activity_Environment.findAll()).length;
+  console.log(`activityEnvironmentCount: ${activityEnvironmentCount}`);
+  if (activityEnvironmentCount === 0) {
+    try {
+      let activity = await Activity.findOne({where: {id: 3}});
+      let environment = await Environment.findOne({where: {id: 7}});
+      await activity.addEnvironment(environment, {through: {default: true}, validate: true}).then().catch(err => console.error(err));
+      activity = await Activity.findOne({where: {id: 3}});
+      environment = await Environment.findOne({where: {id: 5}});
+      await activity.addEnvironment(environment, {validate: true}).then().catch(err => console.error(err));
+      console.log("linked activity 3 to environment 5");
+      console.log("linked activity 3 to environment 6");
     } catch (err) {
       console.error(err.message);
     }
