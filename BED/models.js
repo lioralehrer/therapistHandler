@@ -348,5 +348,9 @@ module.exports = {
   Patient,
   User_Patient,
   Goal,
-  SubGoal
+  SubGoal,
+  Environment,
+  Activity,
+  Activity_Environment,
+  Goal_Activity
 };
