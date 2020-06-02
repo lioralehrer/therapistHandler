@@ -350,7 +350,6 @@ const populateTables = async () => {
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
-      await t.rollback();
     }
   }
   const activityEnvironmentCount = (await Activity_Environment.findAll()).length;
@@ -376,7 +375,6 @@ const populateTables = async () => {
       let activity = await Activity.findOne({where: {id: 3}});
       let goal = await Goal.findOne({where: {id: 1}});
       await activity.addGoal(goal).then().catch(err => console.error(err));
-      activity = await Activity.findOne({where: {id: 3}});
       goal = await Goal.findOne({where: {id: 2}});
       await activity.addGoal(goal).then().catch(err => console.error(err));
       console.log("linked activity 3 to goal 1");
