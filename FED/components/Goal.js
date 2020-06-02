@@ -7,36 +7,27 @@ const Goal = ({ goal }) => {
     const [actExpanded, setActExpended] = useState(true);
     const [envExpanded, setEnvExpanded] = useState(true);
     //  should I get this info from goal ?
-    const therapistNum = 2;
-    const followingDays = 3;
+    const therapistNum = goal.numOfTherapists;
+    const followingDays = goal.numOfDays;
     const toggleGoal = () => {
         setGoalExpanded(!goalExpanded);
     }
     const toggleAct = () => {
         setActExpended(!actExpanded);
     }
-    // const toggleEnv = () => {
-    //     setEnvExpanded(!envExpanded);
-    // }
+
     return (
         <View style={styles.goal}>
             <View style={styles.header} >
                 <Text style={styles.title}>בוצע לאחרונה ב 20/5/2020</Text>
-                <Text style={styles.title}>{goal.title}</Text>
+                <Text style={styles.title}>{goal.skillType}</Text>
             </View>
             <Card >
                 <View>
+                    <Text style={styles.cardTitle}>{goal.title}</Text>
                     <Text>{goal.description}</Text></View>
             </Card>
             <View style={styles.head}>
-                {/* <Text style={styles.title01}>סביבה</Text>
-                <TouchableHighlight
-                    onPress={() => toggleEnv()}
-                >
-                    <Image
-                        style={{ width: 30, height: 30 }}
-                        source={goalExpanded ? require('../assets/arrow-up.jpg') : require('../assets/arrow-down.jpg')} />
-                </TouchableHighlight> */}
                 <Text style={styles.title01}> פעילויות</Text>
                 <TouchableHighlight
                     onPress={() => toggleAct()}
@@ -45,6 +36,7 @@ const Goal = ({ goal }) => {
                         style={{ width: 30, height: 30 }}
                         source={actExpanded ? require('../assets/arrow-up.jpg') : require('../assets/arrow-down.jpg')} />
                 </TouchableHighlight>
+
 
                 <Text style={styles.title01}>תת מטרות</Text>
                 <TouchableHighlight
@@ -60,7 +52,7 @@ const Goal = ({ goal }) => {
                     <View>
                         <ListItem
                             key={index}
-                            title={goal.subGoals[subgoal].text}
+                            title={goal.subGoals[subgoal].title}
                             bottomDivider
                             chevron
                         />
@@ -71,26 +63,16 @@ const Goal = ({ goal }) => {
                     <View>
                         <ListItem
                             key={index}
-                            title={goal.activities[act]}
-                            bottomDivider
-                            chevron
-                        />
-                    </View>
-            })}
-            {Object.keys(goal.environment).map((env, index) => {
-                return envExpanded ? <View></View> :
-                    <View>
-                        <ListItem
-                            key={index}
-                            title={goal.environment[env]}
+                            title={<View><Text>{goal.activities[act].title}  {/**  ב: {goal.activities[act].environments.default}*/}  </Text></View>}
+                          
                             bottomDivider
                             chevron
                         />
                     </View>
             })}
             <View style={styles.head}>
-        <Text>מס' מטפלים מינימלי: {therapistNum}</Text>
-        <Text>ימים עוקבים: {followingDays}</Text>
+                <Text>מס' מטפלים מינימלי: {therapistNum}</Text>
+                <Text>ימים עוקבים: {followingDays}</Text>
             </View>
 
         </View>
@@ -136,5 +118,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         paddingHorizontal: 20
     },
+    cardTitle: {
+        color: '#6d3d6d'
+    }
 
 })

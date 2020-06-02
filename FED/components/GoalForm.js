@@ -17,29 +17,32 @@ const NUMBERS = createArray(4);
 
 const GoalForm = ({ txt, goal, newGoal }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const subjects = ['שפה אקספרסיבית', 'שפה רצפטיבית', 'כישורים חברתיים', 'התנהגות', 'מוטוריקה עדינה', 'קשב משותף', 'קוגניציה', 'משחק'];
-    const [subject, setSubject] = useState(subjects[0]);
+    const skillTypes = ['שפה אקספרסיבית', 'שפה רצפטיבית', 'כישורים חברתיים', 'התנהגות', 'מוטוריקה עדינה', 'קשב משותף', 'קוגניציה', 'משחק'];
+    const [skillType, setSkillType] = useState(skillTypes[0]);
     const [title, setTitle] = useState(goal ? goal.title : '');
     const [description, setDescription] = useState(goal ? goal.description : '');
-    const [subgoals, setSubgoals] = useState(goal ? goal.subgoals : [{ text: 'lalal' }, { text: 'babab' }, { text: 'hey' }]);
-    const [subFields, setSubFields] = useState(1);
-    const [numOfTherapist, setNumOfTherapist] = useState(1);
-    const [numOfDays, setNunOfDays] = useState(1);
-    const [activities, setActivities] = useState(goal ? goal.activities : '');
+    const [subgoals, setSubgoals] = useState(goal ? goal.subgoals : [{ title: '' }]);
+    const [numOfTherapists, setNumOfTherapists] = useState(goal ? goal.numOfTherapists : '1');
+    const [numOfDays, setNunOfDays] = useState(goal ? goal.numOfDays : 1) ;
+    const [activities, setActivities] = useState(goal ? goal.activities : '') ;
+    
 
     const handleNewGoal = () => {
         let goalId = Math.random();
         if (goal) {
             goalId = goal.id;
         }
+        
         let g = {
-            environment: ['בית'],
             id: goalId,
+            skillType: skillType ? skillType : skillTypes[0],
             title: title,
             description: description,
             checked: false,
             activities: activities,
             subGoals: subgoals,
+            numOfTherapists: numOfTherapists,
+            numOfDays : numOfDays,
         }
         newGoal(g);
         cancel();
@@ -50,11 +53,11 @@ const GoalForm = ({ txt, goal, newGoal }) => {
         setModalVisible(false);
     }
     const handleClear = ()=> {
-        setSubject('');
+        setSkillType('');
         setTitle('');
         setDescription('');
         setSubgoals('');
-        setNumOfTherapist(1);
+        setNumOfTherapists(1);
         setNunOfDays(1);
         setActivities('');
     }
@@ -65,8 +68,8 @@ const GoalForm = ({ txt, goal, newGoal }) => {
                 style={styles.picker}
                 itemStyle={styles.pickerItem}
                 mode="dropdown"
-                selectedValue={str == "מספר מטפלים" ? numOfTherapist : numOfDays}
-                onValueChange={num => { str == "מספר מטפלים" ? setNumOfTherapist(num) : setNunOfDays(num) }}
+                selectedValue={str == "מספר מטפלים" ? numOfTherapists : numOfDays}
+                onValueChange={num => { str == "מספר מטפלים" ? setNumOfTherapists(num) : setNunOfDays(num) }}
             >
                 {NUMBERS.map(num => (
                     <Picker.Item key={num} label={num} value={num} />
@@ -101,12 +104,12 @@ const GoalForm = ({ txt, goal, newGoal }) => {
                             <View><Text> תחום: </Text></View>
                             <Picker
                                 mode="dropdown"
-                                selectedValue={subject}
+                                selectedValue={skillType}
                                 style={{ height: 50, width: 200 }}
-                                onValueChange={(itemValue, itemIndex) => setSubject(itemValue)}
+                                onValueChange={(itemValue, itemIndex) => setSkillType(itemValue)}
                             >
                                 {
-                                    subjects.map((e) => {
+                                    skillTypes.map((e) => {
                                         return (<Picker.Item label={e} value={e} />)
                                     })
                                 }
@@ -124,23 +127,19 @@ const GoalForm = ({ txt, goal, newGoal }) => {
                                 defaultValue={description}
                                 multiline={true}
                             />
-                            <TextInput
-                                style={globalStyles.input}
-                                placeholder=' תת מטרה'
-                                onChangeText={(subGoal) => setSubgoals([...subgoals, subGoal])}
-                                defaultValue={subgoals}
-                            />
                         </View>
                         <DynamicTextInput
                             title='תת מטרות'
                             btnTitle='הוסיפי תת מטרה '
-                            placeholder='תת מטרות....'
-                            submitTextInput={(e) => setSubgoals([...subgoals, e])} />
+                            placeholder='תת מטרה ....'
+                            entity = {subgoals}
+                            submitTextInput={(e) => setSubgoals(e)} />
 
                         <DynamicTextInput
                             title='פעילויות'
                             btnTitle='הוסיפי פעילות'
                             placeholder='פעילות....'
+                            entity = {activities}
                             submitTextInput={(e) => setActivities(e)} />
 
                         <View style={globalStyles.btns}>

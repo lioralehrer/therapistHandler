@@ -3,13 +3,13 @@ import { View, Text, TextInput, Alert } from 'react-native';
 import { Card, ListItem, Icon, Button } from 'react-native-elements'
 import { globalStyles } from '../styles/global'
 
-const DynamicTextInput = ({ title, btnTitle, placeholder, submitTextInput }) => {
-    const [fields, setFields] = useState(1);
-    const [eventValue, setEventValue] = useState([{text:''}]);
+const DynamicTextInput = ({ title, btnTitle, placeholder, entity, submitTextInput }) => {
+    const [fields, setFields] = useState(entity ? entity.length : 1);
+    const [eventValue, setEventValue] = useState( [{title:''}]);
 
     const handleChangeText = (e, i) => {
         const updateValue = [...eventValue];
-        updateValue[i] = {text: e}
+        updateValue[i] = {title: e}
         setEventValue(updateValue);
         submitTextInput(updateValue);
     }

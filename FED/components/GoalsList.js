@@ -6,7 +6,7 @@ import { globalStyles } from '../styles/global'
 import Header from './Headers/Header';
 
 
-const GoalsList = ({ goals, activities, deleteGoal, newGoal}) => {
+const GoalsList = ({ goals, deleteGoal, newGoal}) => {
     const goalsList = Object.keys(goals).map((goal, i) => {
         return <View style={styles.goal}>
             <Goal goal={goals[goal]} index={i} />
