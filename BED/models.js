@@ -51,6 +51,14 @@ const Goal = sequelize.define('goal', {
     key: 'id'
   },
   skillType: Sequelize.ENUM('receptive_comm', 'expressive_comm'),
+  minTherapists: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  minConsecutiveDays: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   archived: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
@@ -266,19 +274,26 @@ const populateTables = async () => {
         title: 'title',
         description: 'description',
         patientId: 2,
-        skillType: 'expressive_comm'
+        skillType: 'expressive_comm',
+        minTherapists: 1,
+        minConsecutiveDays: 3
       }, {
         serialNum: 2,
         title: 'tightel',
         description: 'discreepshen',
         patientId: 2,
-        skillType: 'expressive_comm'
+        skillType: 'expressive_comm',
+        minTherapists: 10,
+        minConsecutiveDays: 9,
+        archived: true
       }, {
         serialNum: 1,
         title: 'טייטל',
         description: 'דיסקריפשן',
         patientId: 1,
-        skillType: 'receptive_comm'
+        skillType: 'receptive_comm',
+        minTherapists: 0,
+        minConsecutiveDays: 12
       }], {
         validate: true
       }).then().catch(err => console.error(err));
