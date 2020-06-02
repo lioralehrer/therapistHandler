@@ -209,6 +209,24 @@ const Session_Goal = sequelize.define('session_goals', {
 Goal.belongsToMany(Session, {through: Session_Goal});
 Session.belongsToMany(Goal, {through: Session_Goal});
 
+const Item = sequelize.define('items', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  },
+  patientId: {
+    type: Sequelize.INTEGER,
+    model: 'patients',
+    key: 'id'
+  }
+})
+
+const Activity_Item = sequelize.define('activity_items', {});
+
+Item.belongsToMany(Activity, {through: Activity_Item});
+Activity.belongsToMany(Item, {through: Activity_Item});
+
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
   console.log(`userCount: ${userCount}`);
@@ -435,6 +453,45 @@ const populateTables = async () => {
       await session.addGoal(goal, {through: {priority: 1}}).then().catch(err => console.error(err));
       console.log("linked session 3 to goal 1");
       console.log("linked session 3 to goal 2");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const itemCount = (await Item.findAll()).length;
+  console.log(`itemCount: ${itemCount}`);
+  if (itemCount === 0) {
+    try {
+      await Item.bulkCreate([
+        {
+          title: "toy pony",
+          patientId: 2
+        },
+        {
+          title: "פוני צעצוע",
+          patientId: 2
+        },
+        {
+          title: "rainbow puzzle",
+          patientId: 1
+        }
+      ], {
+        validate: true
+      })
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const activityItemCount = (await Activity_Item.findAll()).length;
+  console.log(`activityItemCount: ${activityItemCount}`);
+  if (activityItemCount === 0) {
+    try {
+      let activity = await Activity.findOne({where: {id: 3}});
+      let item = await Item.findOne({where: {id: 1}});
+      await activity.addItem(item).then().catch(err => console.error(err));
+      item = await Item.findOne({where: {id: 2}});
+      await activity.addItem(item).then().catch(err => console.error(err));
+      console.log("linked activity 3 to item 1");
+      console.log("linked activity 3 to item 2");
     } catch (err) {
       console.error(err.message);
     }
