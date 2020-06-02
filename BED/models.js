@@ -153,6 +153,54 @@ const Goal_Activity = sequelize.define('goal_activities', {});
 Activity.belongsToMany(Goal, {through: Goal_Activity});
 Goal.belongsToMany(Activity, {through: Goal_Activity});
 
+const Session = sequelize.define('sessions', {
+  patientId: {
+    type: Sequelize.INTEGER,
+    model: 'patients',
+    key: 'id'
+  },
+  therapistId: {
+    type: Sequelize.INTEGER,
+    model: 'users',
+    key: 'id'
+  },
+  scheduledAt: Sequelize.DATE,
+  sessionPlanMessage: Sequelize.TEXT,
+  sessionSummaryMessage: Sequelize.TEXT
+})
+
+Patient.hasMany(Session);
+User.hasMany(Session);
+
+const Session_Goal = sequelize.define('session_goals', {
+  goalId: {
+    type: Sequelize.INTEGER,
+    model: 'goals',
+    key: 'id'
+  },
+  priority: {
+    type: Sequelize.INTEGER,
+    validate: {
+      async uniquePriorityPerSession(value) {
+        if (value) {
+          let records;
+          try {
+            records = await Session_Goal.findAll({where: {sessionId: this.sessionId}});
+          } catch (err) {
+            console.error(err);
+          }
+          if (records.some(record => record.priority === value)) {
+            throw new Error(`This session already has a goal with this priority number. (${value})`);
+          }
+        }
+      }
+    }
+  }
+})
+
+Goal.belongsToMany(Session, {through: Session_Goal});
+Session.belongsToMany(Goal, {through: Session_Goal});
+
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
   console.log(`userCount: ${userCount}`);
@@ -337,6 +385,47 @@ const populateTables = async () => {
       console.error(err.message);
     }
   }
+  const sessionCount = (await Session.findAll()).length;
+  console.log(`sessionCount: ${sessionCount}`);
+  if (sessionCount === 0) {
+    try {
+      await Session.bulkCreate([
+        {
+          patientId: 2,
+          therapistId: 1,
+          scheduledAt: new Date(Date.now()),
+          sessionPlanMessage: "lorem ipsum",
+          sessionSummaryMessage: "ipsum lorem"
+        },
+        {
+          patientId: 2,
+          therapistId: 1,
+          scheduledAt: new Date(Date.now()),
+          sessionPlanMessage: "לורם איפסום",
+          sessionSummaryMessage: "איפסום לורם"
+        }
+      ], {
+        validate: true
+      })
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const sessionGoalCount = (await Session_Goal.findAll()).length;
+  console.log(`sessionGoalCount: ${sessionGoalCount}`);
+  if (sessionGoalCount === 0) {
+    try {
+      let session = await Session.findOne({where: {id: 3}});
+      let goal = await Goal.findOne({where: {id: 1}});
+      await session.addGoal(goal, {through: {priority: 2}}).then().catch(err => console.error(err));
+      goal = await Goal.findOne({where: {id: 2}});
+      await session.addGoal(goal, {through: {priority: 1}}).then().catch(err => console.error(err));
+      console.log("linked session 3 to goal 1");
+      console.log("linked session 3 to goal 2");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 }
 
 sequelize.sync().then(() => {
@@ -352,5 +441,7 @@ module.exports = {
   Environment,
   Activity,
   Activity_Environment,
-  Goal_Activity
+  Goal_Activity,
+  Session,
+  Session_Goal
 };
