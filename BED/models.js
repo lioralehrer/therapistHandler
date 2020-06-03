@@ -12,7 +12,7 @@ const User = sequelize.define('user', {
       unique: true
     },
     role: {
-      type: Sequelize.ENUM('admin', 'case_manager', 'therapist')
+      type: Sequelize.ENUM('admin', 'case_manager', 'therapist', 'parent')
     }
   });
 
@@ -40,29 +40,41 @@ const Goal = sequelize.define('goal', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  title: {
-    type: Sequelize.STRING,
+  description: {
+    type: Sequelize.TEXT,
     allowNull: false
   },
-  description: Sequelize.STRING,
   patientId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'patients',
     key: 'id'
   },
   skillType: Sequelize.ENUM('receptive_comm', 'expressive_comm'),
   minTherapists: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   minConsecutiveDays: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   archived: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
+    allowNull: false
   }
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['serialNum', 'patientId']
+  }]
 });
 
 Patient.hasMany(Goal);
@@ -72,15 +84,17 @@ const SubGoal = sequelize.define('subGoal', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  title: {
+  description: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  description: Sequelize.STRING,
   attempts: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    defaultValue: 0
+    defaultValue: 0,
+    validate: {
+      min: 0
+    }
   },
   successes: {
     type: Sequelize.INTEGER,
@@ -96,12 +110,11 @@ const SubGoal = sequelize.define('subGoal', {
   },
   goalId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'goals',
     key: 'id'
   },
-  doneAt: {
-    type: Sequelize.DATEONLY
-  }
+  doneAt: Sequelize.DATEONLY
 }, {
   indexes: [{
     unique: true,
@@ -122,11 +135,11 @@ const Environment = sequelize.define('environments', {
 const Activity = sequelize.define('activities', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   description: {
     type: Sequelize.STRING,
+    allowNull: false
   }
 });
 
@@ -164,11 +177,13 @@ Goal.belongsToMany(Activity, {through: Goal_Activity});
 const Session = sequelize.define('sessions', {
   patientId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'patients',
     key: 'id'
   },
   therapistId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'users',
     key: 'id'
   },
@@ -181,14 +196,10 @@ Patient.hasMany(Session);
 User.hasMany(Session);
 
 const Session_Goal = sequelize.define('session_goals', {
-  goalId: {
-    type: Sequelize.INTEGER,
-    model: 'goals',
-    key: 'id'
-  },
   priority: {
     type: Sequelize.INTEGER,
     validate: {
+      min: 0,
       async uniquePriorityPerSession(value) {
         if (value) {
           let records;
@@ -213,13 +224,18 @@ const Item = sequelize.define('items', {
   title: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true
   },
   patientId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'patients',
     key: 'id'
   }
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['title', 'patientId']
+  }]
 })
 
 const Activity_Item = sequelize.define('activity_items', {});
