@@ -227,6 +227,24 @@ const Activity_Item = sequelize.define('activity_items', {});
 Item.belongsToMany(Activity, {through: Activity_Item});
 Activity.belongsToMany(Item, {through: Activity_Item});
 
+const Word = sequelize.define('words', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  }
+})
+
+const Patient_Word = sequelize.define('patient_words', {});
+
+Patient.belongsToMany(Word, {through: Patient_Word});
+Word.belongsToMany(Patient, {through: Patient_Word});
+
+const Goal_Word = sequelize.define('goal_words', {});
+
+Word.belongsToMany(Goal, {through: Goal_Word});
+Goal.belongsToMany(Word, {through: Goal_Word});
+
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
   console.log(`userCount: ${userCount}`);
@@ -496,6 +514,58 @@ const populateTables = async () => {
       console.error(err.message);
     }
   }
+  const wordCount = (await Word.findAll()).length;
+  console.log(`wordCount: ${wordCount}`);
+  if (wordCount === 0) {
+    try {
+      await Word.bulkCreate([
+        {
+          title: "cooking"
+        },
+        {
+          title: "לבשל"
+        },
+        {
+          title: "לקפל",
+          patientId: 1
+        }
+      ], {
+        validate: true
+      })
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const patientWordCount = (await Patient_Word.findAll()).length;
+  console.log(`patientWordCount: ${patientWordCount}`);
+  if (patientWordCount === 0) {
+    try {
+      let patient = await Patient.findOne({where: {id: 1}});
+      let word = await Word.findOne({where: {id: 1}});
+      await patient.addWord(word).then().catch(err => console.error(err));
+      word = await Word.findOne({where: {id: 2}});
+      await patient.addWord(word).then().catch(err => console.error(err));
+      console.log("linked patient 1 to word 1");
+      console.log("linked patient 1 to word 2");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const goalWordCount = (await Goal_Word.findAll()).length;
+  console.log(`goalWordCount: ${goalWordCount}`);
+  if (goalWordCount === 0) {
+    try {
+      let goal = await Goal.findOne({where: {id: 3}});
+      let word = await Word.findOne({where: {id: 1}});
+      await goal.addWord(word).then().catch(err => console.error(err));
+      word = await Word.findOne({where: {id: 2}});
+      await goal.addWord(word).then().catch(err => console.error(err));
+      console.log("linked goal 3 to word 1");
+      console.log("linked goal 3 to word 2");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 }
 
 sequelize.sync().then(() => {
@@ -513,5 +583,10 @@ module.exports = {
   Activity_Environment,
   Goal_Activity,
   Session,
-  Session_Goal
+  Session_Goal,
+  Item,
+  Activity_Item,
+  Word,
+  Patient_Word,
+  Goal_Word
 };
