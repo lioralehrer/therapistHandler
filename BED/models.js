@@ -12,7 +12,7 @@ const User = sequelize.define('user', {
       unique: true
     },
     role: {
-      type: Sequelize.ENUM('admin', 'case_manager', 'therapist')
+      type: Sequelize.ENUM('admin', 'case_manager', 'therapist', 'parent')
     }
   });
 
@@ -40,29 +40,41 @@ const Goal = sequelize.define('goal', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  title: {
-    type: Sequelize.STRING,
+  description: {
+    type: Sequelize.TEXT,
     allowNull: false
   },
-  description: Sequelize.STRING,
   patientId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'patients',
     key: 'id'
   },
   skillType: Sequelize.ENUM('receptive_comm', 'expressive_comm'),
   minTherapists: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   minConsecutiveDays: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   archived: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
+    allowNull: false
   }
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['serialNum', 'patientId']
+  }]
 });
 
 Patient.hasMany(Goal);
@@ -72,15 +84,17 @@ const SubGoal = sequelize.define('subGoal', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  title: {
+  description: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  description: Sequelize.STRING,
   attempts: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    defaultValue: 0
+    defaultValue: 0,
+    validate: {
+      min: 0
+    }
   },
   successes: {
     type: Sequelize.INTEGER,
@@ -96,12 +110,11 @@ const SubGoal = sequelize.define('subGoal', {
   },
   goalId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'goals',
     key: 'id'
   },
-  doneAt: {
-    type: Sequelize.DATEONLY
-  }
+  doneAt: Sequelize.DATEONLY
 }, {
   indexes: [{
     unique: true,
@@ -119,18 +132,18 @@ const Environment = sequelize.define('environments', {
   }
 });
 
-const Activity = sequelize.define('activities', {
+const Activity = sequelize.define('activity', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   description: {
     type: Sequelize.STRING,
+    allowNull: false
   }
 });
 
-const Activity_Environment = sequelize.define('activity_environments', {
+const Activity_Environment = sequelize.define('activity_environment', {
   default: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
@@ -156,19 +169,21 @@ const Activity_Environment = sequelize.define('activity_environments', {
 Activity.belongsToMany(Environment, {through: Activity_Environment});
 Environment.belongsToMany(Activity, {through: Activity_Environment});
 
-const Goal_Activity = sequelize.define('goal_activities', {});
+const Goal_Activity = sequelize.define('goal_activity', {});
 
 Activity.belongsToMany(Goal, {through: Goal_Activity});
 Goal.belongsToMany(Activity, {through: Goal_Activity});
 
-const Session = sequelize.define('sessions', {
+const Session = sequelize.define('session', {
   patientId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'patients',
     key: 'id'
   },
   therapistId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'users',
     key: 'id'
   },
@@ -180,15 +195,11 @@ const Session = sequelize.define('sessions', {
 Patient.hasMany(Session);
 User.hasMany(Session);
 
-const Session_Goal = sequelize.define('session_goals', {
-  goalId: {
-    type: Sequelize.INTEGER,
-    model: 'goals',
-    key: 'id'
-  },
+const Session_Goal = sequelize.define('session_goal', {
   priority: {
     type: Sequelize.INTEGER,
     validate: {
+      min: 0,
       async uniquePriorityPerSession(value) {
         if (value) {
           let records;
@@ -209,20 +220,25 @@ const Session_Goal = sequelize.define('session_goals', {
 Goal.belongsToMany(Session, {through: Session_Goal});
 Session.belongsToMany(Goal, {through: Session_Goal});
 
-const Item = sequelize.define('items', {
+const Item = sequelize.define('item', {
   title: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true
   },
   patientId: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     model: 'patients',
     key: 'id'
   }
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['title', 'patientId']
+  }]
 })
 
-const Activity_Item = sequelize.define('activity_items', {});
+const Activity_Item = sequelize.define('activity_item', {});
 
 Item.belongsToMany(Activity, {through: Activity_Item});
 Activity.belongsToMany(Item, {through: Activity_Item});
@@ -235,12 +251,12 @@ const Word = sequelize.define('words', {
   }
 })
 
-const Patient_Word = sequelize.define('patient_words', {});
+const Patient_Word = sequelize.define('patient_word', {});
 
 Patient.belongsToMany(Word, {through: Patient_Word});
 Word.belongsToMany(Patient, {through: Patient_Word});
 
-const Goal_Word = sequelize.define('goal_words', {});
+const Goal_Word = sequelize.define('goal_word', {});
 
 Word.belongsToMany(Goal, {through: Goal_Word});
 Goal.belongsToMany(Word, {through: Goal_Word});
@@ -307,7 +323,6 @@ const populateTables = async () => {
     try {
       await Goal.bulkCreate([{
         serialNum: 3,
-        title: 'title',
         description: 'description',
         patientId: 2,
         skillType: 'expressive_comm',
@@ -315,7 +330,6 @@ const populateTables = async () => {
         minConsecutiveDays: 3
       }, {
         serialNum: 2,
-        title: 'tightel',
         description: 'discreepshen',
         patientId: 2,
         skillType: 'expressive_comm',
@@ -324,7 +338,6 @@ const populateTables = async () => {
         archived: true
       }, {
         serialNum: 1,
-        title: 'טייטל',
         description: 'דיסקריפשן',
         patientId: 1,
         skillType: 'receptive_comm',
@@ -343,21 +356,18 @@ const populateTables = async () => {
     try {
       await SubGoal.bulkCreate([{
         serialNum: 3,
-        title: 'title',
         description: 'description',
         goalId: 2,
         attempts: 2,
         successes: 2
       }, {
         serialNum: 2,
-        title: 'tightel',
         description: 'discreepshen',
         goalId: 2,
         attempts: 2,
         successes: 1
       }, {
         serialNum: 1,
-        title: 'טייטל',
         description: 'דיסקריפשן',
         goalId: 1,
         attempts: 1,
@@ -391,11 +401,14 @@ const populateTables = async () => {
   if (activityCount === 0) {
     try {
       await Activity.bulkCreate([{
-        title: 'paint'
+        title: 'paint',
+        description: 'peint'
       }, {
-        title: 'dance'
+        title: 'dance',
+        description: 'dens'
       }, {
-        title: 'לרדד בצק'
+        title: 'לרדד בצק',
+        description: 'leraded'
       }], {
         validate: true
       }).then().catch(err => console.error(err));
@@ -408,13 +421,12 @@ const populateTables = async () => {
   if (activityEnvironmentCount === 0) {
     try {
       let activity = await Activity.findOne({where: {id: 3}});
-      let environment = await Environment.findOne({where: {id: 7}});
+      let environment = await Environment.findOne({where: {id: 1}});
       await activity.addEnvironment(environment, {through: {default: true}, validate: true}).then().catch(err => console.error(err));
-      activity = await Activity.findOne({where: {id: 3}});
-      environment = await Environment.findOne({where: {id: 5}});
+      environment = await Environment.findOne({where: {id: 2}});
       await activity.addEnvironment(environment, {validate: true}).then().catch(err => console.error(err));
-      console.log("linked activity 3 to environment 5");
-      console.log("linked activity 3 to environment 6");
+      console.log("linked activity 3 to environment 1");
+      console.log("linked activity 3 to environment 2");
     } catch (err) {
       console.error(err.message);
     }
@@ -464,13 +476,13 @@ const populateTables = async () => {
   console.log(`sessionGoalCount: ${sessionGoalCount}`);
   if (sessionGoalCount === 0) {
     try {
-      let session = await Session.findOne({where: {id: 3}});
+      let session = await Session.findOne({where: {id: 1}});
       let goal = await Goal.findOne({where: {id: 1}});
       await session.addGoal(goal, {through: {priority: 2}}).then().catch(err => console.error(err));
       goal = await Goal.findOne({where: {id: 2}});
       await session.addGoal(goal, {through: {priority: 1}}).then().catch(err => console.error(err));
-      console.log("linked session 3 to goal 1");
-      console.log("linked session 3 to goal 2");
+      console.log("linked session 1 to goal 1");
+      console.log("linked session 1 to goal 2");
     } catch (err) {
       console.error(err.message);
     }
