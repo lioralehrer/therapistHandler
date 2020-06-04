@@ -323,7 +323,6 @@ const populateTables = async () => {
     try {
       await Goal.bulkCreate([{
         serialNum: 3,
-        title: 'title',
         description: 'description',
         patientId: 2,
         skillType: 'expressive_comm',
@@ -331,7 +330,6 @@ const populateTables = async () => {
         minConsecutiveDays: 3
       }, {
         serialNum: 2,
-        title: 'tightel',
         description: 'discreepshen',
         patientId: 2,
         skillType: 'expressive_comm',
@@ -340,7 +338,6 @@ const populateTables = async () => {
         archived: true
       }, {
         serialNum: 1,
-        title: 'טייטל',
         description: 'דיסקריפשן',
         patientId: 1,
         skillType: 'receptive_comm',
