@@ -359,21 +359,18 @@ const populateTables = async () => {
     try {
       await SubGoal.bulkCreate([{
         serialNum: 3,
-        title: 'title',
         description: 'description',
         goalId: 2,
         attempts: 2,
         successes: 2
       }, {
         serialNum: 2,
-        title: 'tightel',
         description: 'discreepshen',
         goalId: 2,
         attempts: 2,
         successes: 1
       }, {
         serialNum: 1,
-        title: 'טייטל',
         description: 'דיסקריפשן',
         goalId: 1,
         attempts: 1,
