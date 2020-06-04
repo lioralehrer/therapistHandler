@@ -29,8 +29,7 @@ const Patient = sequelize.define('patient', {
 
 // getGoals: fetches the Goals by Patient ID
 
-const User_Patient = sequelize.define('user_patient', {
-});
+const User_Patient = sequelize.define('user_patient', {});
 
 User.belongsToMany(Patient, {through: User_Patient});
 Patient.belongsToMany(User, {through: User_Patient});
