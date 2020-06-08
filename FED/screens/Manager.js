@@ -8,10 +8,10 @@ import Reports from '../components/Reports';
 import TherapistHeader from '../components/TherapistHeader';
 import SessionConfig from '../components/SessionConfig';
 import StartSession from '../components/StartSession';
-
+import PlanSessions from '../sessions/PlanSessions';
 
 export default class Manager extends Component {
-    state = { 
+    state = {
         goals: [
             {
                 serialNum: 1,
@@ -266,23 +266,20 @@ export default class Manager extends Component {
                     >
                         <View style={styles.modal} onStartShouldSetResponder={() => true}>
                             <ScrollView>
-                                <SessionConfig
-                                    title=""
-                                    icon01="pencil-square-o"
-                                    icon02="home"
-                                    btn01Title=" "
-                                    btn02Title=" חזרה לראשי"
-                                    onPressBtn01={() => Alert.alert("TO DO")}
-                                    onPressBtn02={() => this.setModalVisible03(!this.state.modalVisible03)}
-                                />
-                                <TouchableHighlight
-                                    style={globalStyles.circle}
-                                    underlayColor='#ccc'
-                                    onPress={() => this.setModalVisible03(!this.state.modalVisible03)}
-                                >
-                                    <Text > סיים   </Text>
-                                </TouchableHighlight>
-                                <View style={{ flex: 1 }}>
+                                <View style={globalStyles.modalContainer}>
+                                    <PlanSessions/>
+                                    <TouchableHighlight
+                                        style={globalStyles.circle}
+                                        underlayColor='#ccc'
+                                        onPress={() => this.setModalVisible03(!this.state.modalVisible03)}
+                                    >
+
+                                        <Text > סיים   </Text>
+                                    </TouchableHighlight>
+                                    <View style={{ flex: 1 }}>
+
+                                    </View>
+
                                 </View>
                             </ScrollView>
                         </View>
@@ -297,6 +294,7 @@ export default class Manager extends Component {
                     >
 
                         <View style={styles.modal} onStartShouldSetResponder={() => true}>
+
                             <ScrollView>
                                 <StartSession
                                     userName={managerName}
