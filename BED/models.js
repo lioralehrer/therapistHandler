@@ -168,6 +168,18 @@ const Activity_Environment = sequelize.define('activity_environment', {
 Activity.belongsToMany(Environment, {through: Activity_Environment});
 Environment.belongsToMany(Activity, {through: Activity_Environment});
 
+const Assistance = sequelize.define('assitance', {
+  title: {
+    type: Sequelize.STRING,
+    unique: true
+  }
+})
+
+const SubGoal_Assistance = sequelize.define('subGoal_assistance', {});
+
+Assistance.belongsToMany(SubGoal, {through: SubGoal_Assistance});
+SubGoal.belongsToMany(Assistance, {through: SubGoal_Assistance});
+
 const Goal_Activity = sequelize.define('goal_activity', {});
 
 Activity.belongsToMany(Goal, {through: Goal_Activity});
@@ -193,6 +205,33 @@ const Session = sequelize.define('session', {
 
 Patient.hasMany(Session);
 User.hasMany(Session);
+
+const Attempt = sequelize.define('attempt', {
+  sessionId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'sessions',
+    key: 'id'
+  },
+  activityId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'activities',
+    key: 'id'
+  },
+  environmentId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'environments',
+    key: 'id'
+  },
+  assistanceId: {
+    type: Sequelize.INTEGER,
+    model: 'assistances',
+    key: 'id'
+  },
+  successful: Sequelize.BOOLEAN
+})
 
 const Session_Goal = sequelize.define('session_goal', {
   priority: {
@@ -599,5 +638,8 @@ module.exports = {
   Activity_Item,
   Word,
   Patient_Word,
-  Goal_Word
+  Goal_Word,
+  Assistance,
+  SubGoal_Assistance,
+  Attempt
 };
