@@ -27,9 +27,18 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  modalContainer: {
+    minWidth: '100%',
+    minHeight: '100%'
+  },
   modal: {
     alignItems: 'center',
     marginTop: 20,
+  },
+  modal01: {
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: '#4c2a4c'
   },
   paragraph: {
     marginVertical: 8,
@@ -56,8 +65,9 @@ export const globalStyles = StyleSheet.create({
   btns: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    padding:5,
   },
-  body:{
+  body: {
     backgroundColor: '#6d3d6d',
     margin: 10,
     flex: 1

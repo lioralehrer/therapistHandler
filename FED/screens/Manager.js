@@ -1,61 +1,93 @@
 import React, { Component } from 'react';
-import { TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView, Button } from 'react-native';
+import { TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView, Button, TouchableOpacity, Alert } from 'react-native';
 import { globalStyles } from '../styles/global'
 import Timer from '../components/Timer';
 import MyGoal from '../components/MyGoal';
 import GoalsList from '../components/GoalsList';
 import Reports from '../components/Reports';
+import TherapistHeader from '../components/TherapistHeader';
+import SessionConfig from '../components/SessionConfig';
+import StartSession from '../components/StartSession';
+import PlanSessions from '../sessions/PlanSessions';
 
 export default class Manager extends Component {
     state = {
         goals: [
             {
+                serialNum: 1,
                 id: Math.random(),
-                title: ' לעדכן מטרות',
-                description: 'תיאור מטרה ראשונה',
-                checked: false,
+                skillType: '  שפה רצפטיבית',
+                title: 'מטרה 1',
+                description: "כאשר המבוגר יבקש מירדן להביא אובייקט מסוים שנמצא בחדר ומצריך חיפוש כלשהו על מנת לאתרו, ירדן תחפש את האובייקט ותביא אותו ",
+                activities: [{ title: 'מגלשה', description: '', environments: { default: 'חדר טיפולים', more: [] } }],
+                arcived: false,
                 subGoals: [
-                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 3, text: ' תת 3', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: true }]
+                    { id: 1, title: 'תת 1', done: "", tries: 0, succseses: 0 },
+                    { id: 2, title: 'תת 2', done: "", tries: 0, succseses: 0 },
+                    { id: 3, title: ' תת 3', done: "", tries: 0, succseses: 0 },
+                    { id: 4, title: 'תת 4', done: "", tries: 0, succseses: 0 }],
+                numOfTherapists: 1,
+                numOfDays: 4,
             },
             {
+                serialNum: 2,
                 id: Math.random(),
+                skillType: 'כישורים חברתיים',
                 title: 'מטרה שניה',
-                description: 'מטרה שנמחקת לא תוצג בעדכון רשימה',
+                description: '0במהלך פעילות תנועה או פעילות משחקית, ירדן תשתף את המבוגר בפעילות באופן מילולי המלווה במבט. היא תעשה זאת בלפחות שתי פעילויות שונות, עם שני מבוגרים שונים, לאורך 3 ימים עוקבים.")',
                 checked: false,
+                TherapistsConnected: ["קורל", "הדר", "מאי"],
+                activities: [{ title: 'גואש', description: '', environments: { default: 'חדר טיפולים', more: [] } }],
+                arcived: false,
                 subGoals: [
-                    { id: 1, text: 'תת מטרה 1', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: true }]
+                    { id: 1, title: 'תת מטרה 1', done: "", tries: 0, succseses: 0 },
+                    { id: 2, title: 'תת מטרה 2', done: "", tries: 0, succseses: 0 },
+                    { id: 3, title: 'תת מטרה 3', done: "", tries: 0, succseses: 0 },
+                    { id: 4, title: 'תת מטרה 4', done: "", tries: 0, succseses: 0 }],
+                numOfTherapists: 2,
+                numOfDays: 3,
             },
             {
+                serialNum: 3,
                 id: Math.random(),
+                skillType: 'שפה אקספרסיבית',
                 title: 'מטרה שלישית',
-                description: 'הכניסי ID קיים למטרה קיימת',
-                checked: false,
+                description: 'במהלך משחק משותף, כאשר המבוגר מציג לירדן תמונות\ציורים של דמויות עצובות\שמחות, ירדן תשיים אותן ותגיש למבוגר את התמונה\ציור הנכונים ע""פ בקשה מסוימת כגון ""תני לי אופיר עצובה"", עבור 5 דמויות שונות. היא תעשה זאת עם שני מבוגרים שונים, לאורך 3 ימים עוקבים.")',
+                activities: [{ title: 'פאזל', description: '', environments: { default: 'חדר טיפולים', more: ['env1', 'env2'] } }, { title: 'כדור', description: '', environments: { default: '', more: [] } }],
+                arcived: false,
                 subGoals: [
-                    { id: 1, text: 'בדקי שעובד  ', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 2, text: 'תת מטרה 2', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 3, text: 'תת מטרה 3', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 4, text: 'תת מטרה 4', checked: false, tries: 0, succseses: 0, activities: true }]
+                    { id: 1, title: 'בדקי שעובד  ', done: "", tries: 0, succseses: 0 },
+                    { id: 2, title: 'תת מטרה 2', done: "", tries: 0, succseses: 0 },
+                    { id: 3, title: 'תת מטרה 3', done: "", tries: 0, succseses: 0 },
+                    { id: 4, title: 'תת מטרה 4', done: "", tries: 0, succseses: 0 }],
+                numOfTherapists: 3,
+                numOfDays: 3,
             },
             {
+                serialNum: 4,
                 id: Math.random(),
+                skillType: 'קשב משותף',
                 title: 'מטרה רביעית',
                 description: 'בלהבהבךבב',
-                checked: false,
+                activities: [{ title: 'חרוזים', description: '', environments: { default: 'חדר טיפולים', more: [] } }],
+                arcived: false,
                 subGoals: [
-                    { id: 1, text: 'תת 1', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 2, text: 'תת 2', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 3, text: 'תת 3', checked: false, tries: 0, succseses: 0, activities: true },
-                    { id: 4, text: 'תת 4', checked: false, tries: 0, succseses: 0, activities: true }]
+                    { id: 1, title: 'תת 1', done: "", tries: 0, succseses: 0 },
+                    { id: 2, title: 'תת 2', done: "", tries: 0, succseses: 0 },
+                    { id: 3, title: 'תת 3', done: "", tries: 0, succseses: 0 },
+                    { id: 4, title: 'תת 4', done: "", tries: 0, succseses: 0 }],
+                numOfTherapists: 3,
+                numOfDays: 3,
+
             },
         ],
         myGoals: [],
-        modalVisible: false,
+        environment: [{ title: 'חצר' }, { title: 'בית' }, { title: 'גינה' }, { title: 'רחוב' }],
+        activities: [{ title: 'חריזה' }, { title: 'לגו' }, { title: 'גזירה' }, { title: 'כדור' }],
+        modalVisible01: false,
+        modalVisible02: false,
+        modalVisible03: false,
+        modalVisible04: false,
     }
     checkedGoal = (id) => {
         let goals = this.state.goals;
@@ -65,6 +97,17 @@ export default class Manager extends Component {
             myGoals: [...goals.filter(goal => goal.checked)],
         })
 
+    }
+    checkedActivity = (activity) => {
+        let activities = this.state.activities;
+        let exist = activities.includes(activity);
+        if (!exist) {
+            activities.push(activity);
+            this.setState({
+                activities: activities
+            })
+        }
+        alert(activity + " נבחר ");
     }
     handleTries = (num, subgoal, key) => {
         let goals = this.state.goals;
@@ -94,22 +137,31 @@ export default class Manager extends Component {
         this.setState({
             goals: goals
         })
-        alert(objectIndex)
         this.forceUpdate();
     }
     deleteGoal = (id) => {
-        let goals = [...this.state.goals.filter(goal => goal.id != id)];
+        // let goals = [...this.state.goals.filter(goal => goal.id != id)];
+        let goals = [...this.state.goals];
+        let foudIndex = goals.findIndex((goal) => goal.id == id);
+        goals[foudIndex].arcived = true;
         this.setState({
             goals: goals
         })
         this.forceUpdate();
     }
-    setModalVisible(visible) {
-        this.setState({ modalVisible: visible });
+    setModalVisible01(visible) {
+        this.setState({ modalVisible01: visible });
     }
-    paciantPicker = () => {
-        alert('blabla')
+    setModalVisible02(visible) {
+        this.setState({ modalVisible02: visible });
     }
+    setModalVisible03(visible) {
+        this.setState({ modalVisible03: visible });
+    }
+    setModalVisible04(visible) {
+        this.setState({ modalVisible04: visible });
+    }
+
     render() {
         const { managerName } = this.props.route.params;
         const { patient } = this.props.route.params;
@@ -124,64 +176,148 @@ export default class Manager extends Component {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <Text style={styles.HeaderInsideText}>
-                        שלום {managerName} {'\n'}
-                        המטופל שלך: {patient} {'\n'}
-                    </Text>
-                    <View style={styles.btnContainer}>
-                        <TouchableHighlight
-                            style={globalStyles.circle}
-                            underlayColor='#ccc'
-                            onPress={() => this.paciantPicker()}
-                        >
-                            <Text>  מטופל אחר </Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            style={globalStyles.circle}
-                            underlayColor='#ccc'
-                            onPress={() => alert('Yaay!')}
-                        >
-                            <Text> עדכן פעילויות </Text>
-                        </TouchableHighlight>
+                    <TherapistHeader userName={managerName} lastPatient={patient}></TherapistHeader>
+                    <SessionConfig
+                        title="מה תרצי לעשות ?"
+                        icon01="bullseye"
+                        icon02="calendar-check-o"
+                        btn01Title="מטרות ופעילויות"
+                        btn02Title="דוחות"
+                        onPressBtn01={() => this.setModalVisible01(!this.state.modalVisible01)}
+                        onPressBtn02={() => this.setModalVisible02(!this.state.modalVisible02)}
+                    />
+                    <SessionConfig
+                        title="או"
+                        icon01="user-circle"
+                        icon02="life-buoy"
+                        btn01Title="תכנון שבועי"
+                        btn02Title="התחילי טיפול"
+                        onPressBtn01={() => this.setModalVisible03(!this.state.modalVisible03)}
+                        onPressBtn02={() => this.setModalVisible04(!this.state.modalVisible04)}
+                    />
 
-                        <TouchableHighlight
-                            style={globalStyles.circle}
-                            underlayColor='#ccc'
-                            onPress={() => this.setModalVisible(!this.state.modalVisible)}
-                        >
-                            <Text> עדכן מטרות   </Text>
-                        </TouchableHighlight>
-                        <Modal
-                            animationType="fade"
-                            transparent={false}
-                            visible={this.state.modalVisible}
-                            swipeArea={50}
-                        >
-                            <View style={styles.modal} onStartShouldSetResponder={() => true}>
-                                <ScrollView>
+                    {/* Modal for Goals and Activities */}
+                    <Modal
+                        animationType="fade"
+                        transparent={false}
+                        visible={this.state.modalVisible01}
+                        swipeArea={50}
+                    >
+                        <View style={styles.modal} onStartShouldSetResponder={() => true}>
+                            <ScrollView>
+                                <View style={globalStyles.modalContainer}>
                                     <GoalsList
-                                        goals={this.state.goals}
+                                        goals={this.state.goals.filter(goal => goal.arcived != true)}
                                         newGoal={(goal) => this.handleGoal(goal)}
                                         deleteGoal={(id) => this.deleteGoal(id)}
-                                        checkedGoal={(id) => this.checkedGoal(id)} />
-                                    {/* TO DO: able to update goals */}
+                                    />
+                                    <SessionConfig
+                                        title=""
+                                        icon01="pencil-square-o"
+                                        icon02="home"
+                                        btn01Title="פעילויות "
+                                        btn02Title=" חזרה לראשי"
+                                        onPressBtn01={() => Alert.alert("TO DO Activities")}
+                                        onPressBtn02={() => this.setModalVisible01(!this.state.modalVisible01)}
+                                    />
+
+                                </View>
+                            </ScrollView>
+                        </View>
+
+                    </Modal>
+                    {/* Modal for Reports */}
+                    <Modal
+                        animationType="fade"
+                        transparent={false}
+                        visible={this.state.modalVisible02}
+                        swipeArea={50}
+                    >
+                        <View style={styles.modal} onStartShouldSetResponder={() => true}>
+                            <ScrollView>
+                                <SessionConfig
+                                    title=""
+                                    icon01="pencil-square-o"
+                                    icon02="home"
+                                    btn01Title="צפייה בטיפולים קודמים"
+                                    btn02Title=" חזרה לראשי"
+                                    onPressBtn01={() => Alert.alert("TO DO")}
+                                    onPressBtn02={() => this.setModalVisible02(!this.state.modalVisible02)}
+                                />
+                                <TouchableHighlight
+                                    style={globalStyles.circle}
+                                    underlayColor='#ccc'
+                                    onPress={() => this.setModalVisible02(!this.state.modalVisible02)}
+                                >
+                                    <Text > סיים   </Text>
+                                </TouchableHighlight>
+                                <View style={{ flex: 1 }}>
+                                </View>
+                            </ScrollView>
+                        </View>
+
+                    </Modal>
+                    {/* Modal for Planing  Session */}
+                    <Modal
+                        animationType="fade"
+                        transparent={false}
+                        visible={this.state.modalVisible03}
+                        swipeArea={50}
+                    >
+                        <View style={styles.modal} onStartShouldSetResponder={() => true}>
+                            <ScrollView>
+                                <View style={globalStyles.modalContainer}>
+                                    <PlanSessions/>
                                     <TouchableHighlight
                                         style={globalStyles.circle}
                                         underlayColor='#ccc'
-                                        onPress={() => this.setModalVisible(!this.state.modalVisible)}
+                                        onPress={() => this.setModalVisible03(!this.state.modalVisible03)}
                                     >
+
                                         <Text > סיים   </Text>
                                     </TouchableHighlight>
                                     <View style={{ flex: 1 }}>
-                                    </View>
-                                </ScrollView>
-                            </View>
 
-                        </Modal>
-                    </View>
-                    <Timer />
-                    {myGoalsList}
-                    {/* <Reports /> */}
+                                    </View>
+
+                                </View>
+                            </ScrollView>
+                        </View>
+
+                    </Modal>
+                    {/* Modal for Starting Session */}
+                    <Modal
+                        animationType="fade"
+                        transparent={false}
+                        visible={this.state.modalVisible04}
+                        swipeArea={50}
+                    >
+
+                        <View style={styles.modal} onStartShouldSetResponder={() => true}>
+
+                            <ScrollView>
+                                <StartSession
+                                    userName={managerName}
+                                    goals={this.state.goals}
+                                    checkedActivity={(activity) => this.checkedActivity(activity)}
+                                    checkedGoal={(id) => this.checkedGoal(id)}
+                                />
+
+                                <SessionConfig
+                                    title=""
+                                    icon01="pencil-square-o"
+                                    icon02="home"
+                                    btn01Title=" "
+                                    btn02Title=" חזרה לראשי"
+                                    onPressBtn01={() => Alert.alert("TO DO")}
+                                    onPressBtn02={() => this.setModalVisible04(!this.state.modalVisible04)}
+                                />
+                                <View style={{ flex: 1 }}>
+                                </View>
+                            </ScrollView>
+                        </View>
+
+                    </Modal>
                 </ScrollView>
                 <Button title="Go back" onPress={() => this.props.navigation.goBack()} />
 
@@ -217,5 +353,86 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 20,
         backgroundColor: '#4c2a4c'
-    }
+    },
+    activityButton: {
+        flex: 0.8,
+        maxHeight: 170,
+        justifyContent: 'center',
+        backgroundColor: '#c2bad8',
+        marginLeft: 6,
+        marginRight: 6,
+        marginTop: 6,
+    },
+    buttonText: {
+        color: 'darkslateblue',
+        fontFamily: 'sans-serif',
+        fontSize: 18,
+        textAlign: 'center',
+        lineHeight: 18,
+    },
+    buttonIcon: {
+
+    },
+    configContainer: {
+        flex: 1,
+        // margin: 20,
+        marginTop: 30,
+        // paddingTop: 30,
+    },
+    text: {
+        fontSize: 20,
+        fontFamily: 'sans-serif-light',
+        color: '#555',
+        textAlign: 'center',
+    },
+    buttonsContainer: {
+        flex: 1,
+        marginTop: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    goalsButton: {
+        flex: 0.8,
+        maxHeight: 170,
+        justifyContent: 'center',
+        backgroundColor: '#c2bad8',
+        marginLeft: 6,
+    },
+    activityButton: {
+        flex: 0.8,
+        maxHeight: 170,
+        justifyContent: 'center',
+        backgroundColor: '#c2bad8',
+        marginLeft: 6,
+        marginRight: 6,
+    },
+    button: {
+        // padding: 12,
+    },
+    buttonText: {
+        color: 'darkslateblue',
+        fontFamily: 'sans-serif',
+        fontSize: 18,
+        textAlign: 'center',
+        lineHeight: 18,
+    },
+    goalsIcon: {
+        fontSize: 95,
+        color: 'darkslateblue',
+        textAlign: 'center',
+    },
+    activityIcon: {
+        fontSize: 95,
+        paddingLeft: 29,
+        color: 'darkslateblue',
+        textAlign: 'center',
+    },
+    textWrapper: {
+        flex: 0.1,
+        justifyContent: 'center',
+        maxWidth: 30,
+        maxHeight: 120,
+        margin: 10,
+
+    },
 })

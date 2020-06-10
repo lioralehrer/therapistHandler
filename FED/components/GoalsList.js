@@ -1,32 +1,39 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, Animated, Button } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Button } from 'react-native';
 import Goal from './Goal'
 import GoalForm from './GoalForm';
 import { globalStyles } from '../styles/global'
+import Header from './Headers/Header';
 
 
-
-const GoalsList = ({ goals, checkedGoal, newGoal, deleteGoal }) => {
-
-
+const GoalsList = ({ goals, deleteGoal, newGoal}) => {
     const goalsList = Object.keys(goals).map((goal, i) => {
         return <View style={styles.goal}>
-            <Goal goal={goals[goal]} index={i} checkedGoal={(id) => checkedGoal(id)} />
+            <Goal goal={goals[goal]} index={i} />
             <View style={globalStyles.btns}>
                 <Button
                     onPress={() => deleteGoal(goals[goal].id)}
                     color="#841584"
                     title=" מחקי מטרה"
                 />
-                <GoalForm txt='מטרה חדשה' newGoal={(goal) => newGoal(goal)}></GoalForm>
-                <GoalForm txt='עדכני מטרה' goal={goals[goal]} newGoal={(goal) => newGoal(goal)}></GoalForm>
+                <GoalForm
+                    txt='עדכון מטרה ופעילויות'
+                    goal={goals[goal]} newGoal={(goal) => newGoal(goal)}
+                ></GoalForm>
             </View>
         </View>
     })
     return (
-        <View style={styles.container}>
+        <View >
+            <Header title='מטרות' />
             <View style={styles.list}>
                 {goalsList}
+                <View style={styles.btn}>
+                <GoalForm
+                    txt='מטרה חדשה'
+                    newGoal={(goal) => newGoal(goal)}
+                ></GoalForm>
+                </View>
             </View>
         </View>
     );
@@ -35,9 +42,6 @@ const GoalsList = ({ goals, checkedGoal, newGoal, deleteGoal }) => {
 export default GoalsList;
 
 const styles = StyleSheet.create({
-    container: {
-        width: 400
-    },
     list: {
         flex: 1,
         margin: 20,
@@ -48,4 +52,9 @@ const styles = StyleSheet.create({
         textAlign: 'center'
 
     },
+    btn:{
+        padding: 10,
+        margin: 10,
+        width : '50%',
+    }
 })

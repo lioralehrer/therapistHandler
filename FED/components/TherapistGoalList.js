@@ -5,12 +5,17 @@ import Goal from './Goal'
 
 
 
-const TherapistGoalsList = ({ goals, checkedGoal }) => {
+const TherapistGoalsList = ({ goals, checkedGoal, checkedActivity }) => {
 
 
     const goalsList = Object.keys(goals).map((goal, i) => {
         return <View style={styles.goal}>
-            <Goal goal={goals[goal]} index={i} checkedGoal={(id) => checkedGoal(id)} />
+            <Goal 
+            goal={goals[goal]} 
+            index={i} 
+            checkedGoal={(id) => checkedGoal(id)}
+            checkedActivity= {( activities , i )=>checkedActivity(activities[i])}
+            />
         </View>
     })
     return (
@@ -25,17 +30,18 @@ const TherapistGoalsList = ({ goals, checkedGoal }) => {
 export default TherapistGoalsList;
 
 const styles = StyleSheet.create({
-    container: {
-        width: 400
-    },
-    list: {
-        flex: 1,
-        margin: 20,
-    },
-    title: {
-        color: '#fff',
-        fontSize: 20,
-        textAlign: 'center'
+    // container: {
+    //      width: 400
+    // },
+    // list: {
+    //     flex: 1,
+    //     margin: 20,
+    // },
+    // title: {
+    //     color: '#fff',
+    //     fontSize: 20,
+    //     textAlign: 'center'
 
-    },
+    // },
+
 })
