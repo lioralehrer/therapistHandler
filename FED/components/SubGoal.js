@@ -1,88 +1,43 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Picker, Platform } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+// import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
-const createArray = length => {
-    const arr = [];
-    let i = 0;
-    while (i <= length) {
-        arr.push(i.toString());
-        i += 1;
-    }
-    return arr;
-}
-const NUMBERS = createArray(12);
-
-const SubGoal = ({ subGoal, index, tries, succseses }) => {
-    const [selectedTries, setTries] = useState(subGoal.tries);
-    const [selectedSuccesses, setSucceses] = useState(subGoal.succseses);
-
-    const handleTries = (num) => {
-        setTries(num);
-        tries(num);
-    }
-    const handleSucces = (num) => {
-        setSucceses(num);
-        succseses(num)
-    }
-    const renderPicker = (str) => (
-        <View styl={styles.pickerContainer}>
-            <Text style={styles.pickerTitle}>{str} </Text>
-            <Picker
-                style={styles.picker}
-                itemStyle={styles.pickerItem}
-                mode="dropdown"
-                selectedValue={str == "נסיונות" ? selectedTries : selectedSuccesses}
-                onValueChange={num => { str == "נסיונות" ? handleTries(num) : handleSucces(num) }}
-            >
-                {str == "נסיונות" ?   NUMBERS.map(num => (
-                    <Picker.Item key={num} label={num} value={num} />
-                )) : createArray(selectedTries).map(num => ( <Picker.Item key={num} label={num} value={num} /> ))
-              }
-            </Picker>
-        </View>
-    )
-
-    return (
-        <View>
-            <ListItem
-                key={index}
-                title={subGoal.text}
-                subtitle={<View style={styles.report}>
-                    {renderPicker("הצלחות")}
-                    {renderPicker("נסיונות")}
-                </View>}
-                topDivider
-                chevron
-            >
-            </ListItem>
-        </View>
-    )
-}
-
-export default SubGoal;
+const Subgoal = ({subgoal}) => {
+  return (
+    <TouchableOpacity style={styles.subgoal}>
+      <View style={styles.subgoalView}>
+          <Text style={styles.subgoalTitle}>
+              {subgoal.serialNum}
+              <Text style={styles.subgoalDescription}>   {subgoal.description}</Text>
+          </Text>
+          
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
-    report: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+    subgoal: {
+        padding: 5,
+        backgroundColor: '#f8f8f8',
+        // borderBottomWidth: 1,
+        // borderColor: '#eee',
     },
-    picker: {
-        width: 100,
-        ...Platform.select({
-            android: {
-                color: '#89AAFF',
-                backgroundColor: '#fff0f5',
-            },
-        }),
+    subgoalView: {
+        // flexDirection: 'row',
+        justifyContent: 'space-between',
+        // alignItems: 'center',
     },
-    pickerTitle: {
-        color: '#89AAFF',
-        fontSize: 15,
+    subgoalTitle: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      textAlign: 'right',
     },
-    pickerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    subgoalDescription: {
+      fontSize: 14,
+      fontWeight: 'normal',
     },
+  
 })
+
+export default Subgoal;

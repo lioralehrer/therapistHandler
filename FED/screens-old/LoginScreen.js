@@ -1,7 +1,7 @@
-import 'react-native-gesture-handler';
+// import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import Header from '../components/Header';
 import LoginPlaceholder from '../components/LoginPlaceholder';

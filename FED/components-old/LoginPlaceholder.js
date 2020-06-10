@@ -4,33 +4,41 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'reac
 
 
 const LoginPlaceholder = ({ navigation }) => {
-    // const managers = ["Adi"];
-    const managers = ["עדי"];
-    // const therapists = ["Adi", "Coral", "May", "Hadar"];
-    const therapists = ["עדי","קורל", "מאי", "הדר"];
+    // const managers = ["עדי"];
+    // const therapists = [ "קורל", "מאי", "הדר"];
+    const managers = ["Adi"];
+    const therapists = [ "Coral"];
 
     const [text, setText] = useState('');
 
     const onChange = textValue => setText(textValue);
 
     const isValidUser = (username) => {
-        if (managers.includes(username) || therapists.includes(username)) {
-            // Alert.alert('User is valid. Route to the tracker.');
-            navigation.navigate('Therapist Home', { username });
+        if (therapists.includes(username)) {
+            navigation.navigate('Therapist', { therapistName: username, patient: 'ורד'});
+        }else if (managers.includes(username)) {
+            navigation.navigate('Manager', { managerName: username, patient: 'ורד'})
         } else {
-            Alert.alert('User is not valid!');
+            alert("No User named: "+ username + "\n  Please Sign in ")
         }
     };
 
     return (
         <View style={styles.loginContainer}>
             <View style={styles.loginInput}>
-                <TextInput placeholder="Name..." style={styles.loginInputText} onChangeText={onChange} value={text}/>
-                {/* <TextInput placeholder="שם משתמש..." style={styles.input}/> */}
+                <TextInput 
+                placeholder="Name..." 
+                style={styles.loginInputText} 
+                blurOnSubmit ={true}
+                onChangeText={onChange} value={text}/>
             </View>
             <View style={styles.loginInput}>
-                <TextInput placeholder="Password..." style={styles.loginInputText}/>
-            </View>
+                <TextInput 
+                placeholder="Password..." 
+                secureTextEntry={true}
+                style={styles.loginInputText}/>
+                
+                </View>
             <View style={styles.loginButton}>
                 <TouchableOpacity style={styles.button} onPress={() => isValidUser(text)}>
                     <Text style={styles.loginButtonText}>Login</Text>
@@ -69,6 +77,8 @@ const styles = StyleSheet.create({
     loginInputText: {
         paddingLeft: 10,
         fontSize: 18,
+        minHeight: 30,
+        maxHeight: 60,
     },
     button: {
         padding: 12,
