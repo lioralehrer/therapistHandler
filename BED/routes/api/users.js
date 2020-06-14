@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 // Get single user
 router.get('/:id', async (req, res) => {
   try {
-    const user = await User.findOne({where: {id: req.params.id}});
+    const user = await User.findByPk(req.params.id);
     if (user) {
       res.json(user);
     } else {
@@ -42,7 +42,7 @@ router.get('/:id', async (req, res) => {
 // Update a user
 router.patch('/:id', async (req, res) => {
   try {
-    const user = await User.findOne({where: {id: req.params.id}})
+    const user = await User.findByPk(req.params.id);
     if (user) {
       await user.update(req.body);
       res.json({msg: `User with ID ${req.params.id} updated successfully.`});
@@ -71,7 +71,7 @@ router.delete('/:id', async (req, res) => {
 // Get all sessions by user
 router.get('/:id/sessions', async (req, res) => {
   try {
-    const user = await User.findOne({where: {id: req.params.id}})
+    const user = await User.findByPk(req.params.id);
     if (user) {
       const sessions = await user.getSessions();
       res.json(sessions);
@@ -86,7 +86,7 @@ router.get('/:id/sessions', async (req, res) => {
 // Get all patients by user
 router.get('/:id/patients', async (req, res) => {
   try {
-    const user = await User.findOne({where: {id: req.params.id}})
+    const user = await User.findByPk(req.params.id);
     if (user) {
       const patients = await user.getPatients();
       res.json(patients);

@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
 // Get single patient
 router.get('/:id', async (req, res) => {
   try {
-    const patient = await Patient.findOne({where: {id: req.params.id}});
+    const patient = await Patient.findByPk(req.params.id);
     if (patient) {
       res.json(patient);
     } else {
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
 // Update a patient
 router.patch('/:id', async (req, res) => {
   try {
-    const patient = await Patient.findOne({where: {id: req.params.id}})
+    const patient = await Patient.findByPk(req.params.id);
     if (patient) {
       await patient.update(req.body);
       res.json({msg: `Patient with ID ${req.params.id} updated successfully.`});
@@ -60,7 +60,7 @@ router.delete('/:id', async (req, res) => {
 // Get all goals by patient
 router.get('/:id/goals', async (req, res) => {
   try {
-    const patient = await Patient.findOne({where: {id: req.params.id}});
+    const patient = await Patient.findByPk(req.params.id);
     if (patient) {
       const goals = await patient.getGoals();
       res.json(goals)
@@ -75,7 +75,7 @@ router.get('/:id/goals', async (req, res) => {
 // Get all sessions by patient
 router.get('/:id/sessions', async (req, res) => {
   try {
-    const patient = await Patient.findOne({where: {id: req.params.id}});
+    const patient = await Patient.findByPk(req.params.id);
     if (patient) {
       const sessions = await patient.getSessions();
       res.json(sessions)
@@ -90,7 +90,7 @@ router.get('/:id/sessions', async (req, res) => {
 // Get all activities by patient
 router.get('/:id/activities', async (req, res) => {
   try {
-    const patient = await Patient.findOne({where: {id: req.params.id}});
+    const patient = await Patient.findByPk(req.params.id);
     if (patient) {
       const activities = await patient.getActivities();
       res.json(activities)
@@ -105,7 +105,7 @@ router.get('/:id/activities', async (req, res) => {
 // Get all items by patient
 router.get('/:id/items', async (req, res) => {
   try {
-    const patient = await Patient.findOne({where: {id: req.params.id}});
+    const patient = await Patient.findByPk(req.params.id);
     if (patient) {
       const items = await patient.getItems();
       res.json(items)
@@ -120,7 +120,7 @@ router.get('/:id/items', async (req, res) => {
 // Get all words by patient
 router.get('/:id/words', async (req, res) => {
   try {
-    const patient = await Patient.findOne({where: {id: req.params.id}});
+    const patient = await Patient.findByPk(req.params.id);
     if (patient) {
       const words = await patient.getWords();
       res.json(words)
