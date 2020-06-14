@@ -70,31 +70,31 @@ router.delete('/:id', async (req, res) => {
 
 // Get all sessions by user
 router.get('/:id/sessions', async (req, res) => {
-  const user = await User.findOne({where: {id: req.params.id}})
-  if (user) {
-    try {
+  try {
+    const user = await User.findOne({where: {id: req.params.id}})
+    if (user) {
       const sessions = await user.getSessions();
       res.json(sessions);
-    } catch (err) {
-      console.error(err);
+    } else {
+      res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
     }
-  } else {
-    res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
+  } catch (err) {
+    console.error(err);
   }
 })
 
 // Get all patients by user
 router.get('/:id/patients', async (req, res) => {
-  const user = await User.findOne({where: {id: req.params.id}})
-  if (user) {
-    try {
+  try {
+    const user = await User.findOne({where: {id: req.params.id}})
+    if (user) {
       const patients = await user.getPatients();
       res.json(patients);
-    } catch (err) {
-      console.error(err);
+    } else {
+      res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
     }
-  } else {
-    res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
+  } catch (err) {
+    console.error(err);
   }
 })
 
