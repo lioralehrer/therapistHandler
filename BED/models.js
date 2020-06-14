@@ -349,7 +349,8 @@ const populateTables = async () => {
         role: "therapist"
       }
       ], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
       console.log("added 2 users to db");
     } catch (err) {
@@ -369,7 +370,8 @@ const populateTables = async () => {
         fullName: "פיישנט ניים",
         birthdate: new Date(Date.UTC(1990, 2, 21))
       }], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
       console.log("added 2 patients to db");
     } catch (err) {
@@ -415,7 +417,8 @@ const populateTables = async () => {
         minTherapists: 0,
         minConsecutiveDays: 12
       }], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
@@ -444,7 +447,8 @@ const populateTables = async () => {
         attempts: 1,
         successes: 1
       }], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
@@ -461,7 +465,8 @@ const populateTables = async () => {
       }, {
         title: 'מטבח'
       }], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
@@ -540,7 +545,8 @@ const populateTables = async () => {
           sessionSummaryMessage: "איפסום לורם"
         }
       ], {
-        validate: true
+        validate: true,
+        individualHooks: true
       })
     } catch (err) {
       console.error(err.message);
@@ -579,7 +585,8 @@ const populateTables = async () => {
           patientId: 1
         }
       ], {
-        validate: true
+        validate: true,
+        individualHooks: true
       })
     } catch (err) {
       console.error(err.message);
@@ -616,7 +623,8 @@ const populateTables = async () => {
           patientId: 1
         }
       ], {
-        validate: true
+        validate: true,
+        individualHooks: true
       })
     } catch (err) {
       console.error(err.message);
