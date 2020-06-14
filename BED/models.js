@@ -141,8 +141,29 @@ const Activity = sequelize.define('activity', {
   description: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  patientId: {
+    type: Sequelize.INTEGER,
+    model: 'patients',
+    key: 'id'
+  },
+  colorCode: {
+    type: Sequelize.STRING,
+    model: 'colors',
+    key: 'hexaCode',
   }
-});
+}, {
+  hooks: {
+    beforeCreate: async (instance) => {
+      const lastColorId = (await Activity.findAll({where: {
+        patientId: instance.patientId
+      }})).length;
+      const nextColorCode = (await Color.findOne({where: {id: lastColorId+1}})).hexaCode;
+      instance.colorCode = nextColorCode;
+    }
+  }
+}
+);
 
 const Activity_Environment = sequelize.define('activity_environment', {
   default: {
@@ -449,17 +470,20 @@ const populateTables = async () => {
   console.log(`activityCount: ${activityCount}`);
   if (activityCount === 0) {
     try {
-      await Activity.bulkCreate([{
+      await Activity.create({
         title: 'paint',
-        description: 'peint'
-      }, {
+        description: 'peint',
+        patientId: 1
+      }).then().catch(err => console.error(err));
+      await Activity.create({
         title: 'dance',
-        description: 'dens'
-      }, {
+        description: 'dens',
+        patientId: 1
+      }).then().catch(err => console.error(err));
+      await Activity.create({
         title: 'לרדד בצק',
-        description: 'leraded'
-      }], {
-        validate: true
+        description: 'leraded',
+        patientId: 2
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
