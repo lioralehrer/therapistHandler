@@ -25,7 +25,10 @@ const Patient = sequelize.define('patient', {
   },
   birthdate: {
     type: Sequelize.DATEONLY,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isBefore: new Date(Date.now()).toISOString().split('T')[0]
+    }
   }
 });
 
