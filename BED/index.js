@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/users', require('./routes/api/users')); // users
+app.use('/api/patients', require('./routes/api/patients')); // patients
 
 const PORT = process.env.PORT || 5000;
 

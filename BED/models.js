@@ -165,6 +165,8 @@ const Activity = sequelize.define('activity', {
 }
 );
 
+Patient.hasMany(Activity);
+
 const Activity_Environment = sequelize.define('activity_environment', {
   default: {
     type: Sequelize.BOOLEAN,
@@ -299,6 +301,8 @@ const Item = sequelize.define('item', {
     fields: ['title', 'patientId']
   }]
 })
+
+Patient.hasMany(Item);
 
 const Activity_Item = sequelize.define('activity_item', {});
 
