@@ -95,7 +95,7 @@ router.get('/:id/activities', async (req, res) => {
       const activities = await goal.getActivities();
       res.json(activities)
     } else {
-      res.status(400).json({msg: `Unable to find patient with ID ${req.params.id}`})
+      res.status(400).json({msg: `Unable to find goal with ID ${req.params.id}`})
     }
   } catch (err) {
     console.error(err);
