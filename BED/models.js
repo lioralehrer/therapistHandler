@@ -228,7 +228,7 @@ const Session = sequelize.define('session', {
 })
 
 Patient.hasMany(Session);
-User.hasMany(Session);
+User.hasMany(Session, {foreignKey: 'therapistId'});
 
 const Attempt = sequelize.define('attempt', {
   sessionId: {
@@ -369,6 +369,10 @@ const populateTables = async () => {
       {
         fullName: "פיישנט ניים",
         birthdate: new Date(Date.UTC(1990, 2, 21))
+      },
+      {
+        fullName: "שמה של הפציינטית",
+        birthdate: new Date(Date.UTC(2012, 2, 13))
       }], {
         validate: true,
         individualHooks: true
@@ -382,10 +386,17 @@ const populateTables = async () => {
   console.log(`userPatientCount: ${userPatientCount}`);
   if (userPatientCount === 0) {
     try {
-      const user = await User.findOne({where: {id: 1}});
-      const patient = await Patient.findOne({where: {id: 1}});
+      let user = await User.findOne({where: {id: 1}});
+      let patient = await Patient.findOne({where: {id: 1}});
       await user.addPatient(patient);
       console.log("linked user 1 to patient 1");
+      patient = await Patient.findOne({where: {id: 2}});
+      await user.addPatient(patient);
+      console.log("linked user 1 to patient 2");
+      user = await User.findOne({where: {id: 2}});
+      patient = await Patient.findOne({where: {id: 3}});
+      await user.addPatient(patient);
+      console.log("linked user 2 to patient 3");
     } catch (err) {
       console.error(err.message);
     }
