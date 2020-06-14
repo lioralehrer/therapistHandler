@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const User = require('../../models/user');
 const User = require('../../models').User;
 
 // Create user
@@ -68,5 +67,35 @@ router.delete('/:id', async (req, res) => {
     console.error(err);
   }
 });
+
+// Get all sessions by user
+router.get('/:id/sessions', async (req, res) => {
+  const user = await User.findOne({where: {id: req.params.id}})
+  if (user) {
+    try {
+      const sessions = await user.getSessions();
+      res.json(sessions);
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
+  }
+})
+
+// Get all patients by user
+router.get('/:id/patients', async (req, res) => {
+  const user = await User.findOne({where: {id: req.params.id}})
+  if (user) {
+    try {
+      const patients = await user.getPatients();
+      res.json(patients);
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
+  }
+})
 
 module.exports = router;
