@@ -191,9 +191,10 @@ const Activity_Environment = sequelize.define('activity_environment', {
 Activity.belongsToMany(Environment, {through: Activity_Environment});
 Environment.belongsToMany(Activity, {through: Activity_Environment});
 
-const Assistance = sequelize.define('assitance', {
+const Assistance = sequelize.define('assistance', {
   title: {
     type: Sequelize.STRING,
+    allowNull: false,
     unique: true
   }
 })
