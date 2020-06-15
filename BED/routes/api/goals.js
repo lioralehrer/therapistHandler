@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
     if (goal) {
       res.json(goal);
     } else {
-      res.status(400).json({message: `Unable to find goal with ID ${req.params.id}`});
+      res.status(400).json({msg: `Unable to find goal with ID ${req.params.id}`});
     }
   } catch (err) {
     console.error(err.message);
