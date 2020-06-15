@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('./dbConnector');
+const fs = require('fs');
+const colorObjs = fs.readFileSync('../../colors_for_therapistHandler/Color_objs.json');
 
 const User = sequelize.define('user', {
     fullName: {
@@ -23,7 +25,10 @@ const Patient = sequelize.define('patient', {
   },
   birthdate: {
     type: Sequelize.DATEONLY,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isBefore: new Date(Date.now()).toISOString().split('T')[0]
+    }
   }
 });
 
@@ -139,8 +144,31 @@ const Activity = sequelize.define('activity', {
   description: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  patientId: {
+    type: Sequelize.INTEGER,
+    model: 'patients',
+    key: 'id'
+  },
+  colorCode: {
+    type: Sequelize.STRING,
+    model: 'colors',
+    key: 'hexaCode',
   }
-});
+}, {
+  hooks: {
+    beforeCreate: async (instance) => {
+      const lastColorId = (await Activity.findAll({where: {
+        patientId: instance.patientId
+      }})).length;
+      const nextColorCode = (await Color.findOne({where: {id: lastColorId+1}})).hexaCode;
+      instance.colorCode = nextColorCode;
+    }
+  }
+}
+);
+
+Patient.hasMany(Activity);
 
 const Activity_Environment = sequelize.define('activity_environment', {
   default: {
@@ -168,6 +196,19 @@ const Activity_Environment = sequelize.define('activity_environment', {
 Activity.belongsToMany(Environment, {through: Activity_Environment});
 Environment.belongsToMany(Activity, {through: Activity_Environment});
 
+const Assistance = sequelize.define('assistance', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  }
+})
+
+const SubGoal_Assistance = sequelize.define('subGoal_assistance', {});
+
+Assistance.belongsToMany(SubGoal, {through: SubGoal_Assistance});
+SubGoal.belongsToMany(Assistance, {through: SubGoal_Assistance});
+
 const Goal_Activity = sequelize.define('goal_activity', {});
 
 Activity.belongsToMany(Goal, {through: Goal_Activity});
@@ -192,7 +233,34 @@ const Session = sequelize.define('session', {
 })
 
 Patient.hasMany(Session);
-User.hasMany(Session);
+User.hasMany(Session, {foreignKey: 'therapistId'});
+
+const Attempt = sequelize.define('attempt', {
+  sessionId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'sessions',
+    key: 'id'
+  },
+  activityId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'activities',
+    key: 'id'
+  },
+  environmentId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'environments',
+    key: 'id'
+  },
+  assistanceId: {
+    type: Sequelize.INTEGER,
+    model: 'assistances',
+    key: 'id'
+  },
+  successful: Sequelize.BOOLEAN
+})
 
 const Session_Goal = sequelize.define('session_goal', {
   priority: {
@@ -237,6 +305,8 @@ const Item = sequelize.define('item', {
   }]
 })
 
+Patient.hasMany(Item);
+
 const Activity_Item = sequelize.define('activity_item', {});
 
 Item.belongsToMany(Activity, {through: Activity_Item});
@@ -260,6 +330,15 @@ const Goal_Word = sequelize.define('goal_word', {});
 Word.belongsToMany(Goal, {through: Goal_Word});
 Goal.belongsToMany(Word, {through: Goal_Word});
 
+const Color = sequelize.define('color', {
+  hexaCode: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  }
+})
+
+// -----------------------------------------------
 const populateTables = async () => {
   const userCount = (await User.findAll()).length;
   console.log(`userCount: ${userCount}`);
@@ -277,7 +356,8 @@ const populateTables = async () => {
         role: "therapist"
       }
       ], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
       console.log("added 2 users to db");
     } catch (err) {
@@ -296,8 +376,13 @@ const populateTables = async () => {
       {
         fullName: "פיישנט ניים",
         birthdate: new Date(Date.UTC(1990, 2, 21))
+      },
+      {
+        fullName: "שמה של הפציינטית",
+        birthdate: new Date(Date.UTC(2012, 2, 13))
       }], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
       console.log("added 2 patients to db");
     } catch (err) {
@@ -308,10 +393,17 @@ const populateTables = async () => {
   console.log(`userPatientCount: ${userPatientCount}`);
   if (userPatientCount === 0) {
     try {
-      const user = await User.findOne({where: {id: 1}});
-      const patient = await Patient.findOne({where: {id: 1}});
+      let user = await User.findOne({where: {id: 1}});
+      let patient = await Patient.findOne({where: {id: 1}});
       await user.addPatient(patient);
       console.log("linked user 1 to patient 1");
+      patient = await Patient.findOne({where: {id: 2}});
+      await user.addPatient(patient);
+      console.log("linked user 1 to patient 2");
+      user = await User.findOne({where: {id: 2}});
+      patient = await Patient.findOne({where: {id: 3}});
+      await user.addPatient(patient);
+      console.log("linked user 2 to patient 3");
     } catch (err) {
       console.error(err.message);
     }
@@ -343,7 +435,8 @@ const populateTables = async () => {
         minTherapists: 0,
         minConsecutiveDays: 12
       }], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
@@ -372,7 +465,8 @@ const populateTables = async () => {
         attempts: 1,
         successes: 1
       }], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
@@ -389,7 +483,8 @@ const populateTables = async () => {
       }, {
         title: 'מטבח'
       }], {
-        validate: true
+        validate: true,
+        individualHooks: true
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
@@ -399,17 +494,20 @@ const populateTables = async () => {
   console.log(`activityCount: ${activityCount}`);
   if (activityCount === 0) {
     try {
-      await Activity.bulkCreate([{
+      await Activity.create({
         title: 'paint',
-        description: 'peint'
-      }, {
+        description: 'peint',
+        patientId: 1
+      }).then().catch(err => console.error(err));
+      await Activity.create({
         title: 'dance',
-        description: 'dens'
-      }, {
+        description: 'dens',
+        patientId: 1
+      }).then().catch(err => console.error(err));
+      await Activity.create({
         title: 'לרדד בצק',
-        description: 'leraded'
-      }], {
-        validate: true
+        description: 'leraded',
+        patientId: 2
       }).then().catch(err => console.error(err));
     } catch (err) {
       console.error(err.message);
@@ -465,7 +563,8 @@ const populateTables = async () => {
           sessionSummaryMessage: "איפסום לורם"
         }
       ], {
-        validate: true
+        validate: true,
+        individualHooks: true
       })
     } catch (err) {
       console.error(err.message);
@@ -504,7 +603,8 @@ const populateTables = async () => {
           patientId: 1
         }
       ], {
-        validate: true
+        validate: true,
+        individualHooks: true
       })
     } catch (err) {
       console.error(err.message);
@@ -541,7 +641,8 @@ const populateTables = async () => {
           patientId: 1
         }
       ], {
-        validate: true
+        validate: true,
+        individualHooks: true
       })
     } catch (err) {
       console.error(err.message);
@@ -577,6 +678,19 @@ const populateTables = async () => {
       console.error(err.message);
     }
   }
+  const colorCount = (await Color.findAll()).length;
+  console.log(`colorCount: ${colorCount}`);
+  if (colorCount === 0) {
+    try {
+      Color.bulkCreate(JSON.parse(colorObjs), {
+        validate: true,
+        individualHooks: true
+      }).then().catch(err => console.error(err));
+      console.log("added all 150 colors to table");
+    } catch (err) {
+      console.error(err)
+    }
+  }
 }
 
 sequelize.sync().then(() => {
@@ -599,5 +713,9 @@ module.exports = {
   Activity_Item,
   Word,
   Patient_Word,
-  Goal_Word
+  Goal_Word,
+  Assistance,
+  SubGoal_Assistance,
+  Attempt,
+  Color
 };
