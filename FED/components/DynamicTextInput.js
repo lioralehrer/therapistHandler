@@ -5,13 +5,13 @@ import { globalStyles } from '../styles/global'
 
 const DynamicTextInput = ({ title, btnTitle, placeholder, entity, submitTextInput }) => {
     const [fields, setFields] = useState(entity ? entity.length : 1);
-    const [eventValue, setEventValue] = useState( [{title:''}]);
+    const [eventValue, setEventValue] = useState( entity? entity : [{title:''}]);
 
     const handleChangeText = (e, i) => {
         const updateValue = [...eventValue];
         updateValue[i] = {title: e}
         setEventValue(updateValue);
-        submitTextInput(updateValue);
+        submitTextInput(eventValue);
     }
 
     const flds = () => {
@@ -25,7 +25,8 @@ const DynamicTextInput = ({ title, btnTitle, placeholder, entity, submitTextInpu
                             style={globalStyles.input}
                             placeholder={placeholder}
                             onChangeText={e => handleChangeText(e, i)}
-                            defaultValue={eventValue}
+                            defaultValue={eventValue[i]? eventValue[i].title: ''}
+                            
                         />
                     }
                     bottomDivider

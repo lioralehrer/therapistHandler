@@ -9,6 +9,10 @@ import TherapistHeader from '../components/TherapistHeader';
 import SessionConfig from '../components/SessionConfig';
 import StartSession from '../components/StartSession';
 import PlanSessions from '../sessions/PlanSessions';
+import ActivitySelection from '../components/ActivitySelection '
+import UpperMenu from '../components/Headers/UpperMenu';
+import StarSessionButton from '../components/StartSessionButton ';
+
 
 export default class Manager extends Component {
     state = {
@@ -176,6 +180,7 @@ export default class Manager extends Component {
         return (
             <View style={styles.container}>
                 <ScrollView>
+                    <UpperMenu />
                     <TherapistHeader userName={managerName} lastPatient={patient}></TherapistHeader>
                     <SessionConfig
                         title="מה תרצי לעשות ?"
@@ -267,7 +272,7 @@ export default class Manager extends Component {
                         <View style={styles.modal} onStartShouldSetResponder={() => true}>
                             <ScrollView>
                                 <View style={globalStyles.modalContainer}>
-                                    <PlanSessions/>
+                                    <PlanSessions />
                                     <TouchableHighlight
                                         style={globalStyles.circle}
                                         underlayColor='#ccc'
@@ -296,12 +301,18 @@ export default class Manager extends Component {
                         <View style={styles.modal} onStartShouldSetResponder={() => true}>
 
                             <ScrollView>
-                                <StartSession
+                                {/* <StartSession
                                     userName={managerName}
                                     goals={this.state.goals}
                                     checkedActivity={(activity) => this.checkedActivity(activity)}
                                     checkedGoal={(id) => this.checkedGoal(id)}
-                                />
+                                /> */}
+                                <View style={styles.container}>
+                                    <UpperMenu />
+                                    <TherapistHeader  />
+                                    <ActivitySelection />
+                                    <StarSessionButton />
+                                </View>
 
                                 <SessionConfig
                                     title=""
@@ -328,7 +339,7 @@ export default class Manager extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#07121B',
+        // backgroundColor: '#07121B',
     },
     btnContainer: {
         flex: 1,
@@ -354,15 +365,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         backgroundColor: '#4c2a4c'
     },
-    activityButton: {
-        flex: 0.8,
-        maxHeight: 170,
-        justifyContent: 'center',
-        backgroundColor: '#c2bad8',
-        marginLeft: 6,
-        marginRight: 6,
-        marginTop: 6,
-    },
     buttonText: {
         color: 'darkslateblue',
         fontFamily: 'sans-serif',
@@ -375,9 +377,7 @@ const styles = StyleSheet.create({
     },
     configContainer: {
         flex: 1,
-        // margin: 20,
         marginTop: 30,
-        // paddingTop: 30,
     },
     text: {
         fontSize: 20,
