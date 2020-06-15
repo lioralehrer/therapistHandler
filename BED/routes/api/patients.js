@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
     if (patient) {
       res.json(patient);
     } else {
-      res.status(400).json({message: `Unable to find patient with ID ${req.params.id}`});
+      res.status(400).json({msg: `Unable to find patient with ID ${req.params.id}`});
     }
   } catch (err) {
     console.error(err.message);
