@@ -24,9 +24,7 @@ export default class MultiSelectDropdown extends Component {
         });
         
         this.props.handleList(selectedItems)
-        alert(this.props.list[selectedItems - 1].title)
-        // Alert.alert(JSON.stringify(selectedItems))
-        //Set Selected Items
+       
     };
 
     render() {

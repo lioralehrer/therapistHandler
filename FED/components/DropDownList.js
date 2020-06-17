@@ -5,16 +5,11 @@ import { View, Text, Alert, TouchableOpacity, StyleSheet, Picker } from 'react-n
 const DropDownList = ({ title, pickList, handleItem }) => {
     const [item, setItem] = useState('');
     
-    const handleChange = (itemValue, itemIndex) => {
-        setItem(itemValue);
-        handleItem(item);
-    }
     return (
         <View style={styles.container}>
             <TouchableOpacity
                 underlayColor='#ccc'
                 style={styles.btn}
-            // onPress={() => Alert.alert("to do")}
             >
                 <Picker
                     selectedValue={item}
