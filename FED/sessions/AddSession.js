@@ -5,7 +5,6 @@ import DatePicker from './DatePicker';
 import Message from './Message';
 import DropDownList from '../components/DropDownList';
 import MultiSelectDropdown from '../components/MultiSelectDropdown';
-import MultiCheckboxDropdown from '../components/MultiCheckboxDropdown';
 
 const getGoalList = () => {
     const goalList = [
@@ -40,13 +39,15 @@ export const AddSession = () => {
     const [session, setSession] = useState(
         {
             goals: [],
-            therapist: 1,
+            therapist: '',
             scheduledAt: '',
             activities: [],
             sessionPlanMessage: '',
+            id: Math.floor(Math.random() * 100000000) ,
         });
 
     const { addSession } = useContext(SessionContext);
+
 
     const handleSelectedItems = (listOfIndexes, oldList, sessionProperty) => {
         let list = oldList;
@@ -68,13 +69,17 @@ export const AddSession = () => {
     }
 
     const onSubmit = () => {
-        // preventDefault();
-        const newSession = {
-            id: Math.floor(Math.random() * 100000000),
-            session
-        }
-        Alert.alert(newSession.id);
-        // addSession(newSession);
+        addSession(session);
+        Alert.alert("נוצר סשיין חדש  "+ session.sessionPlanMessage)
+        // setSession({
+        //     goals: [],
+        //     therapist: '',
+        //     scheduledAt: '',
+        //     activities: [],
+        //     sessionPlanMessage: '',
+        //     id: 1 ,
+        // })
+
     }
     return (
         <View>
@@ -95,7 +100,6 @@ export const AddSession = () => {
             <View style={{ margin: 10, padding: 5, width: 100 }}>
                 <Button onPress={() => onSubmit()} title="submit session" />
             </View>
-            <View><Text style={{ color: '#fff' }}>{String(session.scheduledAt)}</Text></View>
         </View>
     )
 

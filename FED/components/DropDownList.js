@@ -15,7 +15,7 @@ const DropDownList = ({ title, pickList, handleItem }) => {
                     selectedValue={item}
                     itemStyle={{ backgroundColor: "grey", color: "blue", fontFamily: "Ebrima", fontSize: 17 }}
                     onValueChange={(itemValue, itemIndex) =>{setItem(itemValue); handleItem(itemValue)}} >
-                    {pickList.map((pick) => <Picker.Item label={pick} value={pick} />)}
+                    {pickList.map((pick, i) => <Picker.Item label={pick} value={pick} key={i} />)}
                 </Picker>
             </TouchableOpacity>
             <Text style={styles.text}>{title}</Text>

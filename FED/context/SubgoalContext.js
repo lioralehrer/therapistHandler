@@ -8,7 +8,7 @@ const initialState = {
 export const SubgoalsContext = createContext(initialState);
 // Provider component
 export const SubgoalProvider = ({ children }) => {
-    const [state, dispach] = useReducer(SubgoalReducer, initialState);
+    const [state, dispatch] = useReducer(SubgoalReducer, initialState);
     // Actions:
     function addSubgoal(subgoal) {
         dispatch({

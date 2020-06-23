@@ -12,8 +12,8 @@ import PlanSessions from '../sessions/PlanSessions';
 import ActivitySelection from '../components/ActivitySelection '
 import UpperMenu from '../components/Headers/UpperMenu';
 import StarSessionButton from '../components/StartSessionButton ';
-
-
+import SessionList from '../components/list/SessionList'
+import { SessionProvider } from '../context/SessionContext';
 export default class Manager extends Component {
     state = {
         goals: [
@@ -169,170 +169,166 @@ export default class Manager extends Component {
     render() {
         const { managerName } = this.props.route.params;
         const { patient } = this.props.route.params;
-        const myGoalsList = Object.entries(this.state.myGoals).map(([key, value]) => {
-            return <View style={styles.goal}>
-                <MyGoal goal={this.state.myGoals[key]}
-                    handleTries={(num, subgoal) => this.handleTries(num, subgoal, key)}
-                    handleSuccesses={(num, subgoal) => this.handleSuccesses(num, subgoal, key)}
-                />
-            </View>
-        })
+        // const myGoalsList = Object.entries(this.state.myGoals).map(([key, value]) => {
+        //     key=value;
+        //     return <View style={styles.goal}>
+        //         <MyGoal goal={this.state.myGoals[key]}
+        //             handleTries={(num, subgoal) => this.handleTries(num, subgoal, key)}
+        //             handleSuccesses={(num, subgoal) => this.handleSuccesses(num, subgoal, key)}
+        //         />
+        //     </View>
+        // })
         return (
-            <View style={styles.container}>
-                <ScrollView>
-                    <UpperMenu />
-                    <TherapistHeader userName={managerName} lastPatient={patient}></TherapistHeader>
-                    <SessionConfig
-                        title="מה תרצי לעשות ?"
-                        icon01="bullseye"
-                        icon02="calendar-check-o"
-                        btn01Title="מטרות ופעילויות"
-                        btn02Title="דוחות"
-                        onPressBtn01={() => this.setModalVisible01(!this.state.modalVisible01)}
-                        onPressBtn02={() => this.setModalVisible02(!this.state.modalVisible02)}
-                    />
-                    <SessionConfig
-                        title="או"
-                        icon01="user-circle"
-                        icon02="life-buoy"
-                        btn01Title="תכנון שבועי"
-                        btn02Title="התחילי טיפול"
-                        onPressBtn01={() => this.setModalVisible03(!this.state.modalVisible03)}
-                        onPressBtn02={() => this.setModalVisible04(!this.state.modalVisible04)}
-                    />
+            <SessionProvider>
+                <View style={styles.container}>
+                    <ScrollView>
+                        <UpperMenu />
+                        <TherapistHeader userName={managerName} lastPatient={patient}></TherapistHeader>
+                        <SessionConfig
+                            title="מה תרצי לעשות ?"
+                            icon01="bullseye"
+                            icon02="calendar-check-o"
+                            btn01Title="מטרות ופעילויות"
+                            btn02Title="דוחות"
+                            onPressBtn01={() => this.setModalVisible01(!this.state.modalVisible01)}
+                            onPressBtn02={() => this.setModalVisible02(!this.state.modalVisible02)}
+                        />
+                        <SessionConfig
+                            title="או"
+                            icon01="user-circle"
+                            icon02="life-buoy"
+                            btn01Title="תכנון שבועי"
+                            btn02Title="התחילי טיפול"
+                            onPressBtn01={() => this.setModalVisible03(!this.state.modalVisible03)}
+                            onPressBtn02={() => this.setModalVisible04(!this.state.modalVisible04)}
+                        />
 
-                    {/* Modal for Goals and Activities */}
-                    <Modal
-                        animationType="fade"
-                        transparent={false}
-                        visible={this.state.modalVisible01}
-                        swipeArea={50}
-                    >
-                        <View style={styles.modal} onStartShouldSetResponder={() => true}>
-                            <ScrollView>
-                                <View style={globalStyles.modalContainer}>
-                                    <GoalsList
-                                        goals={this.state.goals.filter(goal => goal.arcived != true)}
-                                        newGoal={(goal) => this.handleGoal(goal)}
-                                        deleteGoal={(id) => this.deleteGoal(id)}
-                                    />
+                        {/* Modal for Goals and Activities */}
+                        <Modal
+                            animationType="fade"
+                            transparent={false}
+                            visible={this.state.modalVisible01}
+                            swipeArea={50}
+                        >
+                            <View style={styles.modal} onStartShouldSetResponder={() => true}>
+                                <ScrollView>
+                                    <View style={globalStyles.modalContainer}>
+                                        <GoalsList
+                                            goals={this.state.goals.filter(goal => goal.arcived != true)}
+                                            newGoal={(goal) => this.handleGoal(goal)}
+                                            deleteGoal={(id) => this.deleteGoal(id)}
+                                        />
+                                        <SessionConfig
+                                            title=""
+                                            icon01="pencil-square-o"
+                                            icon02="home"
+                                            btn01Title="פעילויות "
+                                            btn02Title=" חזרה לראשי"
+                                            onPressBtn01={() => Alert.alert("TO DO Activities")}
+                                            onPressBtn02={() => this.setModalVisible01(!this.state.modalVisible01)}
+                                        />
+
+                                    </View>
+                                </ScrollView>
+                            </View>
+
+                        </Modal>
+                        {/* Modal for Reports */}
+                        <Modal
+                            animationType="fade"
+                            transparent={false}
+                            visible={this.state.modalVisible02}
+                            swipeArea={50}
+                        >
+                            <View style={styles.modal} onStartShouldSetResponder={() => true}>
+                                <ScrollView>
                                     <SessionConfig
                                         title=""
                                         icon01="pencil-square-o"
                                         icon02="home"
-                                        btn01Title="פעילויות "
+                                        btn01Title="צפייה בטיפולים קודמים"
                                         btn02Title=" חזרה לראשי"
-                                        onPressBtn01={() => Alert.alert("TO DO Activities")}
-                                        onPressBtn02={() => this.setModalVisible01(!this.state.modalVisible01)}
+                                        onPressBtn01={() => Alert.alert("TO DO")}
+                                        onPressBtn02={() => this.setModalVisible02(!this.state.modalVisible02)}
                                     />
-
-                                </View>
-                            </ScrollView>
-                        </View>
-
-                    </Modal>
-                    {/* Modal for Reports */}
-                    <Modal
-                        animationType="fade"
-                        transparent={false}
-                        visible={this.state.modalVisible02}
-                        swipeArea={50}
-                    >
-                        <View style={styles.modal} onStartShouldSetResponder={() => true}>
-                            <ScrollView>
-                                <SessionConfig
-                                    title=""
-                                    icon01="pencil-square-o"
-                                    icon02="home"
-                                    btn01Title="צפייה בטיפולים קודמים"
-                                    btn02Title=" חזרה לראשי"
-                                    onPressBtn01={() => Alert.alert("TO DO")}
-                                    onPressBtn02={() => this.setModalVisible02(!this.state.modalVisible02)}
-                                />
-                                <TouchableHighlight
-                                    style={globalStyles.circle}
-                                    underlayColor='#ccc'
-                                    onPress={() => this.setModalVisible02(!this.state.modalVisible02)}
-                                >
-                                    <Text > סיים   </Text>
-                                </TouchableHighlight>
-                                <View style={{ flex: 1 }}>
-                                </View>
-                            </ScrollView>
-                        </View>
-
-                    </Modal>
-                    {/* Modal for Planing  Session */}
-                    <Modal
-                        animationType="fade"
-                        transparent={false}
-                        visible={this.state.modalVisible03}
-                        swipeArea={50}
-                    >
-                        <View style={styles.modal} onStartShouldSetResponder={() => true}>
-                            <ScrollView>
-                                <View style={globalStyles.modalContainer}>
-                                    <PlanSessions />
                                     <TouchableHighlight
                                         style={globalStyles.circle}
                                         underlayColor='#ccc'
-                                        onPress={() => this.setModalVisible03(!this.state.modalVisible03)}
+                                        onPress={() => this.setModalVisible02(!this.state.modalVisible02)}
                                     >
-
                                         <Text > סיים   </Text>
                                     </TouchableHighlight>
                                     <View style={{ flex: 1 }}>
+                                    </View>
+                                </ScrollView>
+                            </View>
+
+                        </Modal>
+                        {/* Modal for Planing  Session */}
+                        <Modal
+                            animationType="fade"
+                            transparent={false}
+                            visible={this.state.modalVisible03}
+                            swipeArea={50}
+                        >
+                            <View style={styles.modal} onStartShouldSetResponder={() => true}>
+                                <ScrollView>
+                                    <View style={globalStyles.modalContainer}>
+                                        <PlanSessions />
+                                        <SessionList />
+                                        <View style={{ margin: 10, padding: 5, width: 100 }}>
+                                            <Button onPress={() => this.setModalVisible03(!this.state.modalVisible03)} title="Go Back" />
+                                        </View>
 
                                     </View>
+                                </ScrollView>
+                            </View>
 
-                                </View>
-                            </ScrollView>
-                        </View>
+                        </Modal>
+                        {/* Modal for Starting Session */}
+                        <Modal
+                            animationType="fade"
+                            transparent={false}
+                            visible={this.state.modalVisible04}
+                            swipeArea={50}
+                        >
 
-                    </Modal>
-                    {/* Modal for Starting Session */}
-                    <Modal
-                        animationType="fade"
-                        transparent={false}
-                        visible={this.state.modalVisible04}
-                        swipeArea={50}
-                    >
+                            <View style={styles.modal} onStartShouldSetResponder={() => true}>
 
-                        <View style={styles.modal} onStartShouldSetResponder={() => true}>
-
-                            <ScrollView>
-                                {/* <StartSession
+                                <ScrollView>
+                                    {/* <StartSession
                                     userName={managerName}
                                     goals={this.state.goals}
                                     checkedActivity={(activity) => this.checkedActivity(activity)}
                                     checkedGoal={(id) => this.checkedGoal(id)}
                                 /> */}
-                                <View style={styles.container}>
-                                    <UpperMenu />
-                                    <TherapistHeader  />
-                                    <ActivitySelection />
-                                    <StarSessionButton />
-                                </View>
+                                    <View style={styles.container}>
+                                        <UpperMenu />
+                                        <TherapistHeader />
+                                        <ActivitySelection />
+                                        <StarSessionButton />
+                                    </View>
 
-                                <SessionConfig
-                                    title=""
-                                    icon01="pencil-square-o"
-                                    icon02="home"
-                                    btn01Title=" "
-                                    btn02Title=" חזרה לראשי"
-                                    onPressBtn01={() => Alert.alert("TO DO")}
-                                    onPressBtn02={() => this.setModalVisible04(!this.state.modalVisible04)}
-                                />
-                                <View style={{ flex: 1 }}>
-                                </View>
-                            </ScrollView>
-                        </View>
+                                    <SessionConfig
+                                        title=""
+                                        icon01="pencil-square-o"
+                                        icon02="home"
+                                        btn01Title=" "
+                                        btn02Title=" חזרה לראשי"
+                                        onPressBtn01={() => Alert.alert("TO DO")}
+                                        onPressBtn02={() => this.setModalVisible04(!this.state.modalVisible04)}
+                                    />
+                                    <View style={{ flex: 1 }}>
+                                    </View>
+                                </ScrollView>
+                            </View>
 
-                    </Modal>
-                </ScrollView>
-                <Button title="Go back" onPress={() => this.props.navigation.goBack()} />
+                        </Modal>
+                    </ScrollView>
+                    <Button title="Go back" onPress={() => this.props.navigation.goBack()} />
 
-            </View>
+                </View>
+            </SessionProvider>
         )
     }
 }
