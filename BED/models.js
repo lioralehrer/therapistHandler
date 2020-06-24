@@ -89,7 +89,7 @@ const SubGoal = sequelize.define('subGoal', {
     allowNull: false
   },
   description: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false
   },
   attempts: {
@@ -142,7 +142,7 @@ const Activity = sequelize.define('activity', {
     allowNull: false
   },
   description: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false
   },
   patientId: {
@@ -371,7 +371,7 @@ const populateTables = async () => {
       await Patient.bulkCreate([
       {
         fullName: "patient name",
-        birthdate: new Date(Date.now())
+        birthdate: new Date(Date.UTC(1812, 9, 2))
       },
       {
         fullName: "פיישנט ניים",
