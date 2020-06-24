@@ -4,8 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import TherapistHeader from '../components/TherapistHeader';
 import UpperMenu from '../components/Headers/UpperMenu';
-import ActivitySelection from '../components/ActivitySelection ';
-import StartSessionButton from '../components/StartSessionButton ';
+import ActivitySelection from '../components/ActivitySelection';
+import StartSessionButton from '../components/StartSessionButton';
 
 const TherapistScreen = ({ route, navigation }) => {
     return (

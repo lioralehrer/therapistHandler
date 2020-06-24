@@ -14,7 +14,8 @@ const UpperMenu = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   upperMenuContainer: {
-    flex: 0.13,
+    // flex: 0.13,
+    flex: 0.5,
     maxHeight: 40,
     flexDirection: 'row',
     alignContent: 'center',

@@ -9,10 +9,10 @@ import TherapistHeader from '../components/TherapistHeader';
 import SessionConfig from '../components/SessionConfig';
 import StartSession from '../components/StartSession';
 import PlanSessions from '../sessions/PlanSessions';
-import ActivitySelection from '../components/ActivitySelection '
+import ActivitySelection from '../components/ActivitySelection';
 import UpperMenu from '../components/Headers/UpperMenu';
-import StarSessionButton from '../components/StartSessionButton ';
-import SessionList from '../components/list/SessionList'
+import StartSessionButton from '../components/StartSessionButton';
+import SessionList from '../components/list/SessionList';
 import { SessionProvider } from '../context/SessionContext';
 export default class Manager extends Component {
     state = {
@@ -306,7 +306,7 @@ export default class Manager extends Component {
                                         <UpperMenu />
                                         <TherapistHeader />
                                         <ActivitySelection />
-                                        <StarSessionButton />
+                                        <StartSessionButton />
                                     </View>
 
                                     <SessionConfig

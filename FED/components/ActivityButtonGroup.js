@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, Button, FlatList, Alert, Modal, TouchableHighlight, TouchableOpacity } from 'react-native';
-import {uuid} from 'uuidv4';
+// import {uuid} from 'uuidv4';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 import ActivityButton from './ActivityButton';
-import {Picker} from '@react-native-community/picker';
+// import {Picker} from '@react-native-community/picker';
 import { startClock } from 'react-native-reanimated';
 // import {
 //   Menu,
