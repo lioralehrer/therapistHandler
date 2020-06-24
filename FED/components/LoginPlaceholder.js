@@ -7,6 +7,8 @@ const LoginPlaceholder = ({ navigation }) => {
     const userInfo = [
         { userName: 'Admin', psw: '123', role: 'admin' },
         { userName: 'עדי', psw: '123', role: 'manager' },
+        { userName: 'מאי', psw: '123', role: 'therapist'},
+        { userName: 'הדר', psw: '123', role: 'therapist'},
         { userName: 'קורל', psw: '123', role: 'therapist' }]
 
     const [userName, setUserName] = useState('');

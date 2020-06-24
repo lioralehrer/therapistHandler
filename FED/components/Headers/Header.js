@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
      color: '#fff',
      fontSize: 24,
      textAlign: 'center',
+     fontFamily: 'sans-serif-light',
 
   }
 })

@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
     if (patient) {
       res.json(patient);
     } else {
-      res.status(400).json({message: `Unable to find patient with ID ${req.params.id}`});
+      res.status(400).json({msg: `Unable to find patient with ID ${req.params.id}`});
     }
   } catch (err) {
     console.error(err.message);
@@ -36,7 +36,7 @@ router.patch('/:id', async (req, res) => {
       await patient.update(req.body);
       res.json({msg: `Patient with ID ${req.params.id} updated successfully.`});
     } else {
-      res.status(400).json({msg: `Unable to find user with ID ${req.params.id}`})
+      res.status(400).json({msg: `Unable to find patient with ID ${req.params.id}`})
     }
     } catch (err) {
       console.error(err)

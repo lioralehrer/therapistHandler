@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Picker, Platform, Button } from 'react-native';
+import { View, Text, StyleSheet,  Platform, Button } from 'react-native';
+// import { View, Text, StyleSheet, Picker, Platform, Button } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { globalStyles } from '../styles/global';
 
@@ -29,7 +30,7 @@ const SubGoal = ({ subGoal, index, tries, succseses }) => {
     const renderPicker = (str) => (
         <View styl={styles.pickerContainer}>
             <Text style={styles.pickerTitle}>{str} </Text>
-            <Picker
+            {/* <Picker
                 style={styles.picker}
                 itemStyle={styles.pickerItem}
                 mode="dropdown"
@@ -40,7 +41,7 @@ const SubGoal = ({ subGoal, index, tries, succseses }) => {
                     <Picker.Item key={num} label={num} value={num} />
                 )) : createArray(selectedTries).map(num => (<Picker.Item key={num} label={num} value={num} />))
                 }
-            </Picker>
+            </Picker> */}
         </View>
     )
     const activityList = Object.keys(subGoal.activities).map((activity, i) => {

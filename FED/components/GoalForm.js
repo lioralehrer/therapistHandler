@@ -21,7 +21,7 @@ const GoalForm = ({ txt, goal, newGoal }) => {
     const [skillType, setSkillType] = useState(skillTypes[0]);
     const [title, setTitle] = useState(goal ? goal.title : '');
     const [description, setDescription] = useState(goal ? goal.description : '');
-    const [subgoals, setSubgoals] = useState(goal ? goal.subgoals : [{ title: '' }]);
+    const [subgoals, setSubgoals] = useState(goal ? goal.subgoals : '');
     const [numOfTherapists, setNumOfTherapists] = useState(goal ? goal.numOfTherapists : '1');
     const [numOfDays, setNunOfDays] = useState(goal ? goal.numOfDays : 1) ;
     const [activities, setActivities] = useState(goal ? goal.activities : '') ;
