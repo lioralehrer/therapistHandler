@@ -371,7 +371,7 @@ const populateTables = async () => {
       await Patient.bulkCreate([
       {
         fullName: "patient name",
-        birthdate: new Date(Date.UTC(1845, 11, 12))
+        birthdate: new Date(Date.UTC(2009, 5, 3))
       },
       {
         fullName: "פיישנט ניים",
