@@ -1,4 +1,4 @@
-import React , {useContext} from 'react';
+import React , {useContext, useEffect} from 'react';
 import {View , Text , Alert, Button , StyleSheet, FlatList, SafeAreaView} from 'react-native';
 import SessionItem from '../item/SessionItem';
 import {SessionContext} from '../../context/SessionContext';
@@ -6,6 +6,9 @@ import {SessionContext} from '../../context/SessionContext';
 const SessionList = () => {
   const {sessions} = useContext(SessionContext);
 
+  useEffect(()=>{
+    console.log("******************RENDER*****************")
+  })
     return(
         <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>

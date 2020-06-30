@@ -194,7 +194,7 @@ export default class Manager extends Component {
                             onPressBtn02={() => this.setModalVisible02(!this.state.modalVisible02)}
                         />
                         <SessionConfig
-                            title="או"
+                            title="או "
                             icon01="user-circle"
                             icon02="life-buoy"
                             btn01Title="תכנון שבועי"
@@ -275,7 +275,6 @@ export default class Manager extends Component {
                                 <ScrollView>
                                     <View style={globalStyles.modalContainer}>
                                         <PlanSessions />
-                                        <SessionList />
                                         <View style={{ margin: 10, padding: 5, width: 100 }}>
                                             <Button onPress={() => this.setModalVisible03(!this.state.modalVisible03)} title="Go Back" />
                                         </View>

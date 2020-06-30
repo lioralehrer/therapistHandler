@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import Header from '../components/Headers/Header';
 import { AddSession } from './AddSession';
 import { SessionProvider } from '../context/SessionContext';
+import SessionList from '../components/list/SessionList';
 
 const PlanSessions = () => {
     return (
@@ -10,6 +11,7 @@ const PlanSessions = () => {
         <View styl={styles.container}>
             <Header title=" תכנון שבועי עבור ירדן" />
             <AddSession />
+            <SessionList/>
         </View>
         </SessionProvider>
     );

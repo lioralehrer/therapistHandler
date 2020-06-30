@@ -1,12 +1,40 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Alert, Button, Text } from 'react-native';
 import { SessionContext } from '../context/SessionContext';
 import DatePicker from './DatePicker';
 import Message from './Message';
 import DropDownList from '../components/DropDownList';
 import MultiSelectDropdown from '../components/MultiSelectDropdown';
+import axios from 'axios';
 
-const getGoalList = () => {
+const getGoalList = async () => {
+    // console.log("blabal")
+    // try {
+    //     let response = await fetch(
+    //         'https://10.0.2.2:5000/api/goals'
+    // 'http://87.70.88.0:5000/api/goals'
+    //             , {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     Accept: 'application/json',
+    //                     'Content-Type': 'application/json'
+    //                 },
+    //             }
+    //         );
+    //         let json = await response.json();
+    //         console.log("THIS IS GOALS: ")
+    //         console.log(json)
+    //         return json;
+    //     } catch (error) {
+    //         console.log("HILAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    //         console.log("THIS IS EROOR" + error);
+    //     }
+    // }
+    //   body: JSON.stringify({
+    //     firstParam: 'yourValue',
+    //     secondParam: 'yourOtherValue'
+    //   })
+    // });
     const goalList = [
         { id: 1, title: 'מטרה 1', description: 'בלהבהבב לחילכימחדי ' },
         { id: 2, title: 'מטרה 2', description: 'בלהבהבב לחילכימחדי ' },
@@ -43,11 +71,20 @@ export const AddSession = () => {
             scheduledAt: '',
             activities: [],
             sessionPlanMessage: '',
-            id: Math.floor(Math.random() * 100000000) ,
+            id: Math.floor(Math.random() * 100000000),
         });
 
     const { addSession } = useContext(SessionContext);
 
+    useEffect(() => {
+        // axios.get('../data.json')
+         axios.get('https://jsonplaceholder.typicode.com/posts')
+        // axios.get('http://localhost/api/goals')
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch(error => console.log(error));
+    })
 
     const handleSelectedItems = (listOfIndexes, oldList, sessionProperty) => {
         let list = oldList;
@@ -70,7 +107,7 @@ export const AddSession = () => {
 
     const onSubmit = () => {
         addSession(session);
-        Alert.alert("נוצר סשיין חדש  "+ session.sessionPlanMessage)
+        Alert.alert("נוצר סשיין חדש  " + session.sessionPlanMessage)
         // setSession({
         //     goals: [],
         //     therapist: '',
