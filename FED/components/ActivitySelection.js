@@ -1,16 +1,10 @@
 import React, {useState}  from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Button, FlatList } from 'react-native';
-import { initialWindowSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
-// import {uuid} from 'uuidv4';
-import Goal from '../goal/Goal';
-// import Goal from '../components/Goal';
+import Goal from '../components/Goal';
 import ActivityButtonGroup from '../components/ActivityButtonGroup';
-// import {Picker} from '@react-native-community/picker';
-
+import DropdownListButton from '../components/DropdownListButton';
 
 const ActivitySelection = ({ navigation }) => {
-
 
     const getSessionGoals = () => {
         const sessionGoals = [ 
@@ -149,21 +143,110 @@ const ActivitySelection = ({ navigation }) => {
             // title: "הפרחת בועות סבון",
             title: "בועות סבון",
             // title: "אבא",
-            description: "פוף!' ירדן תפוצץ בועה עם האצבע'"
+            description: "פוף!' ירדן תפוצץ בועה עם האצבע'",
+            environments: [
+              { id: 1,
+                title: "חדר טיפול",
+                default: false,
+              },
+              { id: 2,
+                title: "סלון ילדים",
+                default: false,
+              },
+              { id: 4,
+                title: "חדר אמבטיה",
+                default: false,
+              },
+              { id: 3,
+                title: "חצר",
+                default: true,
+              },
+            ],
           },
           { id: 3,
             title: "הרכבת פאזל",
-            // title: "אמא",
             description: "מציאת החלק המתאים של פאזל מגנטי",
+            environments: [
+              { id: 1,
+                title: "חדר טיפול",
+                default: true,
+              },
+              { id: 2,
+                title: "סלון ילדים",
+                default: false,
+              },
+              { id: 3,
+                title: "חצר",
+                default: false,
+              },
+              { id: 5,
+                title: "מטבח",
+                default: false,
+              },
+            ],
           },
           { id: 4,
-            // title: "הצגת צעצוע חדש",
             title: "צעצוע חדש",
-            description: "משחק עם צעצוע חדש  פקפקפקפקפקפקפפקפקהההה"
+            description: "משחק עם צעצוע חדש  פקפקפקפקפקפקפפקפקהההה",
+            environments: [
+              { id: 1,
+                title: "חדר טיפול",
+                default: false,
+              },
+              { id: 2,
+                title: "סלון ילדים",
+                default: true,
+              },
+              { id: 3,
+                title: "חצר",
+                default: false,
+              },
+              { id: 6,
+                title: "חדר שינה",
+                default: false,
+              },
+            ],
           },
+          // { id: 4,
+          //   // title: "הצגת צעצוע חדש",
+          //   title: "new toy",
+          //   description: "this is the description of new toy activity",
+          //   environments: [
+          //     { id: 1,
+          //       title: "treatment room",
+          //       default: false,
+          //     },
+          //     { id: 2,
+          //       title: "kids livingroom",
+          //       default: true,
+          //     },
+          //     { id: 3,
+          //       title: "backyard",
+          //       default: false,
+          //     },
+          //     { id: 6,
+          //       title: "bedroom",
+          //       default: false,
+          //     },
+          //   ],
+          // },
           { id: 5,
             title: "משחק בבובות",
             description: "עייפה בובה זהבה ועייף מאוד הדובבבבב",
+            environments: [
+              { id: 1,
+                title: "חדר טיפול",
+                default: true,
+              },
+              { id: 2,
+                title: "סלון ילדים",
+                default: false,
+              },
+              { id: 3,
+                title: "חצר",
+                default: false,
+              },
+            ],
           }
         ];
         return recommendedActivities.reverse();
@@ -176,50 +259,98 @@ const ActivitySelection = ({ navigation }) => {
           // },
           { id: 9,
             title: "בנייה בקוביות",
-            description: " חומה ומגדל חומה ומגדל חומה ומגדל לה. מריה מגדלנה יור דה קריצ'ר אוף דה נייט"
+            description: " חומה ומגדל חומה ומגדל חומה ומגדל לה. מריה מגדלנה יור דה קריצ'ר אוף דה נייט",
+            environments: [
+              { id: 1,
+                title: "חדר טיפול",
+                default: true,
+              },
+              { id: 2,
+                title: "סלון ילדים",
+                default: false,
+              },
+              { id: 3,
+                title: "חצר",
+                default: false,
+              },
+            ],
           },
           { id: 6,
             title: "ציור",
             description: "  כנסי כבר לבאטמוביל וניסע...קורונה ג'ננה שלום שלום ",
+            environments: [
+              { id: 1,
+                title: "חדר טיפול",
+                default: false,
+              },
+              { id: 2,
+                title: "סלון ילדים",
+                default: true,
+              },
+              { id: 3,
+                title: "חצר",
+                default: false,
+              },
+              { id: 7,
+                title: "פינת אוכל",
+                default: false,
+              },
+            ],
           },
         ];
         return restOfSessionActivities;
     };
 
     var sessionGoals = getSessionGoals();
-    console.log(sessionGoals);
     var recommendedActivities = getRecommendedActivities();
-    // const [goals, setGoals] = useState(sessionGoals);
+    var restOfActivities = getRestOfSessionActivities();
     const [goals, setGoals] = useState(getSessionGoals());
+    const [environments, setEnvironments] = useState([]);
+    const [defaultEnvironment, setDefaultEnvironment] = useState('');
+    const [isSelectionVisible, setIsSelectionVisible] = useState(false);
 
-    console.log("goals length =" + goals.length);
-    
-
-
-    // const selectGoals = (activity) => {
-    const selectGoals = (id) => {
-      console.log(id);
-      setGoals(sessionGoals);
-      setGoals(prevGoals => { 
-        return (prevGoals.filter(goal => goal.activities.map(goalActivity => goalActivity.id).includes(id)));
-        // return (prevGoals.filter(goal => ((goal.activities.map(gAct => gAct.title).includes(reversedActivity)))) || (goal.activities.map(gAct => gAct.title).includes(activity)));
-      });
+    const showSelection = () => {
+       if (isSelectionVisible) {
+         return (
+           <View style={styles.goalsList}>
+            <DropdownListButton arrayListItems={environments} defaultValue={defaultEnvironment} onSelect={(environment) => console.log("inside onSelect (in ActivitySelection).  environment.id = " + environment.id)} />
+            <View style={styles.goalsList}>
+              <FlatList 
+              data={goals}
+              renderItem={({item}) => <Goal goal={item} />}
+              />
+            </View>
+           </View>
+         );
+       };
     };
 
-    console.log("goals length later =" + goals.length);
+    const updateGoals = (activity) => {
+      setIsSelectionVisible(true);
+      setGoals(sessionGoals);
+      setGoals(prevGoals => { 
+        return (prevGoals.filter(goal => goal.activities.map(goalActivity => goalActivity.id).includes(activity.id)));
+      });
+      updateEnvironments(activity);
+    };
+
+    const updateEnvironments = (activity) => {
+      setEnvironments(activity.environments);
+      var defEnv = activity.environments?.filter((environment) => environment.default == true)[0] || {title: 'no environments', id: 444};
+      setDefaultEnvironment(defEnv.title);
+    };
 
     return (
       <View style={styles.container}>
-        {/* <View styles={styles.activityButtons}> */}
-          <ActivityButtonGroup recommendedActivities={getRecommendedActivities()} restOfActivities={getRestOfSessionActivities()} selectGoals={selectGoals} />
-        {/* </View> */}
+        <ActivityButtonGroup recommendedActivities={recommendedActivities} restOfActivities={restOfActivities} updateGoals={updateGoals} />
+        {/* <DropdownListButton arrayListItems={environments} defaultValue={defaultEnvironment} onSelect={(environment) => console.log("inside onSelect (in ActivitySelection).  environment.id = " + environment.id)} />
         <View style={styles.goalsList}>
           <FlatList 
-          // data={getSessionGoals()}
           data={goals}
           renderItem={({item}) => <Goal goal={item} />}
           />
-        </View>
+        </View> */}
+        {showSelection()}
       </View>
     );
 }
@@ -228,22 +359,18 @@ const styles = StyleSheet.create({
     container: {
       flex: 8,
     },
-    activityButtons: {
-      // flex: 1,
-      // width: 350,
-      borderColor: 'green',
-      borderWidth: 3,
-      alignItems: "flex-end",
-      justifyContent: "flex-end",
-      backgroundColor: 'blue',
-    },
+    // activityButtons: {
+    //   borderColor: 'green',
+    //   borderWidth: 3,
+    //   alignItems: "flex-end",
+    //   justifyContent: "flex-end",
+    //   backgroundColor: 'blue',
+    // },
     goalsList: {
-        flex: 8,
+        flex: 9,
         backgroundColor: 'wheat',
         paddingTop: 2,
     },
-
-    
 
 })
 
