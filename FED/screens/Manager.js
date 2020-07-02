@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView, Button, TouchableOpacity, Alert } from 'react-native';
 import { globalStyles } from '../styles/global'
-import Timer from '../components/Timer';
-import MyGoal from '../components/MyGoal';
-import GoalsList from '../components/GoalsList';
-import Reports from '../components/Reports';
 import TherapistHeader from '../components/TherapistHeader';
 import SessionConfig from '../components/SessionConfig';
-import StartSession from '../components/StartSession';
 import PlanSessions from '../sessions/PlanSessions';
-import ActivitySelection from '../components/ActivitySelection';
+// import ActivitySelection from '../components/ActivitySelection '
 import UpperMenu from '../components/Headers/UpperMenu';
-import StartSessionButton from '../components/StartSessionButton';
+// import StarSessionButton from '../components/StartSessionButton ';
 import { SessionProvider } from '../context/SessionContext';
+import { SkillProvider } from '../context/SkillContext'
+import Acquired from '../components/form/Acquired';
+
 export default class Manager extends Component {
     state = {
         goals: [
@@ -187,13 +185,13 @@ export default class Manager extends Component {
                             title="מה תרצי לעשות ?"
                             icon01="bullseye"
                             icon02="calendar-check-o"
-                            btn01Title="מטרות ופעילויות"
+                            btn01Title="בניית תוכנית אישית"
                             btn02Title="דוחות"
                             onPressBtn01={() => this.setModalVisible01(!this.state.modalVisible01)}
                             onPressBtn02={() => this.setModalVisible02(!this.state.modalVisible02)}
                         />
                         <SessionConfig
-                            title="או "
+                            title="או"
                             icon01="user-circle"
                             icon02="life-buoy"
                             btn01Title="תכנון שבועי"
@@ -202,7 +200,7 @@ export default class Manager extends Component {
                             onPressBtn02={() => this.setModalVisible04(!this.state.modalVisible04)}
                         />
 
-                        {/* Modal for Goals and Activities */}
+                        {/* Modal of Planning Goals and Activities for 12 weeks */}
                         <Modal
                             animationType="fade"
                             transparent={false}
@@ -212,7 +210,10 @@ export default class Manager extends Component {
                             <View style={styles.modal} onStartShouldSetResponder={() => true}>
                                 <ScrollView>
                                     <View style={globalStyles.modalContainer}>
-                                        <GoalsList
+                                        <SkillProvider>
+                                            <Acquired />
+                                        </SkillProvider>
+                                        {/* <GoalsList
                                             goals={this.state.goals.filter(goal => goal.arcived != true)}
                                             newGoal={(goal) => this.handleGoal(goal)}
                                             deleteGoal={(id) => this.deleteGoal(id)}
@@ -225,8 +226,10 @@ export default class Manager extends Component {
                                             btn02Title=" חזרה לראשי"
                                             onPressBtn01={() => Alert.alert("TO DO Activities")}
                                             onPressBtn02={() => this.setModalVisible01(!this.state.modalVisible01)}
-                                        />
-
+                                        /> */}
+                                        <View style={{ margin: 10, padding: 5, width: 100 }}>
+                                            <Button onPress={() => this.setModalVisible01(!this.state.modalVisible01)} title="Go Back" />
+                                        </View>
                                     </View>
                                 </ScrollView>
                             </View>
@@ -303,8 +306,8 @@ export default class Manager extends Component {
                                     <View style={styles.container}>
                                         <UpperMenu />
                                         <TherapistHeader />
-                                        <ActivitySelection />
-                                        <StartSessionButton />
+                                        {/* <ActivitySelection />   */}
+                                        {/* <StarSessionButton /> */}
                                     </View>
 
                                     <SessionConfig

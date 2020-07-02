@@ -1,12 +1,7 @@
 import React, {useState}  from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Button, FlatList } from 'react-native';
-import { initialWindowSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
-// import {uuid} from 'uuidv4';
+import { View, StyleSheet, FlatList } from 'react-native';
 import Goal from '../goal/Goal';
-// import Goal from '../components/Goal';
 import ActivityButtonGroup from '../components/ActivityButtonGroup';
-// import {Picker} from '@react-native-community/picker';
 
 
 const ActivitySelection = ({ navigation }) => {
@@ -146,18 +141,14 @@ const ActivitySelection = ({ navigation }) => {
     const getRecommendedActivities = () => {
         const recommendedActivities = [
           { id: 1,
-            // title: "הפרחת בועות סבון",
             title: "בועות סבון",
-            // title: "אבא",
             description: "פוף!' ירדן תפוצץ בועה עם האצבע'"
           },
           { id: 3,
             title: "הרכבת פאזל",
-            // title: "אמא",
             description: "מציאת החלק המתאים של פאזל מגנטי",
           },
           { id: 4,
-            // title: "הצגת צעצוע חדש",
             title: "צעצוע חדש",
             description: "משחק עם צעצוע חדש  פקפקפקפקפקפקפפקפקהההה"
           },
@@ -170,10 +161,6 @@ const ActivitySelection = ({ navigation }) => {
     };
     const getRestOfSessionActivities = () => {
         const restOfSessionActivities = [
-          // { id: 11,
-          //   title: "building blocks",
-          //   description: " חומה ומגדל חומה ומגדל חומה ומגדל לה. מריה מגדלנה יור דה קריצ'ר אוף דה נייט"
-          // },
           { id: 9,
             title: "בנייה בקוביות",
             description: " חומה ומגדל חומה ומגדל חומה ומגדל לה. מריה מגדלנה יור דה קריצ'ר אוף דה נייט"
@@ -189,14 +176,9 @@ const ActivitySelection = ({ navigation }) => {
     var sessionGoals = getSessionGoals();
     console.log(sessionGoals);
     var recommendedActivities = getRecommendedActivities();
-    // const [goals, setGoals] = useState(sessionGoals);
     const [goals, setGoals] = useState(getSessionGoals());
 
-    console.log("goals length =" + goals.length);
-    
 
-
-    // const selectGoals = (activity) => {
     const selectGoals = (id) => {
       console.log(id);
       setGoals(sessionGoals);
@@ -210,12 +192,9 @@ const ActivitySelection = ({ navigation }) => {
 
     return (
       <View style={styles.container}>
-        {/* <View styles={styles.activityButtons}> */}
           <ActivityButtonGroup recommendedActivities={getRecommendedActivities()} restOfActivities={getRestOfSessionActivities()} selectGoals={selectGoals} />
-        {/* </View> */}
         <View style={styles.goalsList}>
           <FlatList 
-          // data={getSessionGoals()}
           data={goals}
           renderItem={({item}) => <Goal goal={item} />}
           />
@@ -229,8 +208,6 @@ const styles = StyleSheet.create({
       flex: 8,
     },
     activityButtons: {
-      // flex: 1,
-      // width: 350,
       borderColor: 'green',
       borderWidth: 3,
       alignItems: "flex-end",
