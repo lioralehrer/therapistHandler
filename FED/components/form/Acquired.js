@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet, Alert } from 'react-native';
 import Header from '../Headers/Header';
 import SkillList from '../list/SkillList';
 import { SkillContext } from '../../context/SkillContext'
@@ -52,7 +52,7 @@ const Acquired = () => {
                     <Header title={'סילבוס מיומנויות  \n  סמני בצבע מיומנויות קיימות '} />
                     <View style={styles.container}>
                         <DropdownListBtn title='תחום התפתחות' icon='rowing' arrayListItems={getSkillTypeList()} onSelect={(type) => handleSkillType(type)} />
-                        <DropdownListBtn title='רמה' icon='rowing' arrayListItems={levels} onSelect={(level) => setLevel(level.title)} />
+                        <DropdownListBtn title='רמה' icon='rowing' arrayListItems={levels} onSelect={(level) =>setLevel(level.title)} />
                     </View>
                     <SkillList skillType={skillType} level={level} />
                 </View>
