@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react';
-import { View, Button, Alert, StyleSheet, ImageBackground, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Button, StyleSheet } from 'react-native';
 import Header from '../Headers/Header';
 import SkillList from '../list/SkillList';
 import { SkillContext } from '../../context/SkillContext'
-import DropDownList from '../DropDownList';
 import DropdownListBtn from '../list/DropdownListBtn';
 
 const getSkillTypeList = () => {
@@ -30,10 +29,9 @@ const Acquired = () => {
     // const [levels , setLsevels] = useState(['1','2','3','4','5'])
     const [levels, setLsevels] = useState([{ title: '1' }, { title: '2' }, { title: '3' }, { title: '4' }, { title: '5' }])
     const [skillType, setSkillType] = useState('');
-    const [level, setLevel] = useState(0);
+    const [level, setLevel] = useState();
     const [visible, setVisible] = useState(true);
 
-    const { skills } = useContext(SkillContext);
     const handleSkillType = (type) => {
         setSkillType(type.title)
         var arr = [];
@@ -51,17 +49,15 @@ const Acquired = () => {
             {
                 visible &&
                 <View>
-                    <Header title={'סילבוס מיומנויות  \n  סמני מיומנויות קיימות '} />
+                    <Header title={'סילבוס מיומנויות  \n  סמני בצבע מיומנויות קיימות '} />
                     <View style={styles.container}>
-                        {/* <DropDownList title='תחום התפתחות' width={200} pickList={skillTypes} handleItem={(type)=>handleSkillType(type)}/>
-            <DropDownList title='רמה' pickList={levels} width={80} handleItem={(level)=>Alert.alert(level)}/> */}
                         <DropdownListBtn title='תחום התפתחות' icon='rowing' arrayListItems={getSkillTypeList()} onSelect={(type) => handleSkillType(type)} />
                         <DropdownListBtn title='רמה' icon='rowing' arrayListItems={levels} onSelect={(level) => setLevel(level.title)} />
                     </View>
                     <SkillList skillType={skillType} level={level} />
                 </View>
             }
-            <Button title={visible ? 'לבניית התוכנית': 'חזרה לסילבוס מיומנויות נרכשות'} onPress={() =>setVisible(!visible)} color="#841584" />
+            <Button title={visible ? 'לבניית התוכנית' : 'חזרה לסילבוס מיומנויות נרכשות'} onPress={() => setVisible(!visible)} color="#841584" />
         </View>
 
     )

@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Alert, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-// import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { Icon } from 'react-native-elements'
 
-const DropdownListBtn = ({ title, icon, arrayListItems, defaultValue, onSelect }) => {
+const DropdownListBtn = ({ title, icon, arrayListItems, onSelect }) => {
 
-    const [dropdownValue, setDropdownValue] = useState(defaultValue);
+    const [dropdownValue, setDropdownValue] = useState();
     const [modalVisible, setModalVisible] = useState(false);
-
-    // useEffect(() => {
-    //     setDropdownValue(defaultValue);
-    // }, [defaultValue, arrayListItems])
 
     return (
         <View style={styles.container}>
@@ -28,9 +22,8 @@ const DropdownListBtn = ({ title, icon, arrayListItems, defaultValue, onSelect }
                     setModalVisible(true);
                 }}>
                     <View style={styles.dropdownButtonContainer}>
-                        {/* <FontAwesomeIcon style={styles.dropdownButtonIcon} icon={ faCaretDown } /> */}
                         <View style={styles.buttonTextWrapper}>
-                            <Text style={styles.dropdownButtonText}>{dropdownValue || 'choose'}</Text>
+                            <Text style={styles.dropdownButtonText}> {dropdownValue || 'choose'}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
