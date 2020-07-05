@@ -2,31 +2,11 @@ import React, { useState } from 'react';
 import { View, Button, StyleSheet, Alert } from 'react-native';
 import Header from '../Headers/Header';
 import SkillList from '../list/SkillList';
-import { SkillContext } from '../../context/SkillContext'
 import DropdownListBtn from '../list/DropdownListBtn';
+import {getSkillTypeList } from '../../store/Data'
 
-const getSkillTypeList = () => {
-    let skillTypeList = [{ title: 'שפה רצפטיבית', levels: 5 },
-    { title: 'כישורים חברתיים', levels: 5 },
-    { title: 'משחק', levels: 4 },
-    { title: 'קוגנציה', levels: 4 },
-    { title: 'קשב משותף', levels: 3 },
-    { title: 'מוטוריקה עדינה', levels: 3 },
-    { title: 'התנהגות', levels: 4 },
-    { title: 'שפה אקספרסיבית', levels: 5 },
-    { title: '' }]
-    return skillTypeList
-}
-// const skillTypes = ['שפה אקספרסיבית', 'שפה רצפטיבית', 'כישורים חברתיים', 'התנהגות', 'מוטוריקה עדינה', 'קשב משותף', 'קוגניציה', 'משחק'];
-// const getskills =()=>{
-//     let skills = [{id:1, skillType:'משחק',level:'1',title:'', acuired:false},
-//     {id:1, skillType:'משחק',level:'1',title:'', acuired:false},
-//     {id:1, skillType:'משחק',level:'2',title:'', acuired:false},
-//     {id:1, skillType:'משחק',level:'2',title:'', acuired:false}]
-//     return skills
-// } 
-const Acquired = () => {
-    // const [levels , setLsevels] = useState(['1','2','3','4','5'])
+
+const Acquired = ({handleVisible}) => {
     const [levels, setLsevels] = useState([{ title: '1' }, { title: '2' }, { title: '3' }, { title: '4' }, { title: '5' }])
     const [skillType, setSkillType] = useState('');
     const [level, setLevel] = useState();
@@ -57,7 +37,7 @@ const Acquired = () => {
                     <SkillList skillType={skillType} level={level} />
                 </View>
             }
-            <Button title={visible ? 'לבניית התוכנית' : 'חזרה לסילבוס מיומנויות נרכשות'} onPress={() => setVisible(!visible)} color="#841584" />
+            <Button title={visible ? 'לבניית התוכנית' : 'חזרה לסילבוס מיומנויות נרכשות'} onPress={() => {setVisible(!visible); handleVisible(true)}} color="#841584" />
         </View>
 
     )

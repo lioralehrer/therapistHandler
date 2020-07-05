@@ -10,7 +10,7 @@ const DropdownListBtn = ({ title, icon, arrayListItems, onSelect }) => {
     return (
         <View style={styles.container}>
             <View style={styles.buttonAreaContainer}>
-               
+
                 <TouchableOpacity style={styles.button} onPress={() => {
                     setModalVisible(true);
                 }}>
@@ -21,11 +21,11 @@ const DropdownListBtn = ({ title, icon, arrayListItems, onSelect }) => {
                     </View>
                 </TouchableOpacity>
                 <View style={styles.buttonTextWrapper}>
-                    <Text>{title}   </Text>
                     <Icon
                         name={icon}
-                        
+
                     />
+                    <Text>{title}   </Text>
 
                 </View>
             </View>

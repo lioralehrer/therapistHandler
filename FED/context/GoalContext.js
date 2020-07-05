@@ -5,7 +5,7 @@ const initialState = {
     goals: []
 }
 // Create context
-export const GoalsContext = createContext(initialState);
+export const GoalContext = createContext(initialState);
 // Provider component
 export const GoalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(GoalReducer, initialState);
@@ -23,7 +23,7 @@ export const GoalProvider = ({ children }) => {
         });
     }
     function updateGoal(goal) {
-        dispach({
+        dispatch({
             type: 'UPDATE_GOAL',
             payload: goal
         })

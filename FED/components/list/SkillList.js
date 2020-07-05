@@ -8,8 +8,8 @@ const SkillList = ({ skillType, level }) => {
 
 
     const onSubmit = (skills) => {
-        // Alert.alert("send request to DB");
-        Alert.alert(toString(level))
+        Alert.alert("send request to DB");
+        // Alert.alert(toString(level))
         console.log(level + ' from Submit')
     }
 

@@ -8,8 +8,10 @@ import PlanSessions from '../sessions/PlanSessions';
 import UpperMenu from '../components/Headers/UpperMenu';
 // import StarSessionButton from '../components/StartSessionButton ';
 import { SessionProvider } from '../context/SessionContext';
-import { SkillProvider } from '../context/SkillContext'
+import { SkillProvider } from '../context/SkillContext';
+import { GoalProvider } from '../context/GoalContext'
 import Acquired from '../components/form/Acquired';
+import PlanProgram from '../components/form/PlanProgram';
 
 export default class Manager extends Component {
     state = {
@@ -89,6 +91,7 @@ export default class Manager extends Component {
         modalVisible02: false,
         modalVisible03: false,
         modalVisible04: false,
+        visiblePlan: false,
     }
     checkedGoal = (id) => {
         let goals = this.state.goals;
@@ -162,6 +165,10 @@ export default class Manager extends Component {
     setModalVisible04(visible) {
         this.setState({ modalVisible04: visible });
     }
+    setVisiblePlan(visiblePlan) {
+        this.setState({ visiblePlan: visiblePlan });
+    }
+
 
     render() {
         const { managerName } = this.props.route.params;
@@ -211,22 +218,17 @@ export default class Manager extends Component {
                                 <ScrollView>
                                     <View style={globalStyles.modalContainer}>
                                         <SkillProvider>
-                                            <Acquired />
+                                            <GoalProvider>
+                                                <Acquired handleVisible={(visiblePlan) => this.setVisiblePlan(visiblePlan)} />
+                                                {this.state.visiblePlan && <PlanProgram />}
+                                            </GoalProvider>
                                         </SkillProvider>
                                         {/* <GoalsList
                                             goals={this.state.goals.filter(goal => goal.arcived != true)}
                                             newGoal={(goal) => this.handleGoal(goal)}
                                             deleteGoal={(id) => this.deleteGoal(id)}
-                                        />
-                                        <SessionConfig
-                                            title=""
-                                            icon01="pencil-square-o"
-                                            icon02="home"
-                                            btn01Title="פעילויות "
-                                            btn02Title=" חזרה לראשי"
-                                            onPressBtn01={() => Alert.alert("TO DO Activities")}
-                                            onPressBtn02={() => this.setModalVisible01(!this.state.modalVisible01)}
                                         /> */}
+
                                         <View style={{ margin: 10, padding: 5, width: 100 }}>
                                             <Button onPress={() => this.setModalVisible01(!this.state.modalVisible01)} title="Go Back" />
                                         </View>
