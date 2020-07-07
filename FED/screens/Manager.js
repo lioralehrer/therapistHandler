@@ -229,8 +229,9 @@ export default class Manager extends Component {
                                             deleteGoal={(id) => this.deleteGoal(id)}
                                         /> */}
 
-                                        <View style={{ margin: 10, padding: 5, width: 100 }}>
-                                            <Button onPress={() => this.setModalVisible01(!this.state.modalVisible01)} title="Go Back" />
+                                        <View style={{ margin: 10, padding: 15, width: 200 ,flexDirection:'row', alignSelf:'center'}}>
+                                            <Button onPress={() => this.setModalVisible01(!this.state.modalVisible01)} title="Go Back"  />
+                                       <Button title='GoalList' onPress={()=>Alert.alert('Show GoalList')}  color='#5f9ea0'/>
                                         </View>
                                     </View>
                                 </ScrollView>

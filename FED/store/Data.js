@@ -12,7 +12,7 @@ export const getSkillTypeList = () => {
 }
 
 export const getNums = () => {
-    let numOfDays = [
+    let nums = [
         {title: '- 1 -'},
         {title: '- 2 -'},
         {title: '- 3 -'},
@@ -20,7 +20,7 @@ export const getNums = () => {
         {title: '- 5 -'},
         {title: '- 6 -'},
     ]
-    return numOfDays;
+    return nums;
 }
 
 export const getEnvs = () =>{

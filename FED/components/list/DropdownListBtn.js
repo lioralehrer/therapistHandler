@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
     },
     buttonAreaContainer: {
-        // flex: 1,
         flexDirection: 'row-reverse',
         margin: 6,
         //   borderColor: 'orange',

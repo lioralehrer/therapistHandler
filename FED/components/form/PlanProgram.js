@@ -6,6 +6,7 @@ import { getSkillTypeList } from '../../store/Data';
 import { getNums } from '../../store/Data';
 import { getEnvs } from '../../store/Data';
 import DropdownListBtn from '../list/DropdownListBtn';
+import ChooseSkills from './ChooseSkills';
 
 const PlanProgram = () => {
     const [skillType, setSkillType] = useState();
@@ -65,15 +66,16 @@ const PlanProgram = () => {
                 <Text style={globalStyles.HeaderInsideText}>מטרה חדשה  </Text>
                 <View style={{ alignItems: 'flex-start' }}>
                     <DropdownListBtn title='תחום התפתחות' icon='rowing' arrayListItems={getSkillTypeList()} onSelect={(type) => setSkillType(type.title)} />
-                    <TextInput
+                    <ChooseSkills title='בחרי מטרות מתוך המאגר' skillType={skillType} addSkills={(skills)=>setDescription(skills)} />
+                    {/* <TextInput
                         style={globalStyles.input}
                         placeholder=' מטרה...'
                         onChangeText={title => setTitle(title)}
                         defaultValue={title}
-                    />
+                    /> */}
                     <TextInput
                         style={globalStyles.input}
-                        placeholder='   תיאור...'
+                        placeholder={description}
                         onChangeText={description => setDescription(description)}
                         defaultValue={description}
                         multiline={true}
@@ -93,16 +95,10 @@ const PlanProgram = () => {
                     entity={activities}
                     submitTextInput={(e) => setActivities(e)} />
 
-                <View style={globalStyles.btns}>
-
-                    <DropdownListBtn title='מספר מטפלים' icon='rowing' arrayListItems={getNums()} onSelect={(num) =>setNumOfTherapists(num.title)} />
-                    <DropdownListBtn title='ימים עוקבים ' icon='rowing' arrayListItems={getNums()} onSelect={(days) => setNunOfDays(days.title)} />
-                </View>
-                <View style={{alignItems:'flex-start'}} >
+                    <DropdownListBtn title='מספר מטפלים'  arrayListItems={getNums()} onSelect={(num) =>setNumOfTherapists(num.title)} />
+                    <DropdownListBtn title='ימים עוקבים '  arrayListItems={getNums()} onSelect={(days) => setNunOfDays(days.title)} />
                     <DropdownListBtn title='סביבה דיפולטיבית '  arrayListItems={getEnvs()} onSelect={(env) => setDefaultEnv(env.title)} />
                     <DropdownListBtn title='סביבות נוספות  '  arrayListItems={getEnvs()} onSelect={(env) => setEnvs(env.title)} />
-                
-                    </View>
                 <View style={globalStyles.btns}>
                     <Button
                         onPress={() => cancel()}
@@ -132,22 +128,6 @@ const PlanProgram = () => {
 export default PlanProgram;
 
 const styles = StyleSheet.create({
-    picker: {
-        width: 100,
-        ...Platform.select({
-            android: {
-                color: '#89AAFF',
-                backgroundColor: '#fff0f5',
-            },
-        }),
-    },
-    pickerTitle: {
-        color: '#89AAFF',
-        fontSize: 15,
-    },
-    pickerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
+
 
 })
