@@ -10,7 +10,6 @@ import ChooseSkills from './ChooseSkills';
 
 const PlanProgram = () => {
     const [skillType, setSkillType] = useState();
-    const [title, setTitle] = useState();
     const [description, setDescription] = useState();
     const [subgoals, setSubgoals] = useState();
     const [numOfTherapists, setNumOfTherapists] = useState();
@@ -59,7 +58,7 @@ const PlanProgram = () => {
         setDefaultEnv('');
         setEnvs([]);
     }
-
+ 
     return (
         <View style={globalStyles.body}>
             <ScrollView>
@@ -67,12 +66,6 @@ const PlanProgram = () => {
                 <View style={{ alignItems: 'flex-start' }}>
                     <DropdownListBtn title='תחום התפתחות' icon='rowing' arrayListItems={getSkillTypeList()} onSelect={(type) => setSkillType(type.title)} />
                     <ChooseSkills title='בחרי מטרות מתוך המאגר' skillType={skillType} addSkills={(skills)=>setDescription(skills)} />
-                    {/* <TextInput
-                        style={globalStyles.input}
-                        placeholder=' מטרה...'
-                        onChangeText={title => setTitle(title)}
-                        defaultValue={title}
-                    /> */}
                     <TextInput
                         style={globalStyles.input}
                         placeholder={description}

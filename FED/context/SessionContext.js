@@ -36,7 +36,7 @@ export const SessionProvider = ({ children }) => {
         dispatch({
             type: 'ADD_SESSION',
             payload: session
-        })
+        }) 
     }
     function deleteSession(id) {
         dispatch({
@@ -44,6 +44,7 @@ export const SessionProvider = ({ children }) => {
             payload: id
         });
     }
+  
     // function updateSession(session) {
     //     dispach({
     //         type: 'UPDATE_SESSION',

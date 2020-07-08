@@ -3,26 +3,35 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, ScrollView, Alert, 
 import { SkillContext } from '../../context/SkillContext'
 import Skill from '../item/Skill';
 
-const ChooseSkills = ({ title, skillType , addSkills }) => {
+const ChooseSkills = ({ title, skillType, addSkills }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [list , setList] = useState("")
+    const [list, setList] = useState("");
     const { skills } = useContext(SkillContext);
     const notAcquiredSkills = skills.filter((skill) => skill.acquired !== true)
 
-    const handleClick = (skill, bool)=>{
-        if (bool){
-            setList(prevState => prevState.concat( skill.title+ '\n') );
+    const handleClick = (skill, bool) => {
+        if (bool) {
+            if (!list.includes(skill)) {
+                setList(prevState => prevState.concat(skill + '\n'));
+            }
+
+        }else{
+            if (list.includes(skill)){
+                setList(prevState => prevState.replace(skill, ''))
+            }
         }
+
     }
-    const applyList = ()=>{
+    const applyList = () => {
         addSkills(list);
         Alert.alert('בחרת: ' + list);
         setList('');
     }
-    
+   
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.btn} onPress={() =>setModalVisible(!modalVisible)} >
+            <TouchableOpacity style={styles.btn} onPress={() => setModalVisible(!modalVisible)} >
                 <View style={styles.dropdownButtonContainer}>
                     <Text >{modalVisible ? ' סגרי ' : title}   </Text>
                 </View>
@@ -30,13 +39,13 @@ const ChooseSkills = ({ title, skillType , addSkills }) => {
             </TouchableOpacity>
             {
                 modalVisible && <View style={styles.modal}>
-                    <Button title='apply' onPress={()=>applyList()}/>
+                    <Button title='apply' onPress={() => applyList()} />
                     <View style={styles.container}>
                         <View style={styles.goalsList}>
                             <FlatList
                                 nestedScrollEnabled={true}
                                 data={skillType ? notAcquiredSkills.filter((skill) => skill.skillType === skillType) : notAcquiredSkills}
-                                renderItem={({ item }) => <Skill skill={item} handleClick={(bool)=>handleClick(item, bool)} />}
+                                renderItem={({ item }) => <Skill skill={item} handleClick={(bool) => handleClick(item.title, bool)} />}
                                 keyExtractor={item => item.id.toString()}
                             />
 

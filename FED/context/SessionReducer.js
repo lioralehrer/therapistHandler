@@ -7,7 +7,7 @@ export default (state, action) => {
             return {
                 ...state,
                 sessions: newSessionList
-                
+                 
             }
         case 'DELETE_SESSION':
             return {

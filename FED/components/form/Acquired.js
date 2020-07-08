@@ -7,17 +7,17 @@ import {getSkillTypeList } from '../../store/Data'
 
 
 const Acquired = ({handleVisible}) => {
-    const [levels, setLsevels] = useState([{ title: '1' }, { title: '2' }, { title: '3' }, { title: '4' }, { title: '5' }])
+    const [levels, setLsevels] = useState([{ title: '- 1 -' }, { title: '- 2 -' }, { title: '- 3 -' }, { title: '- 4 -' }, { title: '- 5 -' }])
     const [skillType, setSkillType] = useState('');
     const [level, setLevel] = useState();
     const [visible, setVisible] = useState(true);
-
+    
     const handleSkillType = (type) => {
         setSkillType(type.title)
         var arr = [];
         let length = type.levels;
         while (length > 0) {
-            arr.push({ title: length });
+            arr.push({ title: '- ' + length + ' -' });
             length -= 1;
         }
         setLsevels(arr.reverse())
@@ -37,7 +37,7 @@ const Acquired = ({handleVisible}) => {
                     <SkillList skillType={skillType} level={level} />
                 </View>
             }
-            <Button title={visible ? 'לבניית התוכנית' : 'חזרה לסילבוס מיומנויות נרכשות'} onPress={() => {setVisible(!visible); handleVisible(true)}} color="#841584" />
+            <Button title={visible ? 'לבניית התוכנית' : 'חזרה לסילבוס מיומנויות נרכשות'} onPress={() => {setVisible(!visible); handleVisible(visible)}} color="#841584" />
         </View>
 
     )
