@@ -40,10 +40,11 @@ const PlanProgram = () => {
             minTherapists: numOfTherapists,
             minConsecutiveDays: numOfDays,
             defaultEnv: defaultEnv,
-            envs: en,
+            // envs: en,
             activities: activities,
             subGoals: subgoals,
         }
+        console.log(g);
         addGoal(g);
         setCounter(counter + 1);
         handleClear();

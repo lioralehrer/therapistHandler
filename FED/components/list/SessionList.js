@@ -1,5 +1,5 @@
 import React , {useContext, useEffect} from 'react';
-import {View , Text , Alert, Button , StyleSheet, FlatList, SafeAreaView} from 'react-native';
+import {View, StyleSheet, FlatList, SafeAreaView} from 'react-native';
 import SessionItem from '../item/SessionItem';
 import {SessionContext} from '../../context/SessionContext';
 

@@ -12,6 +12,7 @@ import { SkillProvider } from '../context/SkillContext';
 import { GoalProvider } from '../context/GoalContext'
 import Acquired from '../components/form/Acquired';
 import PlanProgram from '../components/form/PlanProgram';
+import GoalList from '../components/list/GoalList';
 
 export default class Manager extends Component {
     state = {
@@ -91,7 +92,9 @@ export default class Manager extends Component {
         modalVisible02: false,
         modalVisible03: false,
         modalVisible04: false,
+        visibleSyllabus : true,
         visiblePlan: false,
+        visibleGoalList : false,
     }
     checkedGoal = (id) => {
         let goals = this.state.goals;
@@ -168,6 +171,14 @@ export default class Manager extends Component {
     setVisiblePlan(visiblePlan) {
         this.setState({ visiblePlan: visiblePlan });
     }
+    setVisibleGoalList(visibleGoalList){
+        this.setState({visibleGoalList : visibleGoalList})
+        if (visibleGoalList){
+            this.setState({visiblePlan : false, visibleSyllabus : false})
+        }else {
+            this.setState({visibleSyllabus : true})
+        }
+    }
 
 
     render() {
@@ -219,8 +230,9 @@ export default class Manager extends Component {
                                     <View style={globalStyles.modalContainer}>
                                         <SkillProvider>
                                             <GoalProvider>
-                                                <Acquired handleVisible={(visiblePlan) => this.setVisiblePlan(visiblePlan)} />
-                                                {this.state.visiblePlan && <PlanProgram />}
+                                               {this.state.visibleSyllabus && <Acquired handleVisible={(visiblePlan) => this.setVisiblePlan(visiblePlan)} /> } 
+                                                {this.state.visibleGoalList && <GoalList />}
+                                                {this.state.visiblePlan &&  <PlanProgram />}
                                             </GoalProvider>
                                         </SkillProvider>
                                         {/* <GoalsList
@@ -231,7 +243,7 @@ export default class Manager extends Component {
 
                                         <View style={{ margin: 10, padding: 15, width: 200 ,flexDirection:'row', alignSelf:'center'}}>
                                             <Button onPress={() => this.setModalVisible01(!this.state.modalVisible01)} title="Go Back"  />
-                                       <Button title='GoalList' onPress={()=>Alert.alert('Show GoalList')}  color='#5f9ea0'/>
+                                       <Button title={this.state.visibleGoalList ? 'close goalList' : 'GoalList'} onPress={()=>this.setVisibleGoalList(!this.state.visibleGoalList)}  color='#5f9ea0'/>
                                         </View>
                                     </View>
                                 </ScrollView>
