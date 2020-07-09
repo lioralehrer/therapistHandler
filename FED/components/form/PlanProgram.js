@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, ScrollView, Alert } from 'react-native';
+import { View, Text, Button, TextInput, ScrollView } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import DynamicTextInput from '../DynamicTextInput';
 import { getSkillTypeList } from '../../store/Data';
@@ -11,6 +11,7 @@ import { GoalContext } from '../../context/GoalContext';
 import MultiPicker from './MultiPicker';
 
 const PlanProgram = () => {
+    const [counter, setCounter] = useState(1)
     const [skillType, setSkillType] = useState();
     const [description, setDescription] = useState();
     const [subgoals, setSubgoals] = useState();
@@ -19,53 +20,52 @@ const PlanProgram = () => {
     const [activities, setActivities] = useState();
     const [defaultEnv, setDefaultEnv] = useState();
     const [envs, setEnvs] = useState();
-
     const { addGoal } = useContext(GoalContext);
+
     const handleNewGoal = () => {
         let goalId = Math.random();
-        // var res = str.replace(/\D/g, "");
+        let en = () => {
+            if (envs) {
+                return envs.split(" ");
+            }
+            return envs
+        }
         let g = {
             id: goalId,
+            serialNum: counter,
             skillType: skillType,
-            // serialNum: '',
-            // title: title,
             // patientId : ??? TODO?!
             description: description,
             archived: false,
             minTherapists: numOfTherapists,
             minConsecutiveDays: numOfDays,
             defaultEnv: defaultEnv,
-            // All of below doesnt exist in models BED at Goals section:
-            envs: envs,
+            envs: en,
             activities: activities,
             subGoals: subgoals,
         }
-        // console.log(g);
-        // add new Goal to GoalContext:
-        // newGoal(g);
-        addGoal(g)
-        cancel();
-    }
-
-    const cancel = () => {
+        addGoal(g);
+        setCounter(counter + 1);
         handleClear();
     }
+
     const handleClear = () => {
-        setSkillType('');
-        setDescription('');
-        setSubgoals('');
-        setNumOfTherapists(1);
-        setNunOfDays(1);
-        setActivities('');
-        setDefaultEnv('');
-        setEnvs([]);
+        setSkillType();
+        setDescription();
+        setSubgoals();
+        setNumOfTherapists();
+        setNunOfDays();
+        setActivities();
+        setDefaultEnv();
+        setEnvs();
     }
 
     return (
         <View style={globalStyles.body}>
             <ScrollView>
-                <Text style={globalStyles.HeaderInsideText}>מטרה חדשה  </Text>
+                <Text style={globalStyles.HeaderInsideText}>{`מטרה חדשה \n מטרה  ${counter}`} </Text>
                 <View style={{ alignItems: 'flex-start' }}>
+                    <DropdownListBtn title='  ניתן לשנות מספר מטרה  ' arrayListItems={getNums()} onSelect={(num) => setCounter(parseInt(num.title.replace(/-/g, "")))} />
                     <DropdownListBtn title='תחום התפתחות' icon='rowing' arrayListItems={getSkillTypeList()} onSelect={(type) => setSkillType(type.title)} />
                     <ChooseSkills title='בחרי מטרות מתוך המאגר' skillType={skillType} addSkills={(skills) => setDescription(skills)} />
                     <TextInput
@@ -90,8 +90,8 @@ const PlanProgram = () => {
                     entity={activities}
                     submitTextInput={(e) => setActivities(e)} />
 
-                <DropdownListBtn title='מספר מטפלים' arrayListItems={getNums()} onSelect={(num) => setNumOfTherapists(num.title)} />
-                <DropdownListBtn title='ימים עוקבים ' arrayListItems={getNums()} onSelect={(days) => setNunOfDays(days.title)} />
+                <DropdownListBtn title='מספר מטפלים' arrayListItems={getNums()} onSelect={(num) => setNumOfTherapists(parseInt(num.title.replace(/-/g, "")))} />
+                <DropdownListBtn title='ימים עוקבים ' arrayListItems={getNums()} onSelect={(days) => setNunOfDays(parseInt(days.title.replace(/-/g, "")))} />
                 <DropdownListBtn title='סביבה דיפולטיבית ' arrayListItems={getEnvs()} onSelect={(env) => setDefaultEnv(env.title)} />
                 <MultiPicker title='בחרי סביבות נוספות' array={getEnvs()} addItems={(envs) => setEnvs(envs)} />
                 <TextInput
@@ -102,15 +102,11 @@ const PlanProgram = () => {
                     multiline={true}
                 />
                 <View style={globalStyles.btns}>
-                    <Button
-                        onPress={() => cancel()}
-                        color="#841584"
-                        title=" בטלי"
-                    />
+
                     <Button
                         onPress={() => handleClear()}
                         color="#841584"
-                        title=" נקי"
+                        title="ניקוי טופס"
                     />
 
                     <Button
@@ -121,15 +117,7 @@ const PlanProgram = () => {
                 </View>
             </ScrollView>
         </View>
-
-
-
     )
 }
 
 export default PlanProgram;
-
-const styles = StyleSheet.create({
-
-
-})

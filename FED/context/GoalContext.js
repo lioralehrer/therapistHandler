@@ -10,7 +10,7 @@ export const GoalContext = createContext(initialState);
 export const GoalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(GoalReducer, initialState);
     // Actions:
-    function addGoal(goal) {
+    function addGoal (goal) {
         dispatch({
             type: 'ADD_GOAL',
             payload: goal
