@@ -11,8 +11,10 @@ const SkillList = ({ skillType, level }) => {
         console.log(level + ' from Submit')
     }
     const getData = ()=>{
-        if (skillType && (level != 'ALL' || null) ){
-            return skills.filter(skill=> skill.level == level.replace(/-/g,'').trim() ).filter(skill => skill.skillType === skillType)
+        if (level){
+            if (skillType && level.match(/\d+/g)){
+                return skills.filter(skill=> skill.level == level.replace(/-/g,'').trim() ).filter(skill => skill.skillType === skillType)
+            }
         }
         if (skillType){
          return   skills.filter(skill => skill.skillType === skillType);
