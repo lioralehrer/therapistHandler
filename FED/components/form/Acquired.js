@@ -13,16 +13,13 @@ const Acquired = ({handleVisible}) => {
     const [visible, setVisible] = useState(true);
     
     const handleSkillType = (type) => {
-        setSkillType(type.title)
-        var arr = [];
-        let length = type.levels;
-        while (length > 0) {
-            arr.push({ title: '- ' + length + ' -' });
-            length -= 1;
-        }
-        setLsevels(arr.reverse())
+        setSkillType(type.title);
+        let arr = type.levels;
+        let my_arr = [];
+        arr.forEach(e =>  my_arr.push({ title : '- ' + e + ' -'}));
+        my_arr.push({title: 'ALL'})
+        setLsevels(my_arr);
     }
-
     return (
 
         <View>
@@ -32,7 +29,7 @@ const Acquired = ({handleVisible}) => {
                     <Header title={'סילבוס מיומנויות  \n  סמני בצבע מיומנויות קיימות '} />
                     <View style={styles.container}>
                         <DropdownListBtn title='תחום התפתחות' icon='rowing' arrayListItems={getSkillTypeList()} onSelect={(type) => handleSkillType(type)} />
-                        <DropdownListBtn title='רמה' icon='rowing' arrayListItems={levels} onSelect={(level) =>setLevel(level.title)} />
+                        <DropdownListBtn title='רמה' icon='rowing' arrayListItems={levels} onSelect={(level) => level !== "ALL" ? setLevel(level.title) : setLevel ('')} />
                     </View>
                     <SkillList skillType={skillType} level={level} />
                 </View>

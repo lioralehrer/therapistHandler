@@ -1,12 +1,12 @@
 export const getSkillTypeList = () => {
-    let skillTypeList = [{ title: 'שפה רצפטיבית', levels: 5 },
-    { title: 'כישורים חברתיים', levels: 5 },
-    { title: 'משחק', levels: 4 },
-    { title: 'קוגנציה', levels: 4 },
-    { title: 'קשב משותף', levels: 3 },
-    { title: 'מוטוריקה עדינה', levels: 3 },
-    { title: 'התנהגות', levels: 4 },
-    { title: 'שפה אקספרסיבית', levels: 5 },
+    let skillTypeList = [{ title: 'שפה רצפטיבית', levels: [ 3, 4, 5] },
+    { title: 'כישורים חברתיים', levels: [2, 3, 4, 5] },
+    { title: 'משחק', levels: [1, 2, 3, 4, 5] },
+    { title: 'קוגנציה', levels: [2, 3, 4, 5] },
+    { title: 'קשב משותף', levels: [2, 3, 4, 5] },
+    { title: 'מוטוריקה עדינה', levels: [2, 3, 4, 5] },
+    { title: 'התנהגות', levels: [1, 2, 3, 4, 5] },
+    { title: 'שפה אקספרסיבית', levels: [2, 3, 4, 5] },
     { title: '' }]
     return skillTypeList
 }

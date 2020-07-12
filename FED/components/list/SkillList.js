@@ -1,16 +1,25 @@
 import React, { useContext } from 'react';
-import { View,  Alert, StyleSheet, Button, FlatList, SafeAreaView } from 'react-native';
+import { View, Alert, StyleSheet, Button, FlatList, SafeAreaView } from 'react-native';
 import { SkillContext } from '../../context/SkillContext'
 import SkillItem from '../item/SkillItem';
 
 const SkillList = ({ skillType, level }) => {
     const { skills } = useContext(SkillContext);
 
-
     const onSubmit = (skills) => {
         Alert.alert("send request to DB");
-        // Alert.alert(toString(level))
         console.log(level + ' from Submit')
+    }
+    const getData = ()=>{
+        if (skillType && (level != 'ALL' || null) ){
+            return skills.filter(skill=> skill.level == level.replace(/-/g,'').trim() ).filter(skill => skill.skillType === skillType)
+        }
+        if (skillType){
+         return   skills.filter(skill => skill.skillType === skillType);
+        }
+        else {
+            return skills
+        }
     }
 
     return (
@@ -18,11 +27,10 @@ const SkillList = ({ skillType, level }) => {
             <View style={styles.container}>
                 <View style={styles.goalsList}>
                     <FlatList
-                         data =  {skillType ? skills.filter((skill)=> skill.skillType === skillType ): skills}
+                        data ={getData()}
                         renderItem={({ item }) => <SkillItem skill={item} />}
                         keyExtractor={item => item.id}
                         onPress={(id) => Alert.alert("pressed: change background color, and take the id")}
-
                     />
                 </View>
                 <Button title='שמירה' onPress={(skills) => onSubmit(skills)} color="#841584" />
