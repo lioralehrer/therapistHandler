@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, StyleSheet, View, Text, Modal, ScrollView, Button, TouchableOpacity, Alert } from 'react-native';
 import { globalStyles } from '../styles/global'
-import TherapistHeader from '../components/TherapistHeader';
+// import TherapistHeader from '../components/TherapistHeader';
 import SessionConfig from '../components/SessionConfig';
 import PlanSessions from '../sessions/PlanSessions';
 // import ActivitySelection from '../components/ActivitySelection '
-import UpperMenu from '../components/Headers/UpperMenu';
+// import UpperMenu from '../components/Headers/UpperMenu';
 // import StarSessionButton from '../components/StartSessionButton ';
 import { SessionProvider } from '../context/SessionContext';
 import { SkillProvider } from '../context/SkillContext';
@@ -197,8 +197,8 @@ export default class Manager extends Component {
             <SessionProvider>
                 <View style={styles.container}>
                     <ScrollView>
-                        <UpperMenu />
-                        <TherapistHeader userName={managerName} lastPatient={patient}></TherapistHeader>
+                        {/* <UpperMenu /> */}
+                        {/* <TherapistHeader userName={managerName} lastPatient={patient}></TherapistHeader> */}
                         <SessionConfig
                             title="מה תרצי לעשות ?"
                             icon01="bullseye"
@@ -319,8 +319,8 @@ export default class Manager extends Component {
                                     checkedGoal={(id) => this.checkedGoal(id)}
                                 /> */}
                                     <View style={styles.container}>
-                                        <UpperMenu />
-                                        <TherapistHeader />
+                                        {/* <UpperMenu />
+                                        <TherapistHeader /> */}
                                         {/* <ActivitySelection />   */}
                                         {/* <StarSessionButton /> */}
                                     </View>

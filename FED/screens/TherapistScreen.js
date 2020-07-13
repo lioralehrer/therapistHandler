@@ -5,9 +5,10 @@ import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import TherapistHeader from '../components/TherapistHeader';
 import UpperMenu from '../components/Headers/UpperMenu';
 import ActivitySelection from '../components/ActivitySelection';
-import StartSessionButton from '../components/StartSessionButton';
+ import StartSessionButton from '../components/StartSessionButton';
 
 const TherapistScreen = ({ route, navigation }) => {
+
     return (
         <View style={styles.container}>
             <UpperMenu />
@@ -22,6 +23,7 @@ const TherapistScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      justifyContent: 'flex-end',
     },
   })
 

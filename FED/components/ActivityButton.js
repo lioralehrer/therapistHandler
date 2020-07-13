@@ -1,12 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+
 
 const ActivityButton = ({activity, buttonStyle, updateStyle, updateGoals}) => {
   return (
     <View style={styles.container}>
+      {/* <TouchableOpacity style={buttonStyle} onPress={() => changeStyle(activity.id)}> */}
       <TouchableOpacity style={buttonStyle} onPress={() => {
+          // updateStyle(activity.title);
+          // updateGoals(activity.title);
           updateStyle(activity.id);
-          updateGoals(activity.id);
+          // updateGoals(activity.id);
+          updateGoals(activity);
         }}>
         <Text>{activity.title}</Text>
       </TouchableOpacity>
