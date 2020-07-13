@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Button, TextInput, ScrollView } from 'react-native';
+import { View, Text, Button, TextInput, ScrollView, Alert } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import DynamicTextInput from '../DynamicTextInput';
 import { getSkillTypeList } from '../../store/Data';
@@ -34,13 +34,12 @@ const PlanProgram = () => {
             id: goalId,
             serialNum: counter,
             skillType: skillType,
-            // patientId : ??? TODO?!
             description: description,
             archived: false,
             minTherapists: numOfTherapists,
             minConsecutiveDays: numOfDays,
             defaultEnv: defaultEnv,
-            // envs: en,
+            envs: en,
             activities: activities,
             subGoals: subgoals,
         }
@@ -48,6 +47,7 @@ const PlanProgram = () => {
         addGoal(g);
         setCounter(counter + 1);
         handleClear();
+        Alert.alert(` נבנתה : מטרה מספר  ${counter} `)
     }
 
     const handleClear = () => {

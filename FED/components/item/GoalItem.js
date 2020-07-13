@@ -1,14 +1,26 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button, Alert } from 'react-native';
 import { GoalContext } from '../../context/GoalContext'
 
 const GoalItem = ({ goal }) => {
     const { deleteGoal } = useContext(GoalContext);
+    const updateGoal = () => {
+        Alert.alert("Open GoalForm again with goal info");
+        console.log(goal)
+    }
     return (
         <TouchableOpacity style={styles.goal}>
             <View style={styles.goalView}>
-                <Text style={styles.goalTitle}>  {goal.serialNum}   תחום: {goal.skillType} </Text>
+                <View style={{alignItems:'flex-start'}}>
+                <Text style={styles.num}>  {goal.serialNum}  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <Text >תחום : </Text>
+                    <Text style={styles.goalTitle}>{goal.skillType}</Text>
+                </View>
+                <View style={{alignItems:'center'}}>
                 <Text style={styles.goalTitle}> {goal.description} </Text>
+                </View>
                 <Text> תת מטרות : </Text>
                 <FlatList
                     data={goal.subGoals}
@@ -19,13 +31,19 @@ const GoalItem = ({ goal }) => {
                     data={goal.activities}
                     renderItem={(act) => <Text style={styles.goalActivity}>{act.item.title}</Text>}
                     horizontal={true}
-                /> 
+                />
                 <Text style={styles.goalTitle}> סביבה דיפולטיבית : {goal.defaultEnv} </Text>
             </View>
-            <View style={{ margin: 10, padding: 5, width: 100 }}>
+            <View style={styles.btn}>
                 <Button
                     onPress={() => deleteGoal(goal.id)}
-                    title=" מחקי  " />
+                    title=" מחקי  "
+                    color='#9370db' />
+                <Button
+                    onPress={() => updateGoal(goal)}
+                    title=" update  "
+                    color='#9370db' />
+
             </View>
         </TouchableOpacity>
     )
@@ -46,8 +64,8 @@ const styles = StyleSheet.create({
         marginRight: 11,
     },
     goalView: {
-        flex: 1,
-        justifyContent: 'space-between',
+        // flex: 1,
+        // justifyContent: 'space-between',
     },
     goalInfo: {
         flex: 1,
@@ -55,13 +73,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         alignContent: 'flex-start',
     },
+    num: {
+        fontSize: 20,
+        fontWeight: '600',
+         color: '#9370db',
+    },
     goalTitle: {
-        flex: 1,
+        // flex: 1,
         flexWrap: 'wrap',
         fontSize: 16,
         fontWeight: 'bold',
         marginLeft: 10,
-        height: 20,
     },
     activitiesList: {
         flexWrap: 'wrap',
@@ -77,7 +99,12 @@ const styles = StyleSheet.create({
         paddingLeft: 4,
         paddingRight: 4,
         fontSize: 12,
-        // textAlign: 'center',
         height: 20,
     },
+    btn: {
+        margin: 10,
+        padding: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    }
 })
