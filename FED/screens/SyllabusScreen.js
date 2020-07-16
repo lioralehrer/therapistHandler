@@ -17,7 +17,7 @@ const SyllabusScreen = ({ route, navigation }) => {
                 <Acquired handleVisible={(visiblePlan) => setVisiblePlan(visiblePlan)} />
                 {visiblePlan && <PlanProgram />}
                 <View style={{ margin: 10, padding: 15, flexDirection: 'row', alignSelf: 'center' }}>
-                    <Button title={visibleList ? 'Close List ' : 'Goal List'} onPress={() => setVisibleList(!visibleList)} color='#5f9ea0' />
+                    <Button title={visibleList ? 'Close List ' : 'Open Goal List'} onPress={() => setVisibleList(!visibleList)} color='#5f9ea0' />
                     {visibleList && <GoalList />}
                 </View>
             </ScrollView>

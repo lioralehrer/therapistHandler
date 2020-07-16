@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import SessionConfig from '../components/SessionConfig';
 import { SkillProvider } from '../context/SkillContext';
 import { GoalProvider } from '../context/GoalContext';
@@ -21,7 +21,7 @@ const ManagerScreen = ({ route, navigation }) => {
                             btn01Title="בניית תוכנית אישית"
                             btn02Title="דוחות"
                             onPressBtn01={() => navigation.navigate("Syllabus", managerName)}
-                            onPressBtn02={() => Alert.alert("דוחות")}
+                            onPressBtn02={() => navigation.navigate("Reports")}
                         />
                         <SessionConfig
                             title="או"
@@ -30,7 +30,7 @@ const ManagerScreen = ({ route, navigation }) => {
                             btn01Title="תכנון שבועי"
                             btn02Title="התחילי טיפול"
                             onPressBtn02={() => navigation.navigate('Therapist home', managerName)}
-                            onPressBtn01={() => Alert.alert("תכנון שבועי")}
+                            onPressBtn01={() =>navigation.navigate('Plan Session',managerName)}
                         />
                     </ScrollView>
                 </View>
