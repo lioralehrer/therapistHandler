@@ -15,7 +15,6 @@ const GoalList = () => {
                         <FlatList
                             data={goals}
                             renderItem={({item}) => <View><GoalItem  goal={item}/></View>}
-                            // renderItem={({ item }) => console.log(item)}
                             keyExtractor={item => item.id}
                         />
                     </View>

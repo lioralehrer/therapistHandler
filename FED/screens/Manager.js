@@ -214,7 +214,8 @@ export default class Manager extends Component {
                             icon02="life-buoy"
                             btn01Title="תכנון שבועי"
                             btn02Title="התחילי טיפול"
-                            onPressBtn01={() => this.setModalVisible03(!this.state.modalVisible03)}
+                            // onPressBtn01={() => this.setModalVisible03(!this.state.modalVisible03)}
+                            onPressBtn01={() => Alert.alert("navigate to therapist")}
                             onPressBtn02={() => this.setModalVisible04(!this.state.modalVisible04)}
                         />
 

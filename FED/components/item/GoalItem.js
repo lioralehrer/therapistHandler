@@ -3,11 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button, Alert } fro
 import { GoalContext } from '../../context/GoalContext'
 
 const GoalItem = ({ goal }) => {
-    const { deleteGoal } = useContext(GoalContext);
+     const { deleteGoal } = useContext(GoalContext);
     const updateGoal = () => {
         Alert.alert("Open GoalForm again with goal info");
         console.log(goal)
     }
+   
     return (
         <TouchableOpacity style={styles.goal}>
             <View style={styles.goalView}>
