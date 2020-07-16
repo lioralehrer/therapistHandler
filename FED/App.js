@@ -13,20 +13,27 @@ import Manager from './screens/Manager';
 import Therapist from './screens/Therapist'
 import LoginScreen from './screens/LoginScreen';
 import TherapistScreen from './screens/TherapistScreen'
+import ManagerScreen from './screens/ManagerScreen';
+import BuildPlanScreen from './screens/SyllabusScreen';
+import SyllabusScreen from './screens/SyllabusScreen';
 
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
   return (
- 
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
-          <Stack.Screen name="Manager" component={Manager} options={{headerShown:false}} />
-          <Stack.Screen name="Therapist" component={TherapistScreen} options={{headerShown:false}}/>
-          {/* <Stack.Screen name="Therapist" component={Therapist} options={{headerShown:false}}/> */}
-        </Stack.Navigator>
-      </NavigationContainer>
+
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="Manager" component={Manager} options={{headerShown:false}} /> */}
+        <Stack.Screen name="Manager home" component={ManagerScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Therapist home" component={TherapistScreen} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="Therapist" component={Therapist} options={{headerShown:false}}/> */}
+        {/* Navigate From Manager Screen: */}
+        <Stack.Screen name="Syllabus" component={SyllabusScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Build Plan" component={BuildPlanScreen} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

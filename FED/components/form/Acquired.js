@@ -4,6 +4,7 @@ import Header from '../Headers/Header';
 import SkillList from '../list/SkillList';
 import DropdownListBtn from '../list/DropdownListBtn';
 import {getSkillTypeList } from '../../store/Data'
+import { SkillProvider } from '../../context/SkillContext';
 
 
 const Acquired = ({handleVisible}) => {
@@ -21,7 +22,7 @@ const Acquired = ({handleVisible}) => {
         setLsevels(my_arr);
     }
     return (
-
+        <SkillProvider>
         <View>
             {
                 visible &&
@@ -36,6 +37,7 @@ const Acquired = ({handleVisible}) => {
             }
             <Button title={visible ? 'לבניית התוכנית' : 'חזרה לסילבוס מיומנויות נרכשות'} onPress={() => {setVisible(!visible); handleVisible(visible)}} color="#841584" />
         </View>
+        </SkillProvider>
 
     )
 }
