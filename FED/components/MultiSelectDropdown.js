@@ -47,7 +47,7 @@ export default class MultiSelectDropdown extends Component {
                     selectedItemTextColor="#CCC"
                     selectedItemIconColor="#CCC"
                     itemTextColor="#000"
-                    displayKey="title"
+                    displayKey="description"
                     searchInputStyle={{ color: '#CCC' }}
                     submitButtonColor="#48d22b"
                     submitButtonText="Submit"

@@ -9,7 +9,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Manager from './screens/Manager';
 import LoginScreen from './screens/LoginScreen';
 import TherapistScreen from './screens/TherapistScreen'
 import ManagerScreen from './screens/ManagerScreen';
@@ -26,7 +25,6 @@ const App: () => React$Node = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="Manager" component={Manager} options={{headerShown:false}} /> */}
         <Stack.Screen name="Manager home" component={ManagerScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Therapist home" component={TherapistScreen} options={{ headerShown: false }} />
         {/* Navigate From Manager Screen: */}

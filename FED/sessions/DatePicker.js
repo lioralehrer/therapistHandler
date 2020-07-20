@@ -18,13 +18,13 @@ const DatePicker = ({ time }) => {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>{chosenDate ? chosenDate.substring(0, 10) + '\n' + chosenDate.substring(11, 16) : ''}  </Text>
             <TouchableOpacity
                 underlayColor='#ccc'
                 style={styles.btn}
                 onPress={showDatePicker}>
                 <Text style={styles.text}> תאריך ושעה</Text>
             </TouchableOpacity>
+            <Text style={styles.text}>{chosenDate ? chosenDate.substring(0, 10) + '\n' + chosenDate.substring(11, 16) : ''}  </Text>
             <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="datetime"
@@ -39,21 +39,21 @@ export default DatePicker;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
         alignItems: 'center',
     },
     btn: {
-        width: 200,
-        height: 50,
-        backgroundColor: '#89AAFF',
-        borderRadius: 30,
-        marginTop: 15,
+        height: 30,
+        padding: 5,
+        backgroundColor: 'lavender',
+        width:150,
+        alignItems:'center',
+        borderRadius:5,
+        // marginTop: 15,
         justifyContent: 'center'
     },
     text: {
         fontSize: 20,
         textAlign: 'center',
-        color: 'white'
+        color: 'blue'
     }
 })
