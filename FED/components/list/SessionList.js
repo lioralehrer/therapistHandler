@@ -7,7 +7,7 @@ const SessionList = () => {
   const {sessions} = useContext(SessionContext);
 
   useEffect(()=>{
-    console.log("******************RENDER*****************")
+    console.log("******************RENDER SESSION LIST*****************")
   })
     return(
         <SafeAreaView style={{flex: 1}}>
@@ -15,8 +15,8 @@ const SessionList = () => {
         <View style={styles.goalsList}>
           <FlatList
           data={sessions}
-          renderItem={({item}) => <View><SessionItem  session={item}/></View>}
-          //  renderItem={({item}) =>console.log(item)}
+           renderItem={({item}) => <View><SessionItem  session={item}/></View>}
+          // renderItem={({item}) =>console.log('session lalal: ' +item)}
           keyExtractor={item => item.id}
          />
         </View>

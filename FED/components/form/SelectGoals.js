@@ -12,14 +12,11 @@ const SelectGoals = ({ handleGoals }) => {
         if (bool) {
             if (!selectedGoals.includes(item)) {
                 setSelectedGoals([...selectedGoals, item])
-                Alert.alert("inside handle item");
-                console.log(selectedGoals);
             }
         }
         else {
             if (selectedGoals.includes(item)) {
-                setSelectedGoals(selectedGoals.filter((goal) => goal.id === item.id));
-                Alert.alert("delete goal");
+                setSelectedGoals(selectedGoals.filter((goal) => goal.id !== item.id));
             }
         }
 

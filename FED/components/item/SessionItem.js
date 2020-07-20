@@ -12,7 +12,8 @@ const SessionItem = ({ session }) => {
                 <Text>מטרות:</Text>
                 <FlatList
                     data={session.goals}
-                    renderItem={(goal) => <Text style={styles.goalActivity}>{goal.item}</Text>}
+                    renderItem={(goal) => <Text style={styles.goalActivity}>{goal.item.description}</Text>}
+                    // renderItem={(goal) => {console.log("goal: "), console.log(goal)}}
                     keyExtractor={item => item.id}
                 />
                 <Text>פעילויות: </Text>

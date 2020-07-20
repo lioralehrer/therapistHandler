@@ -122,9 +122,9 @@ export const AddSession = () => {
             <DatePicker time={(t) => setSession({ ...session, scheduledAt: t })} />
             <ItemPicker title=" מטפלת" arrayListItems={getTherapistList()} onSelect={(therapist)=> setSession({...session, therapist})} />
             </View>
-            <SelectGoals handleGoals={(selectedGoals)=>console.log(selectedGoals)}/>
+            <SelectGoals handleGoals={(selectedGoals)=>setSession({ ...session, goals : selectedGoals})}/>
             <MultiSelectDropdown title="מטרות...." list={goals} handleList={(list) => handleSelectedItems(list, getGoalList(), 'goals')} />
-            {session.goals.map(g => { return <View><Text style={{ color: '#fff' }}>{g}</Text></View> })}
+            {/* {session.goals.map(g => { return <View><Text style={{ color: '#fff' }}>{g}</Text></View> })} */}
 
             <MultiSelectDropdown title="פעילויות..." list={getActivityList()} handleList={(list) => handleSelectedItems(list, getActivityList(), 'activities')} />
             {session.activities.map(act => { return <View><Text style={{ color: '#fff' }}>{act}</Text></View> })}
