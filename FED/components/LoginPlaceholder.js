@@ -19,9 +19,9 @@ const LoginPlaceholder = ({ navigation }) => {
             return user.userName == userName
         })
         if (u.psw == psw) {
-            if (u.role == 'manager') {
+            if (u.role === 'manager') {
                 navigation.navigate('Manager home', { managerName: userName, patient: 'ירדן' });
-            } else if (u.role == 'therapist home') {
+            } else if (u.role === 'therapist') {
                 // navigation.navigate('Therapist', { therapistName: userName, patient: 'ורד' });
                 navigation.navigate('Therapist home', { userName });
             } else { Alert.alert("Handle Admin...") }
