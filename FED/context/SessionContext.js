@@ -41,12 +41,12 @@ export const SessionProvider = ({ children }) => {
         });
     }
   
-    // function updateSession(session) {
-    //     dispach({
-    //         type: 'UPDATE_SESSION',
-    //         payload: session
-    //     })
-    // }
+    function updateSession(session) {
+        dispach({
+            type: 'UPDATE_SESSION',
+            payload: session
+        })
+    }
 
     return (
         <SessionContext.Provider
@@ -54,7 +54,7 @@ export const SessionProvider = ({ children }) => {
                 sessions: state.sessions,
                 addSession,
                 deleteSession,
-                // updateSession
+                updateSession
             }}
         >
             {children}

@@ -51,16 +51,16 @@ const getGoalList = () => {
 
 const getActivityList = () => {
     const activitiesList = [
-        { id: '1', title: 'כדור' },
-        { id: '2', title: 'גואש' },
-        { id: '3', title: 'חריזה' },
-        { id: '4', title: 'בובה' },
-        { id: '5', title: 'לגו' },
-        { id: '6', title: 'משרוקיות' },
-        { id: '7', title: 'חול' },
-        { id: '8', title: 'אופניים' },
-        { id: '9', title: 'בועות סבון' },
-        { id: '10', title: 'בר בצק' },]
+        { id: '1', description: 'כדור' },
+        { id: '2', description: 'גואש' },
+        { id: '3', description: 'חריזה' },
+        { id: '4', description: 'בובה' },
+        { id: '5', description: 'לגו' },
+        { id: '6', description: 'משרוקיות' },
+        { id: '7', description: 'חול' },
+        { id: '8', description: 'אופניים' },
+        { id: '9', description: 'בועות סבון' },
+        { id: '10', description: 'בר בצק' },]
 
     return activitiesList
 }
@@ -114,7 +114,15 @@ export const AddSession = () => {
 
     const onSubmit = () => {
         addSession(session);
-        Alert.alert("נוצר סשיין חדש  " + session.sessionPlanMessage)
+        Alert.alert("נוצר סשיין חדש  " + session.sessionPlanMessage);
+        setSession({
+            goals: [],
+            therapist: '',
+            scheduledAt: '',
+            activities: [],
+            sessionPlanMessage: '',
+            id: Math.floor(Math.random() * 100000000),
+        })
     }
     return (
         <View style={styles.container}>
@@ -124,8 +132,6 @@ export const AddSession = () => {
             </View>
             <SelectGoals handleGoals={(selectedGoals)=>setSession({ ...session, goals : selectedGoals})}/>
             <MultiSelectDropdown title="מטרות...." list={goals} handleList={(list) => handleSelectedItems(list, getGoalList(), 'goals')} />
-            {/* {session.goals.map(g => { return <View><Text style={{ color: '#fff' }}>{g}</Text></View> })} */}
-
             <MultiSelectDropdown title="פעילויות..." list={getActivityList()} handleList={(list) => handleSelectedItems(list, getActivityList(), 'activities')} />
             {session.activities.map(act => { return <View><Text style={{ color: '#fff' }}>{act}</Text></View> })}
 
