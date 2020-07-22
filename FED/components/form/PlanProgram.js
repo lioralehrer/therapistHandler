@@ -20,6 +20,7 @@ const PlanProgram = () => {
     const [activities, setActivities] = useState();
     const [defaultEnv, setDefaultEnv] = useState();
     const [envs, setEnvs] = useState();
+    const [clear, setClear] = useState(false);
     const { addGoal } = useContext(GoalContext);
 
     const handleNewGoal = () => {
@@ -59,6 +60,7 @@ const PlanProgram = () => {
         setActivities();
         setDefaultEnv();
         setEnvs();
+        setClear(!clear);
     }
 
     return (
@@ -66,8 +68,8 @@ const PlanProgram = () => {
             <ScrollView>
                 <Text style={globalStyles.HeaderInsideText}>{`מטרה חדשה \n מטרה  ${counter}`} </Text>
                 <View style={{ alignItems: 'flex-start' }}>
-                    <DropdownListBtn title='  ניתן לשנות מספר מטרה  ' arrayListItems={getNums()} onSelect={(num) => setCounter(parseInt(num.title.replace(/-/g, "")))} />
-                    <DropdownListBtn title='תחום התפתחות' icon='rowing' arrayListItems={getSkillTypeList()} onSelect={(type) => setSkillType(type.title)} />
+                    <DropdownListBtn clear={clear} title='  ניתן לשנות מספר מטרה  ' arrayListItems={getNums()} onSelect={(num) => setCounter(parseInt(num.title.replace(/-/g, "")))} />
+                    <DropdownListBtn clear={clear} title='תחום התפתחות' icon='rowing' arrayListItems={getSkillTypeList()} onSelect={(type) => setSkillType(type.title)} />
                     <ChooseSkills title='בחרי מטרות מתוך המאגר' skillType={skillType} addSkills={(skills) => setDescription(skills)} />
                     <TextInput
                         style={globalStyles.input}
@@ -78,6 +80,7 @@ const PlanProgram = () => {
                     />
                 </View>
                 <DynamicTextInput
+                     clear={clear}
                     title='תת מטרות'
                     btnTitle='הוסיפי תת מטרה '
                     placeholder='תת מטרה ....'
@@ -85,15 +88,16 @@ const PlanProgram = () => {
                     submitTextInput={(e) => setSubgoals(e)} />
 
                 <DynamicTextInput
+                    clear={clear}
                     title='פעילויות'
                     btnTitle='הוסיפי פעילות'
                     placeholder='פעילות....'
                     entity={activities}
                     submitTextInput={(e) => setActivities(e)} />
 
-                <DropdownListBtn title='מספר מטפלים' arrayListItems={getNums()} onSelect={(num) => setNumOfTherapists(parseInt(num.title.replace(/-/g, "")))} />
-                <DropdownListBtn title='ימים עוקבים ' arrayListItems={getNums()} onSelect={(days) => setNunOfDays(parseInt(days.title.replace(/-/g, "")))} />
-                <DropdownListBtn title='סביבה דיפולטיבית ' arrayListItems={getEnvs()} onSelect={(env) => setDefaultEnv(env.title)} />
+                <DropdownListBtn clear={clear} title='מספר מטפלים' arrayListItems={getNums()} onSelect={(num) => setNumOfTherapists(parseInt(num.title.replace(/-/g, "")))} />
+                <DropdownListBtn clear={clear} title='ימים עוקבים ' arrayListItems={getNums()} onSelect={(days) => setNunOfDays(parseInt(days.title.replace(/-/g, "")))} />
+                <DropdownListBtn clear={clear} title='סביבה דיפולטיבית ' arrayListItems={getEnvs()} onSelect={(env) => setDefaultEnv(env.title)} />
                 <MultiPicker title='בחרי סביבות נוספות' array={getEnvs()} addItems={(envs) => setEnvs(envs)} />
                 <TextInput
                     style={globalStyles.input}

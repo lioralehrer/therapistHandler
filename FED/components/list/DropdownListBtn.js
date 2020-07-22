@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Alert, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Icon } from 'react-native-elements'
 
-const DropdownListBtn = ({ title, icon, arrayListItems, onSelect }) => {
+const DropdownListBtn = ({ clear, title, icon, arrayListItems, onSelect }) => {
 
     const [dropdownValue, setDropdownValue] = useState();
     const [modalVisible, setModalVisible] = useState(false);
+    const [clearText, setClearText] = useState(clear)
+    if (clear !== clearText) {
+        setDropdownValue();
+        setClearText(!clearText);
+    }
 
     return (
         <View style={styles.container}>
