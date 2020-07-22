@@ -71,6 +71,7 @@ const getTherapistList = () => {
 
 
 export const AddSession = () => {
+    const [clear, setclear] = useState(false)
     const [session, setSession] = useState(
         {
             goals: [],
@@ -83,7 +84,10 @@ export const AddSession = () => {
     const { goals } = useContext(GoalContext);
     const { addSession } = useContext(SessionContext);
 
+    
+
     useEffect(() => {
+        // setTimePlaceHolder(!timePlaceHolder)
         // axios.get('../data.json')
         // axios.get('https://jsonplaceholder.typicode.com/posts')
             // axios.get('http://localhost/api/goals')
@@ -113,6 +117,7 @@ export const AddSession = () => {
     }
 
     const onSubmit = () => {
+        setclear(!clear);
         addSession(session);
         Alert.alert("נוצר סשיין חדש  " + session.sessionPlanMessage);
         setSession({
@@ -127,15 +132,15 @@ export const AddSession = () => {
     return (
         <View style={styles.container}>
             <View style={{flexDirection: 'row'}}>
-            <DatePicker time={(t) => setSession({ ...session, scheduledAt: t })} />
-            <ItemPicker title=" מטפלת" arrayListItems={getTherapistList()} onSelect={(therapist)=> setSession({...session, therapist})} />
+            <DatePicker clear={clear} time={(t) => setSession({ ...session, scheduledAt: t })} />
+            <ItemPicker clear={clear} title=" מטפלת" arrayListItems={getTherapistList()} onSelect={(therapist)=> setSession({...session, therapist})} />
             </View>
             <SelectGoals handleGoals={(selectedGoals)=>setSession({ ...session, goals : selectedGoals})}/>
             <MultiSelectDropdown title="מטרות...." list={goals} handleList={(list) => handleSelectedItems(list, getGoalList(), 'goals')} />
             <MultiSelectDropdown title="פעילויות..." list={getActivityList()} handleList={(list) => handleSelectedItems(list, getActivityList(), 'activities')} />
             {session.activities.map(act => { return <View><Text style={{ color: '#fff' }}>{act}</Text></View> })}
 
-            <Message message={(msg) => setSession({ ...session, sessionPlanMessage: msg })} />
+            <Message clear={clear} message={(msg) => setSession({ ...session, sessionPlanMessage: msg })} />
             <View><Text style={{ color: '#fff' }}>{session.sessionPlanMessage}</Text></View>
 
             <View style={{ margin: 10, padding: 5, width: 100 }}>

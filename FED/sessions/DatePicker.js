@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Alert, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const DatePicker = ({ time }) => {
+const DatePicker = ({clear, time }) => {
     const [isDatePickerVisible, setIsDatePickerVIsble] = useState(false)
-    const [chosenDate, setChosenDate] = useState()
+    const [chosenDate, setChosenDate] = useState();
+    const [clearText, setClearText] = useState(clear)
+    if (clear !== clearText){
+        setChosenDate('');
+        setClearText(!clearText);
+    }
     const showDatePicker = () => {
         setIsDatePickerVIsble(true);
     }
@@ -16,6 +21,11 @@ const DatePicker = ({ time }) => {
     const hideDatePicker = () => {
         setIsDatePickerVIsble(false)
     }
+    useEffect(()=>{
+        // console.log("DatePicker Rendered")
+        // console.log(chosenDate)
+    })
+
     return (
         <View style={styles.container}>
             <TouchableOpacity

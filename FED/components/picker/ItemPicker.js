@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
-const ItemPicker = ({ title, arrayListItems, onSelect }) => {
+const ItemPicker = ({ clear, title, arrayListItems, onSelect }) => {
 
     const [dropdownValue, setDropdownValue] = useState();
     const [modalVisible, setModalVisible] = useState(false);
+    const [clearText, setClearText] = useState(clear)
+    if (clear !== clearText){
+        setDropdownValue();
+        setClearText(!clearText);
+    }
 
     return (
         <View style={styles.container}>
