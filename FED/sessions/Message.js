@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, Alert } from 'react-native';
 
 
-const Message = ({ message }) => {
-    const [text, setText] = useState('')
+const Message = ({ clear, message }) => {
+    const [text, setText] = useState('');
+    const [clearText, setClearText] = useState(clear)
+    if (clear !== clearText){
+        setText('');
+        setClearText(!clearText);
+    }
     return (
         <View style={styles.textAreaContainer} >
             <TextInput
