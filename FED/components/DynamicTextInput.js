@@ -9,6 +9,7 @@ const DynamicTextInput = ({clear, title, btnTitle, placeholder, entity, submitTe
     const [clearText, setClearText] = useState(clear)
     if (clear !== clearText) {
         setEventValue('');
+        setFields(1);
         setClearText(!clearText);
     }
 
