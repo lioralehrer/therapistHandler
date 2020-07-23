@@ -18,12 +18,11 @@ const LoginPlaceholder = ({ navigation }) => {
         let u = userInfo.find((user) => {
             return user.userName == userName
         })
-        if (u.psw == psw) {
-            if (u.role == 'manager') {
-                navigation.navigate('Manager', { managerName: userName, patient: 'ירדן' });
-            } else if (u.role == 'therapist') {
-                // navigation.navigate('Therapist', { therapistName: userName, patient: 'ורד' });
-                navigation.navigate('Therapist', {userName});
+        if (u.psw === psw) {
+            if (u.role === 'manager') {
+                navigation.navigate('Manager home', { managerName: userName, patient: 'ירדן' });
+            } else if (u.role === 'therapist') {
+                navigation.navigate('Therapist home', { userName });
             } else { Alert.alert("Handle Admin...") }
         } else {
          Alert.alert("Some Problem With User or Password... ")

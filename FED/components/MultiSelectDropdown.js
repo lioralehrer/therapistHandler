@@ -1,16 +1,11 @@
-// Example Multiple select / Dropdown / Picker in React Native
 import React, { Component } from 'react';
-//Import React
 import { View, Alert } from 'react-native';
-//Import basic react native components
 import MultiSelect from 'react-native-multiple-select';
-//Import MultiSelect library
 
 
 export default class MultiSelectDropdown extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             selectedItems: [],
             newList: []
@@ -24,18 +19,19 @@ export default class MultiSelectDropdown extends Component {
         });
         
         this.props.handleList(selectedItems)
-        alert(this.props.list[selectedItems - 1].title)
+        // alert(this.props.list[selectedItems - 1].title)
         // Alert.alert(JSON.stringify(selectedItems))
         //Set Selected Items
     };
 
     render() {
+        const list = this.props.list
         const { selectedItems } = this.state;
         return (
             <View style={{ flex: 1, padding: 30 }}>
                 <MultiSelect
                     hideTags
-                    items={this.props.list}
+                    items={list}
                     uniqueKey="id"
                     ref={component => {
                         this.multiSelect = component;
@@ -51,7 +47,7 @@ export default class MultiSelectDropdown extends Component {
                     selectedItemTextColor="#CCC"
                     selectedItemIconColor="#CCC"
                     itemTextColor="#000"
-                    displayKey="title"
+                    displayKey="description"
                     searchInputStyle={{ color: '#CCC' }}
                     submitButtonColor="#48d22b"
                     submitButtonText="Submit"

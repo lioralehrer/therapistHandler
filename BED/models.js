@@ -4,6 +4,7 @@ const fs = require('fs');
 const colorObjs = fs.readFileSync('../../DATA_SPECTRACKER/colors/Color_objs.json');
 const skillTypeObjs = fs.readFileSync('../../DATA_SPECTRACKER/skillTypes/skillTypeObjs.json');
 
+
 const User = sequelize.define('user', {
     fullName: {
       type: Sequelize.STRING,
@@ -388,7 +389,7 @@ const populateTables = async () => {
       await Patient.bulkCreate([
       {
         fullName: "patient name",
-        birthdate: new Date(Date.now())
+        birthdate: new Date(Date.UTC(2009, 5, 3))
       },
       {
         fullName: "פיישנט ניים",

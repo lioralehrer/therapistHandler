@@ -3,7 +3,7 @@ export default (state, action) => {
         case 'ADD_GOAL':
             return {
                 ...state,
-               goals : [action.payload, ...state.goals]
+                goals: [action.payload, ...state.goals]
             }
         case 'DELETE_GOAL':
             return {
@@ -13,10 +13,10 @@ export default (state, action) => {
         case 'UPDATE_GOAL':
             var g = [...state.goals];
             var foundIndex = state.goals.findIndex(goal => goal.id === action.payload.id);
-            g[foundIndex] = action.payload ;
+            g[foundIndex] = action.payload;
             return {
                 ...state,
-                goals : g
+                goals: g
             }
         default:
             return state;
