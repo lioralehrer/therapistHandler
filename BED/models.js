@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize');
 const sequelize = require('./dbConnector');
 const fs = require('fs');
-// const colorObjs = fs.readFileSync('../../colors_for_therapistHandler/Color_objs.json');
+const colorObjs = fs.readFileSync('../../DATA_SPECTRACKER/colors/Color_objs.json');
+const skillTypeObjs = fs.readFileSync('../../DATA_SPECTRACKER/skillTypes/skillTypeObjs.json');
+
 
 const User = sequelize.define('user', {
     fullName: {
@@ -336,6 +338,22 @@ const Color = sequelize.define('color', {
     allowNull: false,
     unique: true
   }
+})
+
+const SkillType = sequelize.define('skilltype', {
+  title: {
+    type:Sequelize.STRING,
+    allowNull: false
+  },
+  level: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['title', 'level']
+  }]
 })
 
 // -----------------------------------------------
@@ -678,19 +696,37 @@ const populateTables = async () => {
       console.error(err.message);
     }
   }
-  // const colorCount = (await Color.findAll()).length;
-  // console.log(`colorCount: ${colorCount}`);
-  // if (colorCount === 0) {
-  //   try {
-  //     Color.bulkCreate(JSON.parse(colorObjs), {
-  //       validate: true,
-  //       individualHooks: true
-  //     }).then().catch(err => console.error(err));
-  //     console.log("added all 150 colors to table");
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
+  const colorCount = (await Color.findAll()).length;
+  console.log(`colorCount: ${colorCount}`);
+  if (colorCount === 0) {
+    try {
+      Color.bulkCreate(JSON.parse(colorObjs), {
+        validate: true,
+        individualHooks: true
+      }).then().catch(err => console.error(err));
+      console.log("added all 150 colors to table");
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  const skillTypeCount = (await SkillType.findAll()).length;
+  console.log(`skillTypeCount: ${skillTypeCount}`);
+  if (skillTypeCount === 0) {
+    allSkillTypes = JSON.parse(skillTypeObjs);
+    try {
+      skillTypes = [];
+      for (let level in allSkillTypes) {
+        allSkillTypes[level].forEach(title => skillTypes.push({title, level: parseInt(level)}));
+      }
+      SkillType.bulkCreate(skillTypes, {
+        validate: true,
+        individualHooks: true
+      }).then().catch(err => console.error(err));
+      console.log("added all skill types to table");
+    } catch (err) {
+      console.error(err)
+    }
+  }
 }
 
 sequelize.sync().then(() => {
