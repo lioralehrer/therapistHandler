@@ -2,8 +2,10 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button } from 'react-native';
 import { SessionContext } from '../../context/SessionContext'
 
+// "goals": [{"activities": [Array], "archived": false, "defaultEnv": "ים", "description": "אחלו להם כל טוב", "id": 0.2390894902286022, "minConsecutiveDays": 4, "minTherapists": 3, "serialNum": 1, "skillType": "משחק", "subGoals": [Array]}
 const SessionItem = ({ session }) => {
     const { deleteSession } = useContext(SessionContext);
+  
     return (
         <TouchableOpacity style={styles.goal}>
             <View style={styles.goalView}>
