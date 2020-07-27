@@ -10,15 +10,7 @@ import SelectGoals from '../components/form/SelectGoals';
 import DropdownListBtn from '../components/list/DropdownListBtn';
 import ItemPicker from '../components/picker/ItemPicker';
 
-const getGoalList = () => {
-    const goalList = [
-        { id: 1, title: 'מטרה 1', description: 'מטרה מספר אחת' },
-        { id: 2, title: 'מטרה 2', description: 'מטרה מספר שתיים' },
-        { id: 3, title: 'מטרה 3', description: 'מטרה מספר שלוש' }
-    ]
-    return goalList
 
-}
 //  async () => {
 // console.log("blabal")
 // try {
@@ -48,22 +40,6 @@ const getGoalList = () => {
 //   })
 // });
 
-
-// const getActivityList = () => {
-//     const activitiesList = [
-//         { id: '1', description: 'כדור' },
-//         { id: '2', description: 'גואש' },
-//         { id: '3', description: 'חריזה' },
-//         { id: '4', description: 'בובה' },
-//         { id: '5', description: 'לגו' },
-//         { id: '6', description: 'משרוקיות' },
-//         { id: '7', description: 'חול' },
-//         { id: '8', description: 'אופניים' },
-//         { id: '9', description: 'בועות סבון' },
-//         { id: '10', description: 'בר בצק' },]
-
-//     return activitiesList
-// }
 const getTherapistList = () => {
     const therapistList = [{ title: 'קורל' }, { title: 'הדר' }, { title: 'מאי' }, { title: 'עדי' }]
     return therapistList
@@ -85,13 +61,8 @@ export const AddSession = () => {
     const { addSession } = useContext(SessionContext);
     const getActivityList = () => {
         let activities = [];
-        let goalList = goals;
-      goalList.forEach(goal => {
-          goal.activities.forEach((act) => {
-              activities.push(act);
-          })
-      })
-        console.log(activities)
+        let goalList = session.goals;
+        goalList.forEach(goal => goal.activities.forEach(act => activities.push(act)))
         return activities
     }
 
@@ -108,7 +79,7 @@ export const AddSession = () => {
     const handleSelectedItems = (listOfId, list, sessionProperty) => {
         const newList = [];
         listOfId.forEach(e => {
-            filtered = list.filter((item) => item.id === e);
+            const filtered = list.filter((item) => item.id === e);
             filtered.forEach(element => {
                 newList.push(element)
             });
@@ -145,8 +116,6 @@ export const AddSession = () => {
             {/* <SelectGoals handleGoals={(selectedGoals)=>setSession({ ...session, goals : selectedGoals})}/> */}
             <MultiSelectDropdown clear={clear} title="מטרות...." list={goals} handleList={(listOfId) => handleSelectedItems(listOfId, goals, 'goals')} />
             <MultiSelectDropdown clear={clear} title="פעילויות..." list={getActivityList()} handleList={(listOfId) => handleSelectedItems(listOfId, getActivityList(), 'activities')} />
-            {/* {session.activities.map(act => { return <View><Text style={{ color: '#fff' }}>{act}</Text></View> })} */}
-
             <Message clear={clear} message={(msg) => setSession({ ...session, sessionPlanMessage: msg })} />
             <View><Text style={{ color: '#fff' }}>{session.sessionPlanMessage}</Text></View>
 

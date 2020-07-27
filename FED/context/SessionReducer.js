@@ -1,13 +1,9 @@
 export default (state, action) => {
     switch (action.type) {
         case 'ADD_SESSION':
-            let newSessionList =  state.sessions;
-            newSessionList.push(action.payload);
-            // console.log(newSessionList);
             return {
                 ...state,
-                sessions: newSessionList
-                 
+                 sessions : [action.payload, ...state.sessions]
             }
         case 'DELETE_SESSION':
             return {

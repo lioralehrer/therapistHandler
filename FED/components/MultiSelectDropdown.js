@@ -15,8 +15,8 @@ export default class MultiSelectDropdown extends Component {
         this.setState({
             selectedItems
         });
-        console.log("selected list in MultiSelectedDropdown retun id of item: ");
-        console.log(selectedItems);
+        // console.log("selected list in MultiSelectedDropdown retun id of item: ");
+        // console.log(selectedItems);
         this.props.handleList(selectedItems);
     };
 
