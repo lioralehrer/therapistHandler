@@ -9,6 +9,7 @@ import DropdownListBtn from '../list/DropdownListBtn';
 import ChooseSkills from './ChooseSkills';
 import { GoalContext } from '../../context/GoalContext';
 import MultiPicker from './MultiPicker';
+import DynamicFormInput from './DynamicFormInput';
 
 const PlanProgram = () => {
     const [counter, setCounter] = useState(1)
@@ -20,17 +21,15 @@ const PlanProgram = () => {
     const [activities, setActivities] = useState();
     const [defaultEnv, setDefaultEnv] = useState();
     const [envs, setEnvs] = useState();
+    const [environments , setEnvironments] = useState([]);
     const [clear, setClear] = useState(false);
     const { addGoal } = useContext(GoalContext);
 
     const handleNewGoal = () => {
         let goalId = Math.random();
-        let en = () => {
             if (envs) {
-                return envs.split(" ");
+                setEnvironments(envs.split(" "))
             }
-            return envs
-        }
         let g = {
             id: goalId,
             serialNum: counter,
@@ -40,7 +39,7 @@ const PlanProgram = () => {
             minTherapists: numOfTherapists,
             minConsecutiveDays: numOfDays,
             defaultEnv: defaultEnv,
-            envs: en,
+            envs: environments,
             activities: activities,
             subGoals: subgoals,
         }
@@ -60,6 +59,7 @@ const PlanProgram = () => {
         setActivities();
         setDefaultEnv();
         setEnvs();
+        setEnvironments([]);
         setClear(!clear);
     }
 
@@ -87,13 +87,23 @@ const PlanProgram = () => {
                     entity={subgoals}
                     submitTextInput={(e) => setSubgoals(e)} />
 
-                <DynamicTextInput
+                    <DynamicFormInput 
+                     clear = {clear}
+                     title = 'פעילויות'
+                     btnTitle = 'הוסיפי פעילות'
+                     placeholder01 = 'שם הפעילות'
+                     placeholder02 = 'תיאור'
+                     entity = {activities}
+                     submitTextInput={(e)=> setActivities(e)}   
+                    />
+
+                {/* <DynamicTextInput
                     clear={clear}
                     title='פעילויות'
                     btnTitle='הוסיפי פעילות'
                     placeholder='פעילות....'
                     entity={activities}
-                    submitTextInput={(e) => setActivities(e)} />
+                    submitTextInput={(e) => setActivities(e)} /> */}
 
                 <DropdownListBtn clear={clear} title='מספר מטפלים' arrayListItems={getNums()} onSelect={(num) => setNumOfTherapists(parseInt(num.title.replace(/-/g, "")))} />
                 <DropdownListBtn clear={clear} title='ימים עוקבים ' arrayListItems={getNums()} onSelect={(days) => setNunOfDays(parseInt(days.title.replace(/-/g, "")))} />
