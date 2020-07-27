@@ -34,9 +34,7 @@ const SessionConfig = ({ title, btn01Title,icon01, btn02Title,icon02, onPressBtn
 const styles = StyleSheet.create({
     configContainer: {
         flex: 1,
-        // margin: 20,
         marginTop: 30,
-        // paddingTop: 30,
     },
     text: {
         fontSize: 20,

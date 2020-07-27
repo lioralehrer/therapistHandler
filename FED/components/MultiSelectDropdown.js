@@ -7,24 +7,26 @@ export default class MultiSelectDropdown extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedItems: [],
-            newList: []
+            selectedItems:'',
+            clearText: this.props.clear,
         };
     }
-     
     onSelectedItemsChange = selectedItems => {
         this.setState({
             selectedItems
-            
         });
-        
-        this.props.handleList(selectedItems)
-        // alert(this.props.list[selectedItems - 1].title)
-        // Alert.alert(JSON.stringify(selectedItems))
-        //Set Selected Items
+        // console.log("selected list in MultiSelectedDropdown retun id of item: ");
+        // console.log(selectedItems);
+        this.props.handleList(selectedItems);
     };
 
     render() {
+        if (this.state.clearText !== this.props.clear){
+            this.setState({
+                selectedItems: '',
+                clearText: this.props.clear,
+            })
+        }
         const list = this.props.list
         const { selectedItems } = this.state;
         return (

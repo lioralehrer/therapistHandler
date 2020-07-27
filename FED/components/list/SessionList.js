@@ -15,8 +15,8 @@ const SessionList = () => {
         <View style={styles.goalsList}>
           <FlatList
           data={sessions}
-           renderItem={({item}) => <View><SessionItem  session={item}/></View>}
-          // renderItem={({item}) =>console.log('session lalal: ' +item)}
+            renderItem={({item}) => <View><SessionItem session={item} /></View>}
+          //  renderItem={({item}) =>{console.log('session lalal: '); console.log(item)}}
           keyExtractor={item => item.id}
          />
         </View>

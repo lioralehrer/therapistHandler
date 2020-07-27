@@ -1,13 +1,18 @@
 import React, { useState, useContext } from 'react';
 import { View, Alert, Text, StyleSheet, TouchableHighlight } from 'react-native';
 
-const SelectedItem = ({ item, handleItem }) => {
-     const [selected, setselected] = useState(false)
-    
-     const Handleselected = ()=>{
-         setselected(!selected);
-         handleItem(!selected);
-     }
+const SelectedItem = ({ clear, item, handleItem }) => {
+    const [selected, setselected] = useState(false)
+    // const [clearText, setClearText] = useState(clear);
+    // if (clearText !== clear) {
+    //     setselected(false);
+    //     setClearText(!clearText);
+    // }
+
+    const Handleselected = () => {
+        setselected(!selected);
+        handleItem(!selected);
+    }
 
     return (
 
@@ -17,8 +22,8 @@ const SelectedItem = ({ item, handleItem }) => {
             style={styles.container}
         >
             <View style={selected ? styles.selectedSkill : styles.skill}>
-                <View  style={styles.levelContainer}>
-                <Text style={styles.level}>{item.serialNum}</Text>
+                <View style={styles.levelContainer}>
+                    <Text style={styles.level}>{item.serialNum}</Text>
                 </View>
                 <Text>{item.description}</Text>
             </View>
@@ -37,30 +42,30 @@ const styles = StyleSheet.create({
         marginLeft: 11,
         marginRight: 11,
         height: 50,
-        
+
     },
     skill: {
         backgroundColor: 'white',
-        justifyContent:'space-between',
-         flexDirection: 'row-reverse',
-         height:40
+        justifyContent: 'space-between',
+        flexDirection: 'row-reverse',
+        height: 40
     },
-    selectedSkill:{
+    selectedSkill: {
         backgroundColor: 'lightblue',
-        justifyContent:'space-between',
-         flexDirection: 'row-reverse',
-         height:40
+        justifyContent: 'space-between',
+        flexDirection: 'row-reverse',
+        height: 40
     },
-    levelContainer:{
-        backgroundColor:'lightcoral',
-        width:30,
-        padding:5,
+    levelContainer: {
+        backgroundColor: 'lightcoral',
+        width: 30,
+        padding: 5,
 
     },
-    level:{
-        fontSize:20,
-        fontWeight:'bold',
-        color:'blue',
+    level: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'blue',
     }
 })
 

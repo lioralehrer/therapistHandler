@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button } from 'react-native';
-import { SessionContext } from '../../context/SessionContext'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button, Alert,TouchableWithoutFeedback } from 'react-native';
+import { SessionContext } from '../../context/SessionContext';
 
+// "goals": [{"activities": [Array], "archived": false, "defaultEnv": "ים", "description": "אחלו להם כל טוב", "id": 0.2390894902286022, "minConsecutiveDays": 4, "minTherapists": 3, "serialNum": 1, "skillType": "משחק", "subGoals": [Array]}
 const SessionItem = ({ session }) => {
     const { deleteSession } = useContext(SessionContext);
+
     return (
         <TouchableOpacity style={styles.goal}>
             <View style={styles.goalView}>
@@ -13,16 +15,23 @@ const SessionItem = ({ session }) => {
                 <FlatList
                     data={session.goals}
                     renderItem={(goal) => <Text style={styles.goalActivity}>{goal.item.description}</Text>}
-                    // renderItem={(goal) => {console.log("goal: "), console.log(goal)}}
                     keyExtractor={item => item.id}
                 />
                 <Text>פעילויות: </Text>
                 <FlatList style={styles.activitiesList}
                     data={session.activities}
-                    renderItem={(act) => <Text style={styles.goalActivity}>{act.item}</Text>}
+                    renderItem={(act) => 
+                        <TouchableWithoutFeedback>
+                            <TouchableOpacity onPress={()=>Alert.alert(act.item.description)}>
+                         <Text style={styles.goalActivity}> {act.item.title}</Text>
+                            </TouchableOpacity>
+                        </TouchableWithoutFeedback>
+                    
+                    }
                     horizontal={true}
                     keyExtractor={item => item.id}
                 />
+
                 <Text style={styles.goalTitle}>{session.sessionPlanMessage} </Text>
             </View>
             <View style={{ margin: 10, padding: 5, width: 100 }}>
@@ -81,6 +90,6 @@ const styles = StyleSheet.create({
         paddingRight: 4,
         fontSize: 12,
         // textAlign: 'center',
-        height: 20,
+        // height: 20,
     },
 })

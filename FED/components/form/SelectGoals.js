@@ -3,10 +3,11 @@ import { View, Alert, StyleSheet, Button, FlatList, SafeAreaView, Text, Touchabl
 import { GoalContext } from '../../context/GoalContext';
 import SelectedItem from '../item/SelectedItem';
 
-const SelectGoals = ({ handleGoals }) => {
+const SelectGoals = ({ clear, handleGoals }) => {
     const { goals } = useContext(GoalContext);
     const [visible, setVisible] = useState(false);
     const [selectedGoals, setSelectedGoals] = useState([])
+   
 
     const handleItem = (bool, item) => {
         if (bool) {
@@ -41,7 +42,7 @@ const SelectGoals = ({ handleGoals }) => {
                     <View style={styles.goalsList}>
                         <FlatList
                             data={goals}
-                            renderItem={({ item }) => <SelectedItem item={item} handleItem={(bool) => handleItem(bool, item)} />}
+                            renderItem={({ item }) => <SelectedItem clear={clear} item={item} handleItem={(bool) => handleItem(bool, item)} />}
                             keyExtractor={item => item.id}
                             onPress={(id) => Alert.alert("pressed: change background color, and take the id")}
                         />
