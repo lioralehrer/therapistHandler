@@ -15,13 +15,14 @@ const DynamicFormInput = ({ clear, title, btnTitle, placeholder01, placeholder02
   
     const handleChangeTitle = (e, i) => {
         const updateValue = [...eventValue];
-        updateValue[i] = Object.assign({ title: e }, updateValue[i])
+        updateValue[i] = { ...updateValue[i], title: e } ;
         setEventValue(updateValue);
         submitTextInput(eventValue);
     }
     const handleChangeDescription = (e, i) => {
         const updateValue = [...eventValue];
-        updateValue[i] = Object.assign(updateValue[i], { description: e })
+        updateValue[i] = { ...updateValue[i], description: e } ;
+        setEventValue(updateValue);
         submitTextInput(eventValue);
     }
 
@@ -68,13 +69,13 @@ const DynamicFormInput = ({ clear, title, btnTitle, placeholder01, placeholder02
                     icon={<Icon name='code' color='#ffffff' />}
                     buttonStyle={{ borderRadius: 5, marginLeft: 10, marginRight: 10, marginBottom: 0, backgroundColor: "#841584" }}
                     title={btnTitle}
-                    onPress={() => setFields(fields + 1)}
+                    onPress={() =>setFields(fields + 1)}
                 />
             </Card>
 
         </View>
-    )
-}
+    )}
+
 
 export default DynamicFormInput;
 
