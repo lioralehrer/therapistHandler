@@ -43,6 +43,7 @@ const PlanProgram = () => {
             activities: activities,
             subGoals: subgoals,
         }
+        console.log("GOAL:")
         console.log(g);
         addGoal(g);
         setCounter(counter + 1);
@@ -94,7 +95,7 @@ const PlanProgram = () => {
                      placeholder01 = 'שם הפעילות'
                      placeholder02 = 'תיאור'
                      entity = {activities}
-                     submitTextInput={(e)=> setActivities(e)}   
+                     submitTextInput={(activity)=> setActivities(activity)}   
                     />
 
                 {/* <DynamicTextInput

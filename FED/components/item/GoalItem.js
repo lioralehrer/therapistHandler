@@ -1,26 +1,25 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, FlatList, Button, Alert } from 'react-native';
 import { GoalContext } from '../../context/GoalContext'
 
 const GoalItem = ({ goal }) => {
-     const { deleteGoal } = useContext(GoalContext);
+    const { deleteGoal } = useContext(GoalContext);
     const updateGoal = () => {
         Alert.alert("Open GoalForm again with goal info");
         console.log(goal)
     }
-   
     return (
         <TouchableOpacity style={styles.goal}>
             <View style={styles.goalView}>
-                <View style={{alignItems:'flex-start'}}>
-                <Text style={styles.num}>  {goal.serialNum}  </Text>
+                <View style={{ alignItems: 'flex-start' }}>
+                    <Text style={styles.num}>  {goal.serialNum}  </Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text >תחום : </Text>
                     <Text style={styles.goalTitle}>{goal.skillType}</Text>
                 </View>
-                <View style={{alignItems:'center'}}>
-                <Text style={styles.goalTitle}> {goal.description} </Text>
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={styles.goalTitle}> {goal.description} </Text>
                 </View>
                 <Text> תת מטרות : </Text>
                 <FlatList
@@ -30,7 +29,13 @@ const GoalItem = ({ goal }) => {
                 <Text>פעילויות: </Text>
                 <FlatList style={styles.activitiesList}
                     data={goal.activities}
-                    renderItem={(act) => <Text style={styles.goalActivity}>{act.item.title}</Text>}
+                    renderItem={(act) =>
+                        <TouchableWithoutFeedback>
+                            <TouchableOpacity onPress={() => Alert.alert(act.item.description)}>
+                                <Text style={styles.goalActivity}>{act.item.title}</Text>
+                            </TouchableOpacity>
+                        </TouchableWithoutFeedback>
+                    }
                     horizontal={true}
                 />
                 <Text style={styles.goalTitle}> סביבה דיפולטיבית : {goal.defaultEnv} </Text>
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
     num: {
         fontSize: 20,
         fontWeight: '600',
-         color: '#9370db',
+        color: '#9370db',
     },
     goalTitle: {
         // flex: 1,
