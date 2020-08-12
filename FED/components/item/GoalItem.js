@@ -1,57 +1,84 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, FlatList, Button, Alert } from 'react-native';
-import { GoalContext } from '../../context/GoalContext'
+import React, { useContext, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight, FlatList, Button, Alert, Modal } from 'react-native';
+import { GoalContext } from '../../context/GoalContext';
+import PlanProgram from '../form/PlanProgram';
 
 const GoalItem = ({ goal }) => {
     const { deleteGoal } = useContext(GoalContext);
+    const [visible, setVisible] = useState(false)
     const updateGoal = () => {
-        Alert.alert("Open GoalForm again with goal info");
         console.log(goal)
+        setVisible(true)
     }
     return (
-        <TouchableOpacity style={styles.goal}>
-            <View style={styles.goalView}>
-                <View style={{ alignItems: 'flex-start' }}>
-                    <Text style={styles.num}>  {goal.serialNum}  </Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <Text >תחום : </Text>
-                    <Text style={styles.goalTitle}>{goal.skillType}</Text>
-                </View>
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={styles.goalTitle}> {goal.description} </Text>
-                </View>
-                <Text> תת מטרות : </Text>
-                <FlatList
-                    data={goal.subGoals}
-                    renderItem={(subgoal) => <Text style={styles.goalActivity}>{subgoal.item.title}</Text>}
-                />
-                <Text>פעילויות: </Text>
-                <FlatList style={styles.activitiesList}
-                    data={goal.activities}
-                    renderItem={(act) =>
-                        <TouchableWithoutFeedback>
-                            <TouchableOpacity onPress={() => Alert.alert(act.item.description)}>
-                                <Text style={styles.goalActivity}>{act.item.title}</Text>
-                            </TouchableOpacity>
-                        </TouchableWithoutFeedback>
-                    }
-                    horizontal={true}
-                />
-                <Text style={styles.goalTitle}> סביבה דיפולטיבית : {goal.defaultEnv} </Text>
-            </View>
-            <View style={styles.btn}>
-                <Button
-                    onPress={() => deleteGoal(goal.id)}
-                    title=" מחקי  "
-                    color='#9370db' />
-                <Button
-                    onPress={() => updateGoal(goal)}
-                    title=" update  "
-                    color='#9370db' />
+        <View>
+            <Modal
+                animationType="slide"
+                transparent={false}
+                visible={visible}
+                onRequestClose={() => {
+                    setVisible(false);
+                }}>
+                <View style={{ marginTop: 22 }}>
+                    <View style={{ width: '100%', height: '100%' }}>
+                        <PlanProgram goal={goal} closeForm={(f)=>setVisible(f)}/>
 
-            </View>
-        </TouchableOpacity>
+                        <TouchableHighlight
+                            style={styles.back}
+                            onPress={() => {
+                                setVisible(!visible);
+                            }}>
+                            <Text>BACK  </Text>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+
+            < TouchableOpacity style={styles.goal}>
+                <View style={styles.goalView}>
+                    <View style={{ alignItems: 'flex-start' }}>
+                        <Text style={styles.num}>  {goal.serialNum}  </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <Text >תחום : </Text>
+                        <Text style={styles.goalTitle}>{goal.skillType}</Text>
+                    </View>
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={styles.goalTitle}> {goal.description} </Text>
+                    </View>
+                    <Text> תת מטרות : </Text>
+                    <FlatList
+                        data={goal.subGoals}
+                        renderItem={(subgoal) => <Text style={styles.goalActivity}>{subgoal.item.title}</Text>}
+                    />
+                    <Text>פעילויות: </Text>
+                    <FlatList style={styles.activitiesList}
+                        data={goal.activities}
+                        renderItem={(act) =>
+                            <TouchableWithoutFeedback>
+                                <TouchableOpacity onPress={() => Alert.alert(act.item.description)}>
+                                    <Text style={styles.goalActivity}>{act.item.title}</Text>
+                                </TouchableOpacity>
+                            </TouchableWithoutFeedback>
+                        }
+                        horizontal={true}
+                    />
+                    <Text style={styles.goalTitle}> סביבה דיפולטיבית : {goal.defaultEnv} </Text>
+                </View>
+                <View style={styles.btn}>
+                    <Button
+                        onPress={() => deleteGoal(goal.id)}
+                        title=" מחקי  "
+                        color='#9370db' />
+                    <Button
+                        onPress={() => updateGoal(goal)}
+                        title=" update  "
+                        color='#9370db' />
+
+                </View>
+            </TouchableOpacity>
+
+        </View>
     )
 }
 
@@ -112,5 +139,11 @@ const styles = StyleSheet.create({
         padding: 5,
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    back: {
+        backgroundColor: '#5f9ea0',
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
