@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Alert, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const DatePicker = ({clear, time }) => {
+const DatePicker = ({entity, clear, time }) => {
     const [isDatePickerVisible, setIsDatePickerVIsble] = useState(false)
-    const [chosenDate, setChosenDate] = useState();
+    const [chosenDate, setChosenDate] = useState(entity ? entity.scheduledAt.toLocaleString() : '');
     const [clearText, setClearText] = useState(clear)
     if (clear !== clearText){
         setChosenDate('');

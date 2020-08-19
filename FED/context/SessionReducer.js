@@ -10,14 +10,14 @@ export default (state, action) => {
                 ...state,
                 sessions: state.sessions.filter(session => session.id !== action.payload)
             }
-        // case 'UPDATE_SESSION':
-        //     var s = [...state.sessions];
-        //     var foundIndex = state.sessions.findIndex(session => session.id === action.payload.id);
-        //     s[foundIndex] = action.payload ;
-        //     return {
-        //         ...state,
-        //         session: s
-        //     }
+        case 'UPDATE_SESSION':
+            var s = [...state.sessions];
+            var foundIndex = state.sessions.findIndex(session => session.id === action.payload.id);
+            s[foundIndex] = action.payload ;
+            return {
+                ...state,
+                sessions: s
+            } 
         default:
             return state;
     }

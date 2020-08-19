@@ -9,6 +9,7 @@ import axios from 'axios';
 import SelectGoals from '../components/form/SelectGoals';
 import DropdownListBtn from '../components/list/DropdownListBtn';
 import ItemPicker from '../components/picker/ItemPicker';
+import { globalStyles } from '../styles/global';
 
 
 //  async () => {
@@ -46,19 +47,35 @@ const getTherapistList = () => {
 }
 
 
-export const AddSession = () => {
+export const AddSession = ({ oldsession, closeForm }) => {
     const [clear, setclear] = useState(false)
     const [session, setSession] = useState(
         {
-            goals: [],
-            therapist: '',
-            scheduledAt: '',
-            activities: [],
-            sessionPlanMessage: '',
-            id: Math.floor(Math.random() * 100000000),
+            goals: oldsession ? oldsession.goals : [],
+            therapist: oldsession ? oldsession.therapist : '',
+            scheduledAt: oldsession ? oldsession.scheduledAt.toLocaleString() : '',
+            activities: oldsession ? oldsession.activities : [],
+            sessionPlanMessage: oldsession ? oldsession.sessionPlanMessage : '',
+            id: oldsession ? oldsession.id : Math.floor(Math.random() * 100000000),
         });
     const { goals } = useContext(GoalContext);
-    const { addSession } = useContext(SessionContext);
+    const listOfGoalsId = () => {
+        let myGoals = session.goals;
+        let goalIdList = [];
+        if (oldsession) {
+            myGoals.forEach(goal => goalIdList.push(goal.id));
+            return goalIdList;
+        }
+    }
+    const listOfActivitiesId = () => {
+        let activities = session.activities;
+        let actIdList = [];
+        if (oldsession) {
+            activities.forEach(act => actIdList.push(act.id));
+            return actIdList;
+        }
+    }
+    const { addSession, updateSession } = useContext(SessionContext);
     const getActivityList = () => {
         let activities = [];
         let goalList = session.goals;
@@ -93,11 +110,7 @@ export const AddSession = () => {
                 break;
         }
     }
-
-    const onSubmit = () => {
-        setclear(!clear);
-        addSession(session);
-        Alert.alert("נוצר סשיין חדש  " + session.sessionPlanMessage);
+    const handleClear = () => {
         setSession({
             goals: [],
             therapist: '',
@@ -106,21 +119,70 @@ export const AddSession = () => {
             sessionPlanMessage: '',
             id: Math.floor(Math.random() * 100000000),
         })
+        setclear(!clear);
+    }
+
+    const onSubmit = () => {
+        if (oldsession === undefined) {
+            addSession(session);
+            Alert.alert("נוצר סשיין חדש  " + session.sessionPlanMessage);
+            handleClear();
+        }
+        else {
+            updateSession(session);
+            Alert.alert(`עודכן סשיין   ${session.scheduledAt} `);
+            closeForm(false);
+        }
+
+
+
     }
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row' }}>
-                <DatePicker clear={clear} time={(t) => setSession({ ...session, scheduledAt: t })} />
-                <ItemPicker clear={clear} title=" מטפלת" arrayListItems={getTherapistList()} onSelect={(therapist) => setSession({ ...session, therapist })} />
+                <DatePicker
+                    entity={oldsession}
+                    clear={clear}
+                    time={(t) => setSession({ ...session, scheduledAt: t })}
+                />
+                <ItemPicker
+                    entity={oldsession}
+                    clear={clear}
+                    title=" מטפלת"
+                    arrayListItems={getTherapistList()}
+                    onSelect={(therapist) => setSession({ ...session, therapist })}
+                />
             </View>
-            {/* <SelectGoals handleGoals={(selectedGoals)=>setSession({ ...session, goals : selectedGoals})}/> */}
-            <MultiSelectDropdown clear={clear} title="מטרות...." list={goals} handleList={(listOfId) => handleSelectedItems(listOfId, goals, 'goals')} />
-            <MultiSelectDropdown clear={clear} title="פעילויות..." list={getActivityList()} handleList={(listOfId) => handleSelectedItems(listOfId, getActivityList(), 'activities')} />
-            <Message clear={clear} message={(msg) => setSession({ ...session, sessionPlanMessage: msg })} />
-            <View><Text style={{ color: '#fff' }}>{session.sessionPlanMessage}</Text></View>
-
-            <View style={{ margin: 10, padding: 5, width: 100 }}>
-                <Button onPress={() => onSubmit()} title="submit session" />
+            <MultiSelectDropdown
+                clear={clear}
+                entity={listOfGoalsId()}
+                title="מטרות...."
+                list={goals}
+                handleList={(listOfId) => handleSelectedItems(listOfId, goals, 'goals')}
+            />
+            <MultiSelectDropdown
+                clear={clear}
+                entity={listOfActivitiesId()}
+                title="פעילויות..."
+                list={getActivityList()}
+                handleList={(listOfId) => handleSelectedItems(listOfId, getActivityList(), 'activities')}
+            />
+            <Message
+                clear={clear}
+                entity={oldsession}
+                message={(msg) => setSession({ ...session, sessionPlanMessage: msg })}
+            />
+            <View style={globalStyles.btns}>
+                <Button
+                    onPress={() => onSubmit()}
+                    color="#841584"
+                    title=" submit"
+                />
+                <Button
+                    onPress={() => handleClear()}
+                    color="#841584"
+                    title="ניקוי טופס"
+                />
             </View>
         </View>
     )

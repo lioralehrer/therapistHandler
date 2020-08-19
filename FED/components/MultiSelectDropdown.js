@@ -4,24 +4,26 @@ import MultiSelect from 'react-native-multiple-select';
 
 
 export default class MultiSelectDropdown extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            selectedItems:'',
+            selectedItems: this.props.entity,
             clearText: this.props.clear,
         };
+       
     }
     onSelectedItemsChange = selectedItems => {
         this.setState({
             selectedItems
         });
-        // console.log("selected list in MultiSelectedDropdown retun id of item: ");
-        // console.log(selectedItems);
         this.props.handleList(selectedItems);
+        console.log("Selected Items in MultiSelectDropdown: ")
+        console.log(selectedItems)
     };
 
     render() {
-        if (this.state.clearText !== this.props.clear){
+        if (this.state.clearText !== this.props.clear) {
             this.setState({
                 selectedItems: '',
                 clearText: this.props.clear,
@@ -30,7 +32,7 @@ export default class MultiSelectDropdown extends Component {
         const list = this.props.list
         const { selectedItems } = this.state;
         return (
-            <View style={{ flex: 1, padding: 30 }}>
+            <View style={{padding: 30}}>
                 <MultiSelect
                     hideTags
                     items={list}
