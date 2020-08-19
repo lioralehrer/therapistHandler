@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
-const ItemPicker = ({ clear, title, arrayListItems, onSelect }) => {
+const ItemPicker = ({entity, clear, title, arrayListItems, onSelect }) => {
 
-    const [dropdownValue, setDropdownValue] = useState();
+    const [dropdownValue, setDropdownValue] = useState(entity? entity.therapist : '');
     const [modalVisible, setModalVisible] = useState(false);
     const [clearText, setClearText] = useState(clear)
     if (clear !== clearText){
@@ -50,7 +50,7 @@ const ItemPicker = ({ clear, title, arrayListItems, onSelect }) => {
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
-            {dropdownValue && !modalVisible && <View style={styles.Pick}> 
+            { !modalVisible && <View style={styles.Pick}> 
              <Text style={styles.txt}>
                 {dropdownValue}
             </Text></View>}

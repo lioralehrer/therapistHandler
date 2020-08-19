@@ -42,7 +42,7 @@ export const SessionProvider = ({ children }) => {
     }
   
     function updateSession(session) {
-        dispach({
+        dispatch({
             type: 'UPDATE_SESSION',
             payload: session
         })

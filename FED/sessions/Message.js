@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, Alert } from 'react-native';
 
 
-const Message = ({ clear, message }) => {
-    const [text, setText] = useState('');
+const Message = ({entity, clear, message }) => {
+    const [text, setText] = useState(entity ? entity.sessionPlanMessage :'');
     const [clearText, setClearText] = useState(clear)
     if (clear !== clearText){
         setText('');
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 30,
         padding: 5,
-        margin: 10,
+        margin: 30,
         backgroundColor: '#fff8dc',
         marginHorizontal: 50,
     },

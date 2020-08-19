@@ -7,9 +7,9 @@ const GoalItem = ({ goal }) => {
     const { deleteGoal } = useContext(GoalContext);
     const [visible, setVisible] = useState(false)
     const updateGoal = () => {
-        console.log(goal)
         setVisible(true)
     }
+
     return (
         <View>
             <Modal
@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
         color: '#9370db',
     },
     goalTitle: {
-        // flex: 1,
         flexWrap: 'wrap',
         fontSize: 16,
         fontWeight: 'bold',

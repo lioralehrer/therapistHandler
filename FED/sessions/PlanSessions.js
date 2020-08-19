@@ -6,6 +6,7 @@ import { SessionProvider } from '../context/SessionContext';
 import SessionList from '../components/list/SessionList';
 import { GoalProvider } from '../context/GoalContext';
 
+
 const PlanSessions = () => {
     return (
         <SessionProvider>
