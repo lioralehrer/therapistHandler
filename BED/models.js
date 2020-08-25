@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const sequelize = require('./dbConnector');
 const fs = require('fs');
-const colorObjs = fs.readFileSync('../../DATA_SPECTRACKER/colors/Color_objs.json');
-const skillTypeObjs = fs.readFileSync('../../DATA_SPECTRACKER/skillTypes/skillTypeObjs.json');
+const colorObjs = fs.readFileSync('/media/hillash/Media/dev/DATA_SPECTRACKER/colors/Color_objs.json');
+const skillTypeObjs = fs.readFileSync('/media/hillash/Media/dev/DATA_SPECTRACKER/skillTypes/skillTypeObjs.json');
 
 
 const User = sequelize.define('user', {
@@ -41,6 +41,22 @@ const User_Patient = sequelize.define('user_patient', {});
 User.belongsToMany(Patient, {through: User_Patient});
 Patient.belongsToMany(User, {through: User_Patient});
 
+const SkillType = sequelize.define('skillType', {
+  title: {
+    type:Sequelize.STRING,
+    allowNull: false
+  },
+  level: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['title', 'level']
+  }]
+});
+
 const Goal = sequelize.define('goal', {
   serialNum: {
     type: Sequelize.INTEGER,
@@ -56,7 +72,12 @@ const Goal = sequelize.define('goal', {
     model: 'patients',
     key: 'id'
   },
-  skillType: Sequelize.ENUM('receptive_comm', 'expressive_comm'),
+  skillTypeId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'skillTypes',
+    key: 'id'
+  },
   minTherapists: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -94,26 +115,6 @@ const SubGoal = sequelize.define('subGoal', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  attempts: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-    validate: {
-      min: 0
-    }
-  },
-  successes: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-    validate: {
-      isLteAttempts(value) {
-        if (this.attempts < value) {
-          throw new Error('Successes must be less than or equal to attempts');
-        }
-      }
-    }
-  },
   goalId: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -126,7 +127,7 @@ const SubGoal = sequelize.define('subGoal', {
     unique: true,
     fields: ['serialNum', 'goalId']
   }]
-})
+});
 
 Goal.hasMany(SubGoal);
 
@@ -163,7 +164,9 @@ const Activity = sequelize.define('activity', {
       const lastColorId = (await Activity.findAll({where: {
         patientId: instance.patientId
       }})).length;
-      const nextColorCode = (await Color.findOne({where: {id: lastColorId+1}})).hexaCode;
+      const nextColorCode = (await Color.findOne({where: {
+        id: lastColorId+1
+      }})).hexaCode;
       instance.colorCode = nextColorCode;
     }
   }
@@ -203,8 +206,21 @@ const Assistance = sequelize.define('assistance', {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true
+  },
+  assistType: Sequelize.ENUM('verbal', 'physical')
+});
+
+const Activity_Assistance = sequelize.define('activity_assistance', {
+  priority: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
-})
+// }, {
+//   indexes: [{
+//     unique: true,
+//     fields: ['assistanceId', 'activityId', 'priority']
+//   }] <-- Check what the deal with assistances is
+});
 
 const SubGoal_Assistance = sequelize.define('subGoal_assistance', {});
 
@@ -230,18 +246,54 @@ const Session = sequelize.define('session', {
     key: 'id'
   },
   scheduledAt: Sequelize.DATE,
+  duration: {
+    type: Sequelize.INTEGER, // in minutes; i.e. 2 hours are 120
+    defaultValue: 120,
+    allowNull: false
+  },
   sessionPlanMessage: Sequelize.TEXT,
   sessionSummaryMessage: Sequelize.TEXT
-})
+});
 
 Patient.hasMany(Session);
 User.hasMany(Session, {foreignKey: 'therapistId'});
+
+const Session_Activity = sequelize.define('session_activity', {
+  sessionId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'sessions',
+    key: 'id'
+  },
+  activityId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'activities',
+    key: 'id'
+  },
+  recommended: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  }
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['sessionId', 'activityId']
+  }]
+});
 
 const Attempt = sequelize.define('attempt', {
   sessionId: {
     type: Sequelize.INTEGER,
     allowNull: false,
     model: 'sessions',
+    key: 'id'
+  },
+  subgoalId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'subGoals',
     key: 'id'
   },
   activityId: {
@@ -261,8 +313,11 @@ const Attempt = sequelize.define('attempt', {
     model: 'assistances',
     key: 'id'
   },
-  successful: Sequelize.BOOLEAN
-})
+  successful: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
+  }
+});
 
 const Session_Goal = sequelize.define('session_goal', {
   priority: {
@@ -284,7 +339,7 @@ const Session_Goal = sequelize.define('session_goal', {
       }
     }
   }
-})
+});
 
 Goal.belongsToMany(Session, {through: Session_Goal});
 Session.belongsToMany(Goal, {through: Session_Goal});
@@ -305,7 +360,7 @@ const Item = sequelize.define('item', {
     unique: true,
     fields: ['title', 'patientId']
   }]
-})
+});
 
 Patient.hasMany(Item);
 
@@ -320,7 +375,7 @@ const Word = sequelize.define('words', {
     allowNull: false,
     unique: true
   }
-})
+});
 
 const Patient_Word = sequelize.define('patient_word', {});
 
@@ -332,56 +387,92 @@ const Goal_Word = sequelize.define('goal_word', {});
 Word.belongsToMany(Goal, {through: Goal_Word});
 Goal.belongsToMany(Word, {through: Goal_Word});
 
+const Skill = sequelize.define('skill', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  patientId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'patients',
+    key: 'id'
+  },
+  skillTypeId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    model: 'skillTypes',
+    key: 'id'
+  }
+}, {
+  indexes: [{
+    unique: true,
+    fields: ['title', 'patientId']
+  }]
+});
+
+const Goal_Skill = sequelize.define('goal_skill', {});
+
+Skill.belongsToMany(Goal, {through: Goal_Skill});
+Goal.belongsToMany(Skill, {through: Goal_Skill});
+
+const Patient_Skill = sequelize.define('patient_skill', {
+  acquired: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  }
+})
+
+Skill.belongsToMany(Patient, {through: Patient_Skill});
+Patient.belongsToMany(Skill, {through: Patient_Skill});
+
+SkillType.hasMany(Skill);
+
 const Color = sequelize.define('color', {
   hexaCode: {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true
   }
-})
+});
 
-const SkillType = sequelize.define('skilltype', {
-  title: {
-    type:Sequelize.STRING,
-    allowNull: false
-  },
-  level: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
-}, {
-  indexes: [{
-    unique: true,
-    fields: ['title', 'level']
-  }]
-})
+
 
 // -----------------------------------------------
-const populateTables = async () => {
-  const userCount = (await User.findAll()).length;
-  console.log(`userCount: ${userCount}`);
-  if (userCount === 0) {
+
+const bulkCreateTableRows = async (Model, objs_arr) => {
+  const rowCount = (await Model.findAll()).length;
+  console.log(`${Model.name} rowCount: ${rowCount}`);
+  if (rowCount === 0) {
     try {
-      await User.bulkCreate([
-      {
-        fullName: "full name",
-        email: "e@ma.il",
-        role: "case_manager"
-      },
-      {
-        fullName: "פול ניים",
-        email: "h@p.kl",
-        role: "therapist"
-      }
-      ], {
+      await Model.bulkCreate(
+        objs_arr, {
         validate: true,
         individualHooks: true
       }).then().catch(err => console.error(err));
-      console.log("added 2 users to db");
+      console.log("added ${objs_arr.length} ${Model.name} rows to db");
     } catch (err) {
       console.error(err.message);
     }
   }
+};
+
+const users = [
+  {
+    fullName: "full name",
+    email: "e@ma.il",
+    role: "case_manager"
+  },
+  {
+    fullName: "פול ניים",
+    email: "h@p.kl",
+    role: "therapist"
+  }
+]
+
+const populateTables = async () => {
+  bulkCreateTableRows(User, users);
   const patientCount = (await Patient.findAll()).length;
   console.log(`patientCount: ${patientCount}`);
   if (patientCount === 0) {
@@ -426,6 +517,24 @@ const populateTables = async () => {
       console.error(err.message);
     }
   }
+  const skillTypeCount = (await SkillType.findAll()).length;
+  console.log(`skillTypeCount: ${skillTypeCount}`);
+  if (skillTypeCount === 0) {
+    allSkillTypes = JSON.parse(skillTypeObjs);
+    try {
+      skillTypes = [];
+      for (let level in allSkillTypes) {
+        allSkillTypes[level].forEach(title => skillTypes.push({title, level: parseInt(level)}));
+      }
+      SkillType.bulkCreate(skillTypes, {
+        validate: true,
+        individualHooks: true
+      }).then().catch(err => console.error(err));
+      console.log("added all skill types to table");
+    } catch (err) {
+      console.error(err)
+    }
+  }
   const goalCount = (await Goal.findAll()).length;
   console.log(`goalCount: ${goalCount}`);
   if (goalCount === 0) {
@@ -434,14 +543,14 @@ const populateTables = async () => {
         serialNum: 3,
         description: 'description',
         patientId: 2,
-        skillType: 'expressive_comm',
+        skillTypeId: 1,
         minTherapists: 1,
         minConsecutiveDays: 3
       }, {
         serialNum: 2,
         description: 'discreepshen',
         patientId: 2,
-        skillType: 'expressive_comm',
+        skillTypeId: 1,
         minTherapists: 10,
         minConsecutiveDays: 9,
         archived: true
@@ -449,7 +558,7 @@ const populateTables = async () => {
         serialNum: 1,
         description: 'דיסקריפשן',
         patientId: 1,
-        skillType: 'receptive_comm',
+        skillTypeId: 3,
         minTherapists: 0,
         minConsecutiveDays: 12
       }], {
@@ -577,8 +686,70 @@ const populateTables = async () => {
           patientId: 2,
           therapistId: 1,
           scheduledAt: new Date(Date.now()),
+          duration: 180,
           sessionPlanMessage: "לורם איפסום",
           sessionSummaryMessage: "איפסום לורם"
+        }
+      ], {
+        validate: true,
+        individualHooks: true
+      })
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const sessionActivityCount = (await Session_Activity.findAll()).length;
+  console.log(`sessionActivityCount: ${sessionActivityCount}`)
+  if (sessionCount === 0) {
+    try {
+      await Session_Activity.bulkCreate([
+        {
+          sessionId: 2,
+          activityId: 2,
+          recommended: true
+        },
+        {
+          sessionId: 2,
+          activityId: 1
+        },
+        {
+          sessionId: 1,
+          activityId: 3
+        }
+      ], {
+        validate: true,
+        individualHooks: true
+      })
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const attemptCount = (await Attempt.findAll()).length;
+  console.log(`attemptCount: ${attemptCount}`);
+  if (attemptCount === 0) {
+    try {
+      await Attempt.bulkCreate([
+        {
+          sessionId: 1,
+          subgoalId: 2,
+          activityId: 1,
+          environmentId: 3,
+          successful: true
+        },
+        {
+          sessionId: 2,
+          subgoalId: 2,
+          activityId: 2,
+          environmentId: 1,
+          assistanceId: 2,
+          successful: false
+        },
+        {
+          sessionId: 2,
+          subgoalId: 2,
+          activityId: 2,
+          environmentId: 1,
+          successful: true
         }
       ], {
         validate: true,
@@ -655,8 +826,7 @@ const populateTables = async () => {
           title: "לבשל"
         },
         {
-          title: "לקפל",
-          patientId: 1
+          title: "לקפל"
         }
       ], {
         validate: true,
@@ -696,6 +866,64 @@ const populateTables = async () => {
       console.error(err.message);
     }
   }
+  const skillCount = (await Skill.findAll()).length;
+  console.log(`skillCount: ${skillCount}`);
+  if (skillCount === 0) {
+    try {
+      await Skill.bulkCreate([
+        {
+          title: "לנגן בפסנתר",
+          patientId: 2,
+          skillTypeId: 1
+        },
+        {
+          title: "לנגן בחלילית",
+          patientId: 2,
+          skillTypeId: 3
+        },
+        {
+          title: "play the drums",
+          patientId: 1,
+          skillTypeId: 3
+        }
+      ], {
+        validate: true,
+        individualHooks: true
+      })
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const goalSkillCount = (await Goal_Skill.findAll()).length;
+  console.log(`goalSkillCount: ${goalSkillCount}`);
+  if (goalSkillCount === 0) {
+    try {
+      let goal = await Goal.findOne({where: {id: 3}});
+      let skill = await Skill.findOne({where: {id: 1}});
+      await goal.addSkill(skill).then().catch(err => console.error(err));
+      skill = await Skill.findOne({where: {id: 2}});
+      await goal.addSkill(skill).then().catch(err => console.error(err));
+      console.log("linked goal 3 to skill 1");
+      console.log("linked goal 3 to skill 2");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  const patientSkillCount = (await Patient_Skill.findAll()).length;
+  console.log(`patientSkillCount: ${patientSkillCount}`);
+  if (patientSkillCount === 0) {
+    try {
+      let patient = await Patient.findOne({where: {id: 3}});
+      let skill = await Skill.findOne({where: {id: 1}});
+      await patient.addSkill(skill).then().catch(err => console.error(err));
+      skill = await Skill.findOne({where: {id: 2}});
+      await patient.addSkill(skill).then().catch(err => console.error(err));
+      console.log("linked patient 3 to skill 1");
+      console.log("linked patient 3 to skill 2");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
   const colorCount = (await Color.findAll()).length;
   console.log(`colorCount: ${colorCount}`);
   if (colorCount === 0) {
@@ -705,24 +933,6 @@ const populateTables = async () => {
         individualHooks: true
       }).then().catch(err => console.error(err));
       console.log("added all 150 colors to table");
-    } catch (err) {
-      console.error(err)
-    }
-  }
-  const skillTypeCount = (await SkillType.findAll()).length;
-  console.log(`skillTypeCount: ${skillTypeCount}`);
-  if (skillTypeCount === 0) {
-    allSkillTypes = JSON.parse(skillTypeObjs);
-    try {
-      skillTypes = [];
-      for (let level in allSkillTypes) {
-        allSkillTypes[level].forEach(title => skillTypes.push({title, level: parseInt(level)}));
-      }
-      SkillType.bulkCreate(skillTypes, {
-        validate: true,
-        individualHooks: true
-      }).then().catch(err => console.error(err));
-      console.log("added all skill types to table");
     } catch (err) {
       console.error(err)
     }
@@ -737,21 +947,27 @@ module.exports = {
   User,
   Patient,
   User_Patient,
+  SkillType,
   Goal,
   SubGoal,
   Environment,
   Activity,
   Activity_Environment,
+  Assistance,
+  Activity_Assistance,
+  SubGoal_Assistance,
   Goal_Activity,
   Session,
+  Session_Activity,
+  Attempt,
   Session_Goal,
   Item,
   Activity_Item,
   Word,
   Patient_Word,
   Goal_Word,
-  Assistance,
-  SubGoal_Assistance,
-  Attempt,
+  Skill,
+  Goal_Skill,
+  Patient_Skill,
   Color
 };
