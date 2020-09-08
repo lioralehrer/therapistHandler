@@ -12,16 +12,16 @@ const DynamicFormInput = ({ clear, title, btnTitle, placeholder01, placeholder02
         setFields(1);
         setClearText(!clearText);
     }
-  
+
     const handleChangeTitle = (e, i) => {
         const updateValue = [...eventValue];
-        updateValue[i] = { ...updateValue[i], title: e } ;
+        updateValue[i] = { ...updateValue[i], title: e };
         setEventValue(updateValue);
         submitTextInput(eventValue);
     }
     const handleChangeDescription = (e, i) => {
         const updateValue = [...eventValue];
-        updateValue[i] = { ...updateValue[i], description: e } ;
+        updateValue[i] = { ...updateValue[i], description: e };
         setEventValue(updateValue);
         submitTextInput(eventValue);
     }
@@ -32,7 +32,9 @@ const DynamicFormInput = ({ clear, title, btnTitle, placeholder01, placeholder02
             arr.push(
                 <ListItem
                     key={i}
-                    title={
+                    bottomDivider
+                >
+                    <ListItem.Content>
                         <View style={styles.unit}>
                             <TextInput
                                 style={globalStyles.input}
@@ -49,10 +51,9 @@ const DynamicFormInput = ({ clear, title, btnTitle, placeholder01, placeholder02
                                 multiline={true}
                             />
                         </View>
-                    }
-                    bottomDivider
-                    chevron
-                />
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                </ListItem>
             )
 
         }
@@ -69,12 +70,13 @@ const DynamicFormInput = ({ clear, title, btnTitle, placeholder01, placeholder02
                     icon={<Icon name='code' color='#ffffff' />}
                     buttonStyle={{ borderRadius: 5, marginLeft: 10, marginRight: 10, marginBottom: 0, backgroundColor: "#841584" }}
                     title={btnTitle}
-                    onPress={() =>setFields(fields + 1)}
+                    onPress={() => setFields(fields + 1)}
                 />
             </Card>
 
         </View>
-    )}
+    )
+}
 
 
 export default DynamicFormInput;
@@ -82,5 +84,6 @@ export default DynamicFormInput;
 const styles = StyleSheet.create({
     unit: {
         backgroundColor: 'lavenderblush',
+        alignSelf:'stretch'
     }
 })
