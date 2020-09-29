@@ -325,6 +325,11 @@ const Attempt = sequelize.define('attempt', {
   }
 });
 
+const Attempt_Assistance = sequelize.define('attempt_assistance', {});
+
+Attempt.belongsToMany(Assistance, {through: Attempt_Assistance});
+Assistance.belongsToMany(Attempt, {through: Attempt_Assistance});
+
 const Session_Goal = sequelize.define('session_goal', {
   priority: {
     type: Sequelize.INTEGER,
@@ -742,6 +747,21 @@ const populateTables = async () => {
     }
   }
   bulkCreateTableRows(Attempt, attempts);
+  const attemptAssistanceCount = (await Attempt_Assistance.findAll()).length;
+  console.log(`attemptAssistanceCount: ${attemptAssistanceCount}`);
+  if (attemptAssistanceCount === 0) {
+    try {
+      let attempt = await Attempt.findOne({where: {id: 1}});
+      let assistance = await Assistance.findOne({where: {id: 1}});
+      await attempt.addAssistance(assistance).then().catch(err => console.error(err));
+      assistance = await Assistance.findOne({where: {id: 2}});
+      await attempt.addAssistance(assistance).then().catch(err => console.error(err));
+      console.log("linked attempt 1 to assistance 1");
+      console.log("linked attempt 1 to assistance 2");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
   const sessionGoalCount = (await Session_Goal.findAll()).length;
   console.log(`sessionGoalCount: ${sessionGoalCount}`);
   if (sessionGoalCount === 0) {
@@ -884,6 +904,7 @@ module.exports = {
   Session,
   Session_Activity,
   Attempt,
+  Attempt_Assistance,
   Session_Goal,
   Item,
   Activity_Item,
